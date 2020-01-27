@@ -7,12 +7,21 @@ router.get('/', function (req, res) {
     });
 });
 
-var pluginController = require('./plugin/pluginController');
+var pluginsController = require('./plugins/pluginsController');
+
+router.route('/plugins')
+	.post(pluginsController.addplugins)
+	.get(pluginsController.getAll);
 
 
-router.route('/plugin')
-	.post(pluginController.addplugins)
-	.get(pluginController.getAll);
 
+var usersController = require('./users/usersController');
+
+router.route('/user/connect')
+	.post(usersController.logIn);
+
+router.route('/user')
+	.post(usersController.new)
+	.get(usersController.user);
 
 module.exports = router;

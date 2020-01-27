@@ -17,7 +17,7 @@ exports.addplugins = function(req, res){
 	var plugins = [
 		{ name: 'Plugin1'},
 		{ name: 'Plugin2'},
-		];        
+	];        
 
 	Plugin.collection.insertMany(plugins, function(err, plugins) {
 		if(err)
