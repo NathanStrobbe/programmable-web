@@ -38,6 +38,5 @@ app.use('/api', apiRoutes);
 
 
 http.listen(3000, () => {
-	console.info('SocketIOServer is ready.');
-    console.info('Socket.IO\'s port is 10000');
+    console.info('Server listen on 3000');
 });
