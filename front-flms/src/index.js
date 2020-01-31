@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Connexion from "./components/Connexion";
+import PluginsList from "./components/PluginsList";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Header from "./components/Header";
 
@@ -13,6 +14,7 @@ const routing = (
         <Switch>
             <Route exact path="/" component={App}/>
             <Route path="/connexion" component={Connexion}/>
+            <Route path="/pluginsList" component={PluginsList}/>
         </Switch>
     </Router>
 );

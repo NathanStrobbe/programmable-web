@@ -13,6 +13,9 @@ const Header = () => {
                 <NavItem>
                     <Link to="/">Inscription</Link>
                 </NavItem>
+                <NavItem>
+                    <Link to="/pluginsList">Liste des plugins</Link>
+                </NavItem>
             </Nav>
         </Navbar>
     );
