@@ -2,6 +2,7 @@ User = require('./userModel');
 Token  = require('./tokenModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 exports.user = function(req, res){
 	var _id;
 	if(req.query.token != null){
@@ -30,12 +31,13 @@ exports.user = function(req, res){
 exports.logIn = function(req, res){
 	User.findOne({email: req.body.email}, function(err, user){
 		if(err){
+			console.log(err);
 			res.status(401).send(err);
 		}
 
 		if(user){
 			if(bcrypt.compareSync(req.body.password, user.password)){
-				var token = jwt.sign({_id: user._id},'flms');
+				var token = jwt.sign({email: user.email},'flms');
 				res.status(200).send({token: token, user: user});
 			}
 			else  {

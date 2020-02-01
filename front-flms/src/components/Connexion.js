@@ -27,7 +27,10 @@ const Connexion = () => {
                 setError(401);
             }
             else{
-                setRedirectToReferrer(true)
+                res.json().then(data=>{
+                    sessionStorage.setItem('jwtToken', data.token);
+                    setRedirectToReferrer(true);
+                })
             }
             return res;
         });
