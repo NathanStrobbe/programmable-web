@@ -6,8 +6,6 @@ import {Link} from "react-router-dom";
 const PluginsList = () => {
     const { plugins } = GetPluginsList();
 
-  const { plugins } = GetPluginsList();
-
   const click = (id) =>{
     if(sessionStorage.getItem('jwtToken')){
       console.log("connecté");
