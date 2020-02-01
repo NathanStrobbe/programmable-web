@@ -1,11 +1,18 @@
 import React from 'react';
+import { GetPluginsList } from '../utils/hooks';
+
 
 const PluginsList = () => {
-    return (
-        <div className="PluginsList">
-            <p>PluginsList hello</p>
-        </div>
-    );
-};
+
+const { plugins } = GetPluginsList()
+
+return (
+  <div>
+    {
+      plugins.map(plugins => <div>{plugins.name}</div>)
+    }
+  </div>
+)
+}
 
 export default PluginsList;
