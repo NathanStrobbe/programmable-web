@@ -3,8 +3,8 @@ import { GetPluginsList } from '../utils/hooks';
 import { Card,Button,Alert } from 'react-bootstrap';
 import {Link} from "react-router-dom";
 
-
 const PluginsList = () => {
+    const { plugins } = GetPluginsList();
 
   const { plugins } = GetPluginsList();
 
