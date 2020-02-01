@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Alert} from "reactstrap";
 import { Redirect } from "react-router-dom";
+const Register = () => {
 
-const Connexion = () => {
-
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
@@ -12,25 +12,23 @@ const Connexion = () => {
 
     const handleSubmit= (e) => {
         e.preventDefault();
-        return fetch('http://localhost:3001/api/user/connect', {
+        return fetch('http://localhost:3001/api/user', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                "name": username,
                 "password": password,
                 "email": email
             })
         }).then(res => {
-            if(res.status === 401){
-                setError(401);
+            if(res.status === 409){
+                setError(409);
             }
             else{
-                res.json().then(data=>{
-                    sessionStorage.setItem('jwtToken', data.token);
-                    setRedirectToReferrer(true);
-                })
+               setRedirectToReferrer(true)
             }
             return res;
         });
@@ -41,42 +39,41 @@ const Connexion = () => {
         setEmail(e.target.value);
     }
 
-    const handlePasswordChange = (e)=>{
-        setError(0);
-        setPassword(e.target.value);
-    }
 
     return (
-        <div className="connexion content">
+        <div className="register content">
             {
-                redirectToReferrer ? <Redirect to='/pluginsList'/>: null
+                redirectToReferrer ? <Redirect to='/connexion'/>: null
             }
             <Card>
-                <CardHeader>Connexion</CardHeader>
+                <CardHeader>Inscription</CardHeader>
                 <CardBody>
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
-                            <Label for="exampleEmail">Email</Label>
+                            <Label for="userName">User Name</Label>
+                            <Input name="userName" id="userName" value={username} onChange={e=> setUsername(e.target.value)}/>
+                        </FormGroup>
+                        <FormGroup>
+                            {
+                                error === 409 && (
+                                    <Alert color="danger" >
+                                        Cet email est déjà enregistré!
+                                    </Alert>
+                                )
+                            }
+                            <Label for="email">Email</Label>
                             <Input type="email" name="email" id="email" value={email} onChange={handleEmailChange}/>
                         </FormGroup>
                         <FormGroup>
                             <Label for="examplePassword">Mot de passe</Label>
-                            <Input type="password" name="password" id="password" alue={password} onChange={handlePasswordChange}/>
-                            {
-                                error === 401 && (
-                                    <Alert color="danger" >
-                                        Connexion impossible, verifiez votre email et mot de passe
-                                    </Alert>
-                                )
-                            }
+                            <Input type="password" name="password" id="password" value={password} onChange={e=> setPassword(e.target.value)}/>
                         </FormGroup>
-                        <Button>Se connecter</Button>
+                        <Button>Enregistrer</Button>
                     </Form>
                 </CardBody>
             </Card>
-
         </div>
     );
 };
 
-export default Connexion;
+export default Register;
