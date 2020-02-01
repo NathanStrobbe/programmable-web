@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Alert} from "reactstrap";
 import { Redirect } from "react-router-dom";
 
-const Connexion = () => {
+const Login = () => {
 
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -74,9 +74,8 @@ const Connexion = () => {
                     </Form>
                 </CardBody>
             </Card>
-
         </div>
     );
 };
 
-export default Connexion;
+export default Login;

@@ -1,11 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 export const GetPluginsList = () => {
-  const [plugins, setPlugins] = useState([])
+  const [plugins, setPlugins] = useState([]);
 
   useEffect(() => {
-
-
     fetch('http://localhost:3001/api/plugins',{
       method: 'GET',
       headers: {
@@ -13,16 +11,17 @@ export const GetPluginsList = () => {
         'Content-Type': 'application/json'
       },
     })
-      .then(res => res.json())
-      .then(json => {
-        console.log(json)
-        if (json) {
-          setPlugins(json)
-          console.log(plugins);
-        } else {
-          setPlugins([])
-        }
-      })
-  }, [])
-  return { plugins }
-}
+    .then(res => res.json())
+    .then(json => {
+      console.log(json);
+      if (json) {
+        setPlugins(json);
+        console.log(plugins);
+      } else {
+        setPlugins([]);
+      }
+    })
+  }, []);
+
+  return { plugins };
+};
