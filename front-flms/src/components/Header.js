@@ -16,12 +16,14 @@ const Header = () => {
         {
             return  (
                 <NavItem className="mr-4">
+                    <Link to="/pluginsList"><Button>Liste des plugins</Button></Link>
                     <Button onClick={handleSignOut}>Deconnexion</Button>
                 </NavItem>
             )
         }else {
             return(
                 <NavItem className="mr-4">
+                    <Link to="/pluginsList"><Button>Liste des plugins</Button></Link>
                     <Link to="/connexion"><Button>Connexion</Button></Link>
                     <Link to="/register"><Button>Inscription</Button></Link>
                 </NavItem>
@@ -36,9 +38,6 @@ const Header = () => {
                 {
                     navContent()
                 }
-                <NavItem>
-                    <Link to="/pluginsList">Liste des plugins</Link>
-                </NavItem>
             </Nav>
         </Navbar>
     );
