@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Alert} from "reactstrap";
-import { Redirect } from "react-router-dom";
+import React, { useState } from 'react';
+import { Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Alert } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 
 const Login = () => {
 
@@ -10,7 +10,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [redirectToReferrer, setRedirectToReferrer] = useState('');
 
-    const handleSubmit= (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         return fetch('http://localhost:3001/api/user/connect', {
             method: 'POST',
@@ -19,37 +19,37 @@ const Login = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "password": password,
-                "email": email
+                'password': password,
+                'email': email
             })
         }).then(res => {
-            if(res.status === 401){
+            if (res.status === 401) {
                 setError(401);
             }
-            else{
-                res.json().then(data=>{
+            else {
+                res.json().then(data => {
                     sessionStorage.setItem('jwtToken', data.token);
                     setRedirectToReferrer(true);
-                })
+                });
             }
             return res;
         });
     };
 
-    const handleEmailChange = (e)=>{
+    const handleEmailChange = (e) => {
         setError(0);
         setEmail(e.target.value);
-    }
+    };
 
-    const handlePasswordChange = (e)=>{
+    const handlePasswordChange = (e) => {
         setError(0);
         setPassword(e.target.value);
-    }
+    };
 
     return (
         <div className="connexion content">
             {
-                redirectToReferrer ? <Redirect to='/pluginsList'/>: null
+                redirectToReferrer ? <Redirect to='/pluginsList' /> : null
             }
             <Card>
                 <CardHeader>Connexion</CardHeader>
@@ -57,11 +57,11 @@ const Login = () => {
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
                             <Label for="exampleEmail">Email</Label>
-                            <Input type="email" name="email" id="email" value={email} onChange={handleEmailChange}/>
+                            <Input type="email" name="email" id="email" value={email} onChange={handleEmailChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="examplePassword">Mot de passe</Label>
-                            <Input type="password" name="password" id="password" alue={password} onChange={handlePasswordChange}/>
+                            <Input type="password" name="password" id="password" alue={password} onChange={handlePasswordChange} />
                             {
                                 error === 401 && (
                                     <Alert color="danger" >

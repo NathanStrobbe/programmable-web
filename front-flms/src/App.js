@@ -26,6 +26,6 @@ const App = () => {
             </BrowserRouter>
         </main>
     );
-}
+};
 
 export default App;

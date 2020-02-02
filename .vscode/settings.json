@@ -1,0 +1,4 @@
+{
+    "eslint.enable": true,
+    "eslint.nodePath": "/usr/local/lib/node_modules/"
+}

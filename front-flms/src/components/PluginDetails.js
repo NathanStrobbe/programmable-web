@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col, Card, CardBody, CardText } from 'reactstrap';
 import { useParams } from 'react-router-dom';
 import { GetPlugin } from '../utils/hooks.js';
 
 const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
-    console.log("#rendering pluginDetails");
-    
+    console.log('#rendering pluginDetails');
+
     const { pluginId } = useParams();
 
     const plugin = GetPlugin(pluginId);
-    if (plugin) {    
+    if (plugin) {
         console.log(plugin);
         return (
             <div className="pluginDetails">
@@ -33,9 +33,9 @@ const PluginDetails = () => {
                 <Row className="pluginDetailsCommentsTitle" sm='1'>
                     <Col><h4>Comments:</h4></Col>
                 </Row>
-                { 
-                    plugin.comments.map((comment) => (
-                        <Row className="pluginDetailsComment" sm='1'>
+                {
+                    plugin.comments.map((comment, i) => (
+                        <Row key={i} className="pluginDetailsComment" sm='1'>
                             <Card>
                                 <CardBody>
                                     <CardText>

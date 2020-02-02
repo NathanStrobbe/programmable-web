@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
-import {Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Alert} from "reactstrap";
-import { Redirect } from "react-router-dom";
+import React, { useState } from 'react';
+import { Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Alert } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
+
 const Register = () => {
 
     const [username, setUsername] = useState('');
@@ -10,7 +11,7 @@ const Register = () => {
     const [error, setError] = useState('');
     const [redirectToReferrer, setRedirectToReferrer] = useState('');
 
-    const handleSubmit= (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         return fetch('http://localhost:3001/api/user', {
             method: 'POST',
@@ -19,31 +20,31 @@ const Register = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "name": username,
-                "password": password,
-                "email": email
+                'name': username,
+                'password': password,
+                'email': email
             })
         }).then(res => {
-            if(res.status === 409){
+            if (res.status === 409) {
                 setError(409);
             }
-            else{
-               setRedirectToReferrer(true)
+            else {
+                setRedirectToReferrer(true);
             }
             return res;
         });
     };
 
-    const handleEmailChange = (e)=>{
+    const handleEmailChange = (e) => {
         setError(0);
         setEmail(e.target.value);
-    }
+    };
 
 
     return (
         <div className="register content">
             {
-                redirectToReferrer ? <Redirect to='/connexion'/>: null
+                redirectToReferrer ? <Redirect to='/connexion' /> : null
             }
             <Card>
                 <CardHeader>Inscription</CardHeader>
@@ -51,7 +52,7 @@ const Register = () => {
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
                             <Label for="userName">User Name</Label>
-                            <Input name="userName" id="userName" value={username} onChange={e=> setUsername(e.target.value)}/>
+                            <Input name="userName" id="userName" value={username} onChange={e => setUsername(e.target.value)} />
                         </FormGroup>
                         <FormGroup>
                             {
@@ -62,11 +63,11 @@ const Register = () => {
                                 )
                             }
                             <Label for="email">Email</Label>
-                            <Input type="email" name="email" id="email" value={email} onChange={handleEmailChange}/>
+                            <Input type="email" name="email" id="email" value={email} onChange={handleEmailChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="examplePassword">Mot de passe</Label>
-                            <Input type="password" name="password" id="password" value={password} onChange={e=> setPassword(e.target.value)}/>
+                            <Input type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
                         </FormGroup>
                         <Button>Enregistrer</Button>
                     </Form>
