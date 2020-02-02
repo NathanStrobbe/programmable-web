@@ -13,6 +13,19 @@ exports.getAll = function(req, res){
 	});
 }
 
+exports.get = function(req, res) {
+	console.log(req.query);
+	Plugin.find({'_id': req.query.id}, function(err, plugin) {
+		if (err) {
+			res.status(500).send(err);
+		}
+		if (plugin) {
+			console.log(plugin);
+			res.status(200).send(plugin);
+		}
+	});
+}
+
 exports.addplugins = function(req, res){
 	var plugins = [
 		{ name: 'Plugin1'},

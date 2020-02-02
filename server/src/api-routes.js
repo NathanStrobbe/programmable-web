@@ -13,6 +13,8 @@ router.route('/plugins')
 	.post(pluginsController.addplugins)
 	.get(pluginsController.getAll);
 
+router.route('/plugin')
+	.get(pluginsController.get);
 
 
 var usersController = require('./users/usersController');

@@ -7,6 +7,7 @@ import Connexion from "./components/Connexion";
 import PluginsList from "./components/PluginsList";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Header from "./components/Header";
+import PluginDetails from './components/PluginDetails';
 
 const routing = (
     <Router>
@@ -15,6 +16,7 @@ const routing = (
             <Route exact path="/" component={App}/>
             <Route path="/connexion" component={Connexion}/>
             <Route path="/pluginsList" component={PluginsList}/>
+            <Route path="/pluginDetails/:pluginId" component={PluginDetails}/>
         </Switch>
     </Router>
 );
