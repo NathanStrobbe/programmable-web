@@ -27,14 +27,11 @@ exports.get = function (req, res) {
 };
 
 exports.addplugins = function (req, res) {
-    var plugins = [
-        { name: 'Plugin1' },
-        { name: 'Plugin2' },
-    ];
+    const plugin = req.body;
 
-    Plugin.collection.insertMany(plugins, function (err, plugins) {
+    Plugin.collection.insertOne(plugin, function (err, plugin) {
         if (err)
             res.status(500).send(err);
-        res.status(200).send({ msg: 'Plugins added', data: plugins });
+        res.status(200).send({ msg: 'Plugins added', data: plugin });
     });
 };

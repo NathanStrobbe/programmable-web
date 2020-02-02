@@ -7,7 +7,7 @@ router.get('/', function (req, res) {
     });
 });
 
-var pluginsController = require('./plugins/pluginsController');
+const pluginsController = require('./plugins/pluginsController');
 
 router.route('/plugins')
     .post(pluginsController.addplugins)
@@ -17,7 +17,7 @@ router.route('/plugin')
     .get(pluginsController.get);
 
 
-var usersController = require('./users/usersController');
+const usersController = require('./users/usersController');
 
 router.route('/user/connect')
     .post(usersController.logIn);

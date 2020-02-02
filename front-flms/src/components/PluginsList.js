@@ -31,7 +31,7 @@ const PluginsList = () => {
                                 </Card.Text>
                             </Link>
                             Likes : {plugins.likes.length}<br />
-                            <Button variant="primary" onClick={click(plugins.likes)}>Add</Button>
+                            <Button variant="primary" onClick={e => click(plugins.likes)}>Add</Button>
                         </Card.Body>
                     </Card>
                 )

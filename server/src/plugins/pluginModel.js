@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var pluginSchema = mongoose.Schema({
+const pluginSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -44,7 +44,7 @@ var pluginSchema = mongoose.Schema({
     }
 });
 
-var Plugin = module.exports = mongoose.model('plugin', pluginSchema);
+const Plugin = module.exports = mongoose.model('plugin', pluginSchema);
 
 module.exports.get = function (callback, limit) {
     Plugin.find(callback).limit(limit);

@@ -1,25 +1,38 @@
 import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input, Card, CardBody, CardTitle } from 'reactstrap';
 import { Button } from 'reactstrap';
+import { post } from '../utils/api';
+import { useHistory } from 'react-router-dom';
 
 const PublishPlugin = () => {
     const [openSource, setOpenSource] = useState(false);
-    
+    const history = useHistory();
+
     const handleOpenSourceClick = (event) => {
         setOpenSource(event.target.checked);
     };
 
     const handleSubmitForm = (event) => {
         event.preventDefault();
+        const data = new FormData(event.target);
+
+        post('api/plugins', data)
+            .then(response => {
+                console.log(response);
+                if (response) {
+                    history.push('/pluginsList');
+                }
+            })
+            .catch(console.error);
     };
-    
+
     return (
         <Card>
             <CardBody>
                 <CardTitle><h2>Publier un plugin</h2></CardTitle>
                 <Form onSubmit={handleSubmitForm}>
                     <FormGroup>
-                        <Label for="publish-plugin-name">Nom du plugin</Label>
+                        <Label htmlFor="publish-plugin-name">Nom du plugin</Label>
                         <Input type="text" name="name" id="publish-plugin-name" required/>
                     </FormGroup>
                     <FormGroup>
@@ -43,7 +56,7 @@ const PublishPlugin = () => {
                             <Input type="checkbox" onClick={handleOpenSourceClick}/>Open source
                         </Label>
                     </FormGroup>
-                    {openSource && 
+                    {openSource &&
                     (<FormGroup>
                         <Label for="publish-plugin-github">Lien vers Github</Label>
                         <Input type="text" name="github" id="publish-plugin-github" />
