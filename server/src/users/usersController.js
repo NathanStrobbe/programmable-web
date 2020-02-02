@@ -1,5 +1,7 @@
 User = require('./userModel');
 Token  = require('./tokenModel');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.user = function(req, res){
 	var _id;
@@ -29,12 +31,13 @@ exports.user = function(req, res){
 exports.logIn = function(req, res){
 	User.findOne({email: req.body.email}, function(err, user){
 		if(err){
+			console.log(err);
 			res.status(401).send(err);
 		}
 
 		if(user){
 			if(bcrypt.compareSync(req.body.password, user.password)){
-				var token = jwt.sign({_id: user._id},'flms');
+				var token = jwt.sign({email: user.email},'flms');
 				res.status(200).send({token: token, user: user});
 			}
 			else  {
@@ -53,13 +56,13 @@ exports.new = function(req, res){
 	user.email = req.body.email;
 	user.password = bcrypt.hashSync(req.body.password, 10);
 
-	User.findOne({email: req.body.email}, function(err, user){
 
+	User.findOne({email: req.body.email}, function(err, userfound){
 		if(err){
 			res.status(401).send(err);
 		}
 
-		if(user)
+		if(userfound)
 			res.status(409).send("Email already in database");
 		else
 		{
@@ -68,7 +71,9 @@ exports.new = function(req, res){
 					res.status(500).send(err);
 				}
 
-		        var token = new Token({_id: user._id, token: jwt.sign({_id: user._id},'fmls')});
+		        var token = new Token({email: user.email, token: jwt.sign({email: user.email},'fmls')});
+
+		        console.log("User created");
 		 		
 		        return token.save(function (err) {
 		            if (err){
