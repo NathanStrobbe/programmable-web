@@ -29,7 +29,9 @@ export const GetPluginsList = () => {
 export const AddLike = (plugin, userId) => {
 
   const newArr = [];
-  plugin.likes.map(plugin => newArr.push(plugin));
+  if(plugin.likes.length > 0){
+    plugin.likes.map(plugin => newArr.push(plugin));
+  }
   newArr.push(userId)
 
   console.log(newArr);
