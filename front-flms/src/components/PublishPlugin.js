@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Form, FormGroup, Label, Input, Card, CardBody, CardTitle } from 'reactstrap';
-import { Button } from 'reactstrap';
+import { Card, Form, Button } from 'react-bootstrap';
 import { post } from '../utils/api';
 import { useHistory } from 'react-router-dom';
 
@@ -28,51 +27,53 @@ const PublishPlugin = () => {
 
     return (
         <Card>
-            <CardBody>
-                <CardTitle><h2>Publier un plugin</h2></CardTitle>
+            <Card.Body>
+                <Card.Title><h2>Publier un plugin</h2></Card.Title>
                 <Form onSubmit={handleSubmitForm}>
-                    <FormGroup>
-                        <Label htmlFor="publish-plugin-name">Nom du plugin</Label>
-                        <Input type="text" name="name" id="publish-plugin-name" required />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="publish-plugin-version">Version du plugin</Label>
-                        <Input type="text" name="version" id="publish-plugin-version" required />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="publish-plugin-description">Description</Label>
-                        <Input type="textarea" name="description" id="publish-plugin-description" required />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="publish-plugin-category">Category</Label>
-                        <Input type="text" name="category" id="publish-plugin-category" required />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="publish-plugin-image">Lien de l'image</Label>
-                        <Input type="text" name="image" id="publish-plugin-image" required />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="publish-plugin-video">Lien du tuto</Label>
-                        <Input type="text" name="video" id="publish-plugin-video" />
-                    </FormGroup>
-                    <FormGroup check>
-                        <Label check>
-                            <Input type="checkbox" onClick={handleOpenSourceClick} />Open source
-                        </Label>
-                    </FormGroup>
+                    <Form.Group>
+                        <Form.Label htmlFor="publish-plugin-name">Nom du plugin</Form.Label>
+                        <Form.Control type="text" name="name" id="publish-plugin-name" required />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label htmlFor="publish-plugin-version">Version du plugin</Form.Label>
+                        <Form.Control type="text" name="version" id="publish-plugin-version" required />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label htmlFor="publish-plugin-description">Description</Form.Label>
+                        <Form.Control type="textarea" name="description" id="publish-plugin-description" required />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label htmlFor="publish-plugin-category">Category</Form.Label>
+                        <Form.Control type="text" name="category" id="publish-plugin-category" required />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label htmlFor="publish-plugin-image">Lien de l&apos;image</Form.Label>
+                        <Form.Control type="text" name="image" id="publish-plugin-image" required />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label htmlFor="publish-plugin-video">Lien du tuto</Form.Label>
+                        <Form.Control type="text" name="video" id="publish-plugin-video" />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Check
+                            type={'checkbox'}
+                            id={'publish-plugin-opensource'}
+                            label={'Open Source'}
+                            onClick={handleOpenSourceClick} />
+                    </Form.Group>
                     {openSource &&
-                        (<FormGroup>
-                            <Label for="publish-plugin-github">Lien vers Github</Label>
-                            <Input type="text" name="github" id="publish-plugin-github" />
-                        </FormGroup>)
+                        (<Form.Group>
+                            <Form.Label htmlFor="publish-plugin-github">Lien vers Github</Form.Label>
+                            <Form.Control type="text" name="github" id="publish-plugin-github" />
+                        </Form.Group>)
                     }
-                    <FormGroup>
-                        <Label for="publish-plugin-tags">Tags</Label>
-                        <Input type="textarea" name="tags" id="publish-plugin-tags" />
-                    </FormGroup>
-                    <Button>Submit</Button>
+                    <Form.Group>
+                        <Form.Label htmlFor="publish-plugin-tags">Tags</Form.Label>
+                        <Form.Control type="textarea" name="tags" id="publish-plugin-tags" />
+                    </Form.Group>
+                    <Button type="submit">Submit</Button>
                 </Form>
-            </CardBody>
+            </Card.Body>
         </Card>
     );
 };

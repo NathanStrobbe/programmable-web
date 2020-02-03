@@ -104,3 +104,5 @@ dist
 .tern-port
 
 front-flms/.vscode/settings.json
+
+server/.vscode/settings.json
