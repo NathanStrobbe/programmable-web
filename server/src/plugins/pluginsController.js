@@ -1,4 +1,4 @@
-Plugin = require('./pluginModel');
+const Plugin = require('./pluginModel');
 const User = require('../users/userModel');
 
 exports.getAll = function (req, res) {
@@ -74,7 +74,7 @@ exports.addplugins = function (req, res) {
 
 exports.addLike = function (req, res) {
     const users = req.body.users;
-    const plugin = req.body.plugin;
+    const plugin = req.body.name;
     const target = { name: plugin };
     const newValue = { $set: {likes: users } };
 

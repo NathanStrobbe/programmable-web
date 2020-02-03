@@ -4,17 +4,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.user = function (req, res) {
-    var _id;
+    var email;
     if (req.query.token != null) {
         var decoded = jwt.verify(req.query.token, 'flms');
-        _id = decoded._id;
-    } else if (req.query._id != null) {
-        _id = req.query._id;
+        email = decoded.email;
+    } else if (req.query.email != null) {
+        email = req.query.email;
     } else {
         return res.status(500).send(err);
     }
 
-    User.findOne({ _id: ObjectId(_id) }, function (err, user) {
+    User.findOne({ email: ObjectId(email) }, function (err, user) {
         if (err)
             res.status(500).send(err);
         if (user) {

@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Header from './components/Header';
 import PluginsList from './components/PluginsList';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter, Redirect } from 'react-router-dom';
 import { Switch } from 'react-router-dom';
 import PublishPlugin from './components/PublishPlugin';
 import PluginDetails from './components/PluginDetails';
@@ -22,6 +22,7 @@ const App = () => {
                     <Route path="/pluginsList" component={PluginsList} />
                     <Route path="/publishPlugin" component={PublishPlugin} />
                     <Route path="/pluginDetails/:pluginId" component={PluginDetails} />
+                    <Redirect from='*' to='/' />
                 </Switch>
             </BrowserRouter>
         </main>

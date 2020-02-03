@@ -1,8 +1,8 @@
 import React from 'react';
-import { Row, Col, Card, CardBody, CardText } from 'reactstrap';
 import { useParams } from 'react-router-dom';
-import { GetPlugin } from '../utils/hooks.js';
-import { Button, Badge, Container } from 'react-bootstrap';
+import { GetPlugin, AddLike } from '../utils/hooks.js';
+import { Row, Col, Card, Button } from 'react-bootstrap';
+import { Badge, Container } from 'react-bootstrap';
 
 const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
@@ -10,10 +10,17 @@ const PluginDetails = () => {
 
     const { pluginId } = useParams();
 
-    const click = (likes) => {
+    const click = (plugin) => {
+        const myId = 'test2';
         if (sessionStorage.getItem('jwtToken')) {
             console.log('connecté');
-            console.log(likes);
+            console.log(plugin);
+            if (!plugin.likes.includes(myId)) {
+                AddLike(plugin, myId);
+                window.location.reload();
+            } else {
+                alert('Vous avez deja aimé !');
+            }
         } else {
             alert('Veuillez vous connecter !');
         }
@@ -57,11 +64,11 @@ const PluginDetails = () => {
                                 <Row className="pluginDetailsComment" md="auto">
                                     <Col md={{ span: 12, offset: 1 }}>
                                         <Card>
-                                            <CardBody>
-                                                <CardText>
+                                            <Card.Body>
+                                                <Card.Text>
                                                     {comment}
-                                                </CardText>
-                                            </CardBody>
+                                                </Card.Text>
+                                            </Card.Body>
                                         </Card>
                                     </Col>
                                 </Row>
