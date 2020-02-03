@@ -18,12 +18,12 @@ const PluginsList = () => {
 
     return (
         <div>
-            <Link to={'/pluginDetails/5e35427d1f125b006bc4d0be'}>to pluginDetails</Link>
+            
             {
                 plugins.map(plugins =>
                     <Card key={plugins._id} style={{ width: '18rem' }}>
                         <Card.Body>
-                            <Link to="/register" style={{ textDecoration: 'none' }}>
+                            <Link to={`/pluginDetails/${plugins._id}`} style={{ textDecoration: 'none' }}>
                                 <Card.Title>{plugins.name}</Card.Title>
                                 <Card.Img variant="top" src={plugins.image} />
                                 <Card.Text>
