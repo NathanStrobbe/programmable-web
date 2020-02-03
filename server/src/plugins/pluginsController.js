@@ -35,3 +35,16 @@ exports.addplugins = function (req, res) {
         res.status(200).send({ msg: 'Plugins added', data: plugin });
     });
 };
+
+exports.addLike = function (req, res) {
+    const users = req.body.users;
+    const plugin = req.body.plugin;
+    const target = { name: plugin };
+    const newValue = { $set: {likes: users } };
+
+    Plugin.collection.updateOne(target, newValue, function (err, yolo) {
+        if (err)
+            res.status(500).send(err);
+        res.status(200).send({ msg: 'Plugins updated', data: plugin });
+    });
+};

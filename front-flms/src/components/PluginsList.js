@@ -7,18 +7,9 @@ const PluginsList = () => {
 
     const { plugins } = GetPluginsList();
 
-    const click = (likes) => {
-        if (sessionStorage.getItem('jwtToken')) {
-            console.log('connecté');
-            console.log(likes);
-        } else {
-            alert('Veuillez vous connecter !');
-        }
-    };
-
     return (
         <div>
-            
+
             {
                 plugins.map(plugins =>
                     <Card key={plugins._id} style={{ width: '18rem' }}>
@@ -31,7 +22,6 @@ const PluginsList = () => {
                                 </Card.Text>
                             </Link>
                             Likes : {plugins.likes.length}<br />
-                            <Button variant="primary" onClick={e => click(plugins.likes)}>Add</Button>
                         </Card.Body>
                     </Card>
                 )
