@@ -14,6 +14,7 @@ router.route('/plugins')
     .get(pluginsController.getAll);
 
 router.route('/plugin')
+    .post(pluginsController.addLike)
     .get(pluginsController.get);
 
 

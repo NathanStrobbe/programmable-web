@@ -21,27 +21,25 @@ const Header = () => {
             return (
                 <NavItem className="mr-4">
                     <Link to="/pluginsList"><Button>Liste des plugins</Button></Link>
-                    <Button onClick={handleSignOut}>Deconnexion</Button>
-                </NavItem>
-            );
-        } else {
-            return (
-                <NavItem className="mr-4">
-                    <Link to="/pluginsList"><Button>Liste des plugins</Button></Link>
-                    <Link to="/login"><Button>Connexion</Button></Link>
-                    <Link to="/register"><Button>Inscription</Button></Link>
+                    <Link to="/publishPlugin"><Button>Publier un plugin</Button></Link>
+                    <Button onClick={handleSignOut}>Déconnexion</Button>
                 </NavItem>
             );
         }
+        return (
+            <NavItem className="mr-4">
+                <Link to="/pluginsList"><Button>Liste des plugins</Button></Link>
+                <Link to="/login"><Button>Connexion</Button></Link>
+                <Link to="/register"><Button>Inscription</Button></Link>
+            </NavItem>
+        );
     };
 
     return (
         <Navbar color="light" light expand="md">
-            <NavbarBrand className="mr-auto"><Link to="/">Hello</Link></NavbarBrand>
+            <NavbarBrand className="mr-auto">Store FLMS</NavbarBrand>
             <Nav navbar className="mr-2">
-                {
-                    navContent()
-                }
+                {navContent()}
             </Nav>
         </Navbar>
     );
