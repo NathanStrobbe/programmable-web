@@ -14,9 +14,9 @@ const PublishPlugin = () => {
 
     const handleSubmitForm = (event) => {
         event.preventDefault();
-        const data = new FormData(event.target);
+        const plugin = JSON.stringify(Object.fromEntries(new FormData(event.target)));
 
-        post('api/plugins', data)
+        post('api/plugins', plugin)
             .then(response => {
                 console.log(response);
                 if (response) {
@@ -33,19 +33,23 @@ const PublishPlugin = () => {
                 <Form onSubmit={handleSubmitForm}>
                     <FormGroup>
                         <Label htmlFor="publish-plugin-name">Nom du plugin</Label>
-                        <Input type="text" name="name" id="publish-plugin-name" required/>
+                        <Input type="text" name="name" id="publish-plugin-name" required />
                     </FormGroup>
                     <FormGroup>
                         <Label for="publish-plugin-version">Version du plugin</Label>
-                        <Input type="text" name="version" id="publish-plugin-version" required/>
+                        <Input type="text" name="version" id="publish-plugin-version" required />
                     </FormGroup>
                     <FormGroup>
                         <Label for="publish-plugin-description">Description</Label>
-                        <Input type="textarea" name="description" id="publish-plugin-description" required/>
+                        <Input type="textarea" name="description" id="publish-plugin-description" required />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="publish-plugin-category">Category</Label>
+                        <Input type="text" name="category" id="publish-plugin-category" required />
                     </FormGroup>
                     <FormGroup>
                         <Label for="publish-plugin-image">Lien de l'image</Label>
-                        <Input type="text" name="image" id="publish-plugin-image" required/>
+                        <Input type="text" name="image" id="publish-plugin-image" required />
                     </FormGroup>
                     <FormGroup>
                         <Label for="publish-plugin-video">Lien du tuto</Label>
@@ -53,14 +57,15 @@ const PublishPlugin = () => {
                     </FormGroup>
                     <FormGroup check>
                         <Label check>
-                            <Input type="checkbox" onClick={handleOpenSourceClick}/>Open source
+                            <Input type="checkbox" onClick={handleOpenSourceClick} />Open source
                         </Label>
                     </FormGroup>
                     {openSource &&
-                    (<FormGroup>
-                        <Label for="publish-plugin-github">Lien vers Github</Label>
-                        <Input type="text" name="github" id="publish-plugin-github" />
-                    </FormGroup>)}
+                        (<FormGroup>
+                            <Label for="publish-plugin-github">Lien vers Github</Label>
+                            <Input type="text" name="github" id="publish-plugin-github" />
+                        </FormGroup>)
+                    }
                     <FormGroup>
                         <Label for="publish-plugin-tags">Tags</Label>
                         <Input type="textarea" name="tags" id="publish-plugin-tags" />
