@@ -1,26 +1,27 @@
 import React from 'react';
 import { Row, Col, Card, CardBody, CardText } from 'reactstrap';
 import { useParams } from 'react-router-dom';
-import { GetPlugin,AddLike } from '../utils/hooks.js';
+import { GetPlugin,AddLike, GetUser } from '../utils/hooks.js';
 import { Button } from 'react-bootstrap';
 
 const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
     console.log('#rendering pluginDetails');
-
+    let user = ''
     const { pluginId } = useParams();
+    if (sessionStorage.getItem('jwtToken')) {
+      user = GetUser(sessionStorage.getItem('jwtToken'));
+    }
 
     const click = (plugin) => {
-      const myId = "test2"
       if (sessionStorage.getItem('jwtToken')) {
-          console.log('connecté');
-          console.log(plugin);
-          if(!plugin.likes.includes(myId)){
-            AddLike(plugin,myId)
-            window.location.reload();
-          }else {
-            alert('Vous avez deja aimé !');
-          }
+        const myId = user._id;
+        if(!plugin.likes.includes(myId)){
+          AddLike(plugin,myId)
+          window.location.reload();
+        }else {
+          alert('Vous avez deja aimé !');
+        }
       } else {
           alert('Veuillez vous connecter !');
       }

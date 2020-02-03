@@ -14,7 +14,7 @@ exports.user = function (req, res) {
         return res.status(500).send(err);
     }
 
-    User.findOne({ email: ObjectId(email) }, function (err, user) {
+    User.findOne({ email: email }, function (err, user) {
         if (err)
             res.status(500).send(err);
         if (user) {

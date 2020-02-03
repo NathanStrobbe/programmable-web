@@ -74,3 +74,29 @@ export const GetPlugin = (pluginId) => {
 
     return plugin;
 };
+
+export const GetUser = (userToken) => {
+    const [user, setUser] = useState({ username: '', password: '', email: ''});
+
+    useEffect(() => {
+        fetch(`http://localhost:3001/api/user?token=${userToken}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log(json);
+                if (json) {
+                    setUser(json);
+                    console.log(user);
+                } else {
+                    setUser();
+                }
+            });
+    }, []);
+
+    return user;
+};
