@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Alert } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import allActions from "../actions/action";
 
 const Login = () => {
 
@@ -9,6 +11,8 @@ const Login = () => {
 
     const [error, setError] = useState('');
     const [redirectToReferrer, setRedirectToReferrer] = useState('');
+
+    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -29,6 +33,7 @@ const Login = () => {
             else {
                 res.json().then(data => {
                     sessionStorage.setItem('jwtToken', data.token);
+                    dispatch(allActions.loginAction(data.user._id));
                     setRedirectToReferrer(true);
                 });
             }
@@ -77,5 +82,7 @@ const Login = () => {
         </div>
     );
 };
+
+
 
 export default Login;
