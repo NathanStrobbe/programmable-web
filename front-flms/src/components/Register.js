@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Alert } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
+import { Card, Form, Button, Alert } from 'react-bootstrap';
 
 const Register = () => {
 
@@ -47,14 +47,14 @@ const Register = () => {
                 redirectToReferrer ? <Redirect to='/connexion' /> : null
             }
             <Card>
-                <CardHeader>Inscription</CardHeader>
-                <CardBody>
+                <Card.Header>Inscription</Card.Header>
+                <Card.Body>
                     <Form onSubmit={handleSubmit}>
-                        <FormGroup>
-                            <Label for="userName">User Name</Label>
-                            <Input name="userName" id="userName" value={username} onChange={e => setUsername(e.target.value)} />
-                        </FormGroup>
-                        <FormGroup>
+                        <Form.Group>
+                            <Form.Label htmlFor="userName">User Name</Form.Label>
+                            <Form.Control name="userName" id="userName" value={username} onChange={e => setUsername(e.target.value)} />
+                        </Form.Group>
+                        <Form.Group>
                             {
                                 error === 409 && (
                                     <Alert color="danger" >
@@ -62,16 +62,16 @@ const Register = () => {
                                     </Alert>
                                 )
                             }
-                            <Label for="email">Email</Label>
-                            <Input type="email" name="email" id="email" value={email} onChange={handleEmailChange} />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="examplePassword">Mot de passe</Label>
-                            <Input type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
-                        </FormGroup>
+                            <Form.Label htmlFor="email">Email</Form.Label>
+                            <Form.Control type="email" name="email" id="email" value={email} onChange={handleEmailChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="examplePassword">Mot de passe</Form.Label>
+                            <Form.Control type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
+                        </Form.Group>
                         <Button>Enregistrer</Button>
                     </Form>
-                </CardBody>
+                </Card.Body>
             </Card>
         </div>
     );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Alert } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
+import { Card, Form, Button, Alert } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import allActions from "../actions/action";
 
@@ -57,16 +57,16 @@ const Login = () => {
                 redirectToReferrer ? <Redirect to='/pluginsList' /> : null
             }
             <Card>
-                <CardHeader>Connexion</CardHeader>
-                <CardBody>
+                <Card.Header>Connexion</Card.Header>
+                <Card.Body>
                     <Form onSubmit={handleSubmit}>
-                        <FormGroup>
-                            <Label for="exampleEmail">Email</Label>
-                            <Input type="email" name="email" id="email" value={email} onChange={handleEmailChange} />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="examplePassword">Mot de passe</Label>
-                            <Input type="password" name="password" id="password" alue={password} onChange={handlePasswordChange} />
+                        <Form.Group>
+                            <Form.Label htmlFor="exampleEmail">Email</Form.Label>
+                            <Form.Control type="email" name="email" id="email" value={email} onChange={handleEmailChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="examplePassword">Mot de passe</Form.Label>
+                            <Form.Control type="password" name="password" id="password" alue={password} onChange={handlePasswordChange} />
                             {
                                 error === 401 && (
                                     <Alert color="danger" >
@@ -74,10 +74,10 @@ const Login = () => {
                                     </Alert>
                                 )
                             }
-                        </FormGroup>
-                        <Button>Se connecter</Button>
+                        </Form.Group>
+                        <Button type="submit">Se connecter</Button>
                     </Form>
-                </CardBody>
+                </Card.Body>
             </Card>
         </div>
     );
