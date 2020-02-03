@@ -1,6 +1,7 @@
 import React from 'react';
-import { Row, Col, Card, CardBody, CardText } from 'reactstrap';
+import { Card, Button, Row, Col } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import { GetPlugin } from '../utils/hooks.js';
 import { GetPlugin,AddLike } from '../utils/hooks.js';
 import { Button } from 'react-bootstrap';
 
@@ -54,11 +55,11 @@ const PluginDetails = () => {
                     plugin.comments.map((comment, i) => (
                         <Row key={i} className="pluginDetailsComment" sm='1'>
                             <Card>
-                                <CardBody>
-                                    <CardText>
+                                <Card.Body>
+                                    <Card.Text>
                                         {comment}
-                                    </CardText>
-                                </CardBody>
+                                    </Card.Text>
+                                </Card.Body>
                             </Card>
                         </Row>
                     ))

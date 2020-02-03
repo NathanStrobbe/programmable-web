@@ -1,4 +1,4 @@
-Plugin = require('./pluginModel');
+const Plugin = require('./pluginModel');
 const User = require('../users/userModel');
 
 exports.getAll = function (req, res) {
