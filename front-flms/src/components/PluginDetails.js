@@ -11,12 +11,13 @@ const PluginDetails = () => {
     const { pluginId } = useParams();
 
     const click = (plugin) => {
-      const myId = "yolo"
+      const myId = "test2"
       if (sessionStorage.getItem('jwtToken')) {
           console.log('connecté');
           console.log(plugin);
           if(!plugin.likes.includes(myId)){
             AddLike(plugin,myId)
+            window.location.reload();
           }else {
             alert('Vous avez deja aimé !');
           }
