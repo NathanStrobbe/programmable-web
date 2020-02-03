@@ -1,9 +1,7 @@
 import React from 'react';
-import { Card, Button, Row, Col } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { GetPlugin } from '../utils/hooks.js';
-import { GetPlugin,AddLike } from '../utils/hooks.js';
-import { Button } from 'react-bootstrap';
+import { GetPlugin, AddLike } from '../utils/hooks.js';
+import { Row, Col, Card, Button } from 'react-bootstrap';
 
 const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
@@ -12,19 +10,19 @@ const PluginDetails = () => {
     const { pluginId } = useParams();
 
     const click = (plugin) => {
-      const myId = "test2"
-      if (sessionStorage.getItem('jwtToken')) {
-          console.log('connecté');
-          console.log(plugin);
-          if(!plugin.likes.includes(myId)){
-            AddLike(plugin,myId)
-            window.location.reload();
-          }else {
-            alert('Vous avez deja aimé !');
-          }
-      } else {
-          alert('Veuillez vous connecter !');
-      }
+        const myId = 'test2';
+        if (sessionStorage.getItem('jwtToken')) {
+            console.log('connecté');
+            console.log(plugin);
+            if (!plugin.likes.includes(myId)) {
+                AddLike(plugin, myId);
+                window.location.reload();
+            } else {
+                alert('Vous avez deja aimé !');
+            }
+        } else {
+            alert('Veuillez vous connecter !');
+        }
     };
 
     const plugin = GetPlugin(pluginId);
@@ -35,7 +33,7 @@ const PluginDetails = () => {
                 <Row className="pluginDetailsHeader" sm='3'>
                     <Col><h1>{plugin.name}</h1></Col>
                     <Col></Col>
-                    <Col><h4>Likes : {plugin.likes.length}</h4><Button variant="primary" onClick={e => click(plugin)}>Add</Button></Col>
+                    <Col><h4>Likes : {plugin.likes.length}</h4><Button variant="primary" onClick={() => click(plugin)}>Add</Button></Col>
                 </Row>
                 <Row className="pluginDetailsPicture" sm='3'>
                     <Col></Col>
