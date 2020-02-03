@@ -26,6 +26,27 @@ export const GetPluginsList = () => {
     return { plugins };
 };
 
+export const AddLike = (plugin, userId) => {
+
+  const newArr = [];
+  plugin.likes.map(plugin => newArr.push(plugin));
+  newArr.push(userId)
+
+  console.log(newArr);
+
+  fetch('http://localhost:3001/api/plugin', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          'name': plugin.name,
+          'users': newArr
+      })
+  })
+};
+
 export const GetPlugin = (pluginId) => {
     const [plugin, setPlugin] = useState({ name: '', version: '', category: '', image: '', description: '', tags: [], likes: [], comments: [] });
 

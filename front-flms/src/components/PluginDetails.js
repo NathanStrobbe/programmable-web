@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Card, CardBody, CardText } from 'reactstrap';
 import { useParams } from 'react-router-dom';
-import { GetPlugin } from '../utils/hooks.js';
+import { GetPlugin,AddLike } from '../utils/hooks.js';
 import { Button } from 'react-bootstrap';
 
 const PluginDetails = () => {
@@ -10,13 +10,19 @@ const PluginDetails = () => {
 
     const { pluginId } = useParams();
 
-    const click = (likes) => {
-        if (sessionStorage.getItem('jwtToken')) {
-            console.log('connecté');
-            console.log(likes);
-        } else {
-            alert('Veuillez vous connecter !');
-        }
+    const click = (plugin) => {
+      const myId = "yolo"
+      if (sessionStorage.getItem('jwtToken')) {
+          console.log('connecté');
+          console.log(plugin);
+          if(!plugin.likes.includes(myId)){
+            AddLike(plugin,myId)
+          }else {
+            alert('Vous avez deja aimé !');
+          }
+      } else {
+          alert('Veuillez vous connecter !');
+      }
     };
 
     const plugin = GetPlugin(pluginId);
@@ -27,7 +33,7 @@ const PluginDetails = () => {
                 <Row className="pluginDetailsHeader" sm='3'>
                     <Col><h1>{plugin.name}</h1></Col>
                     <Col></Col>
-                    <Col><h4>Likes : {plugin.likes.length}</h4><Button variant="primary" onClick={e => click(plugin.likes)}>Add</Button></Col>
+                    <Col><h4>Likes : {plugin.likes.length}</h4><Button variant="primary" onClick={e => click(plugin)}>Add</Button></Col>
                 </Row>
                 <Row className="pluginDetailsPicture" sm='3'>
                     <Col></Col>
