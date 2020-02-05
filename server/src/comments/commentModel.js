@@ -11,11 +11,11 @@ const commentSchema = mongoose.Schema({
         required: true,
     },
     date: {
-        date: Date,
+        type: Date,
         required: true,
     },
     pluginId: {
-        pluginId: String,
+        type: String,
         required: true,
         ref: 'plugin'
     }

@@ -27,4 +27,9 @@ router.route('/user')
     .post(usersController.new)
     .get(usersController.user);
 
+const commentsController = require('./comments/commentsController');
+
+router.route('/comments')
+    .get(commentsController.get);
+
 module.exports = router;

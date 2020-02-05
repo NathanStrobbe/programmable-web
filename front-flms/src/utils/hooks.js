@@ -28,29 +28,29 @@ export const GetPluginsList = () => {
 
 export const AddLike = (plugin, userId) => {
 
-  const newArr = [];
-  if(plugin.likes.length > 0){
-    plugin.likes.map(plugin => newArr.push(plugin));
-  }
-  newArr.push(userId)
+    const newArr = [];
+    if(plugin.likes.length > 0){
+        plugin.likes.map(plugin => newArr.push(plugin));
+    }
+    newArr.push(userId);
 
-  console.log(newArr);
+    console.log(newArr);
 
-  fetch('http://localhost:3001/api/plugin', {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          'name': plugin.name,
-          'users': newArr
-      })
-  })
+    fetch('http://localhost:3001/api/plugin', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'name': plugin.name,
+            'users': newArr
+        })
+    });
 };
 
 export const GetPlugin = (pluginId) => {
-    const [plugin, setPlugin] = useState({ name: '', version: '', category: '', image: '', description: '', tags: [], likes: [], comments: [] });
+    const [plugin, setPlugin] = useState({ name: '', version: '', category: '', image: '', description: '', tags: [], likes: [] });
 
     useEffect(() => {
         fetch(`http://localhost:3001/api/plugin?id=${pluginId}`, {
@@ -99,4 +99,30 @@ export const GetUser = (userToken) => {
     }, []);
 
     return user;
+};
+
+export const GetComments = (pluginId) => {
+    const [comments, setComments] = useState([/*{ writer: '', content: '', date: '', pluginId: '' }*/]);
+
+    useEffect(() => {
+        fetch(`http://localhost:3001/api/comments?pluginId=${pluginId}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log(json);
+                if (json) {
+                    setComments(json);
+                    console.log(comments);
+                } else {
+                    setComments();
+                }
+            });
+    }, []);
+
+    return comments;
 };
