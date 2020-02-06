@@ -1,11 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { GetPlugin,AddLike, GetUser, GetComments } from '../utils/hooks.js';
 import { Button, Row, Col, Card, Container, Badge } from 'react-bootstrap';
+import { GetPlugin,AddLike, GetUser, GetComments, convertBufferToBase64 } from '../utils/hooks.js';
 
 const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
-    console.log('#rendering pluginDetails');
+
     let user = '';
     const { pluginId } = useParams();
     if (sessionStorage.getItem('jwtToken')) {
@@ -37,7 +37,7 @@ const PluginDetails = () => {
             <Container className="pluginDetails">
                 <Row className="pluginDetailsHeader">
                     <Col><h1>{plugin.name}</h1></Col>
-                    <Col></Col>
+                    <Col><img src={convertBufferToBase64(plugin.image)} /></Col>
                     <Col><h4>Likes : {plugin.likes.length}</h4><Button variant="primary" onClick={e => click(plugin)}>Add</Button></Col>
                 </Row>
                 <Row className="pluginDetailsSourceLink">
@@ -45,7 +45,7 @@ const PluginDetails = () => {
                 </Row>
                 <Row className="pluginDetailsPicture">
                     <Col></Col>
-                    <Col>{plugin.image}</Col>
+                    <Col></Col>
                     <Col></Col>
                 </Row>
                 <Row className="pluginDetailsTag">

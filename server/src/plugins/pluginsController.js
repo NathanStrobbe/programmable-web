@@ -1,32 +1,39 @@
 const Plugin = require('./pluginModel');
+const Image = require('./imageModel');
 const User = require('../users/userModel');
 
 exports.getAll = function (req, res) {
-    Plugin.get(function (err, plugins) {
-
-        if (err) {
-            res.status(500).send(err);
-        }
-
-        res.status(200).send(plugins);
-
-    });
+    Plugin
+        .find({})
+        .populate('image')
+        .exec((err, plugins) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send(err);
+            }
+            return res.status(200).send(plugins);
+        });
 };
 
 exports.get = function (req, res) {
     console.log(req.query);
-    Plugin.find({ '_id': req.query.id }, function (err, plugin) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        if (plugin) {
-            console.log(plugin);
-            res.status(200).send(plugin);
-        }
-    });
+    Plugin
+        .findOne({ '_id': req.query.id })
+        .populate('image')
+        .exec((err, plugin) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send(err);
+            }
+            return res.status(200).send(plugin);
+        });
 };
 
 exports.addplugins = function (req, res) {
+    console.log(req.body);
+    const image = req.files.image[0];
+    console.log(req.files.plugin[0]);
+
     const plugin = new Plugin();
     plugin.name = req.body.name;
     plugin.version = req.body.version;
@@ -35,7 +42,6 @@ exports.addplugins = function (req, res) {
     plugin.version = req.body.version;
     plugin.likes = req.body.likes;
     plugin.creator = req.body.creator;
-    plugin.image = req.body.image;
     plugin.tags = req.body.tags;
     plugin.video = req.body.video;
     plugin.linkgithub = req.body.linkgithub;
@@ -57,16 +63,27 @@ exports.addplugins = function (req, res) {
             if (err) {
                 return console.error(err);
             }
-            const creator = user.email;
-            console.log(creator);
-            console.log(pluginFound);
-            plugin.creator = creator;
-            return plugin.save((err) => {
+            plugin.creator = user._id;
+
+            const imageModel = new Image();
+            imageModel.name = image.originalname;
+            imageModel.mimeType = image.mimetype;
+            imageModel.buffer = image.buffer;
+            return imageModel.save((err, img) => {
                 if (err) {
-                    console.log(err);
-                    return res.status(500).send(err);
+                    console.error(err);
+                    return res.status(500).send(500);
                 }
-                return res.status(201).send({ message: 'Plugin added', data: plugin});
+                console.log('Image added');
+                plugin.image = img._id;
+
+                return plugin.save((err) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send(err);
+                    }
+                    return res.status(201).send({ message: 'Plugin added', data: plugin });
+                });
             });
         });
     });
@@ -76,7 +93,7 @@ exports.addLike = function (req, res) {
     const users = req.body.users;
     const plugin = req.body.name;
     const target = { name: plugin };
-    const newValue = { $set: {likes: users } };
+    const newValue = { $set: { likes: users } };
 
     Plugin.collection.updateOne(target, newValue, function (err, yolo) {
         if (err)

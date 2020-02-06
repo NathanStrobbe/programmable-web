@@ -1,11 +1,13 @@
 let express = require('express');
 let mongoose = require('mongoose');
 let bodyParser = require('body-parser');
+let multer = require('multer');
 let cors = require('cors');
 
 
 const app = express();
 const http = require('http').Server(app);
+const upload = multer();
 //var io = require('socket.io')(http);
 
 app.use(cors());
@@ -17,7 +19,12 @@ app.use(function(req,res,next){
     next();
 });
 
+// for parsing application/json
 app.use(bodyParser.json());
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true }));
+// for parsing multipart/form-data
+app.use(upload.fields([{ name: 'image', maxCount: 1 }, { name: 'plugin', maxCount: 1 }]));
 
 let apiRoutes = require('./api-routes');
 

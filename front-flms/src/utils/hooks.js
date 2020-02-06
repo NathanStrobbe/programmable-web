@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react';
 
+export const convertBufferToBase64 = image => {
+    let binary = '';
+    if (image.buffer && image.buffer.data) {
+        const bytes = [].slice.call(new Uint8Array(image.buffer.data));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        binary = btoa(binary);
+    }
+    return `data:${image.mimeType};base64,${binary}`;
+};
+
 export const GetPluginsList = () => {
     const [plugins, setPlugins] = useState([]);
 
@@ -13,10 +23,9 @@ export const GetPluginsList = () => {
         })
             .then(res => res.json())
             .then(json => {
-                console.log(json);
                 if (json) {
+                    console.log(json);
                     setPlugins(json);
-                    console.log(plugins);
                 } else {
                     setPlugins([]);
                 }
@@ -62,10 +71,9 @@ export const GetPlugin = (pluginId) => {
         })
             .then(res => res.json())
             .then(json => {
-                console.log(json);
                 if (json) {
-                    setPlugin(json[0]);
-                    console.log(plugin);
+                    console.log(json);
+                    setPlugin(json);
                 } else {
                     setPlugin();
                 }
@@ -88,10 +96,9 @@ export const GetUser = (userToken) => {
         })
             .then(res => res.json())
             .then(json => {
-                console.log(json);
                 if (json) {
+                    console.log(json);
                     setUser(json);
-                    console.log(user);
                 } else {
                     setUser();
                 }
@@ -117,7 +124,6 @@ export const GetComments = (pluginId) => {
                 console.log(json);
                 if (json) {
                     setComments(json);
-                    console.log(comments);
                 } else {
                     setComments();
                 }

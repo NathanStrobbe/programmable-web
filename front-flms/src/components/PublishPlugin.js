@@ -5,17 +5,36 @@ import { useHistory } from 'react-router-dom';
 
 const PublishPlugin = () => {
     const [openSource, setOpenSource] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
+    const [pluginBinary, setPluginBinary] = useState(null);
     const history = useHistory();
 
-    const handleOpenSourceClick = (event) => {
+    const handleOpenSourceClick = event => {
         setOpenSource(event.target.checked);
     };
 
-    const handleSubmitForm = (event) => {
-        event.preventDefault();
-        const plugin = JSON.stringify(Object.fromEntries(new FormData(event.target)));
+    const handleImageUpload = event => {
+        setImageFile(event.target.files[0]);
+    };
 
-        post('api/plugins', plugin)
+    const handlePluginUpload = event => {
+        setPluginBinary(event.target.files[0]);
+    };
+
+    const handleSubmitForm = event => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        data.append('image', imageFile, imageFile.name);
+        data.append('plugin', pluginBinary, pluginBinary.name);
+
+        if (!data.linkgithub) {
+            data.append('linkgithub', '');
+        }
+
+        const plugin = JSON.stringify(Object.fromEntries(data));
+        console.log(plugin);
+
+        post('api/plugins', data)
             .then(response => {
                 console.log(response);
                 if (response) {
@@ -43,12 +62,16 @@ const PublishPlugin = () => {
                         <Form.Control type="textarea" name="description" id="publish-plugin-description" required />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label htmlFor="publish-plugin-category">Category</Form.Label>
+                        <Form.Label htmlFor="publish-plugin-category">Catégorie</Form.Label>
                         <Form.Control type="text" name="category" id="publish-plugin-category" required />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label htmlFor="publish-plugin-image">Lien de l&apos;image</Form.Label>
-                        <Form.Control type="text" name="image" id="publish-plugin-image" required />
+                        <Form.Label htmlFor="publish-plugin-image">Image</Form.Label>
+                        <Form.Control as="input" type="file" id="publish-plugin-image" accept="image/*" required onChange={handleImageUpload} />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label htmlFor="publish-plugin-sources">Sources du plugin</Form.Label>
+                        <Form.Control as="input" type="file" id="publish-plugin-sources" accept=".zip" required onChange={handlePluginUpload} />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label htmlFor="publish-plugin-video">Lien du tuto</Form.Label>
@@ -56,9 +79,9 @@ const PublishPlugin = () => {
                     </Form.Group>
                     <Form.Group>
                         <Form.Check
-                            type={'checkbox'}
-                            id={'publish-plugin-opensource'}
-                            label={'Open Source'}
+                            type="switch"
+                            id="publish-plugin-opensource"
+                            label="Open Source"
                             onClick={handleOpenSourceClick} />
                     </Form.Group>
                     {openSource &&

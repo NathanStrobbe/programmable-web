@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import allActions from "../actions/action";
+import allActions from '../actions/action';
 
 const Login = () => {
 

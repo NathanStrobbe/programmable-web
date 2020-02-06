@@ -1,6 +1,6 @@
 import React from 'react';
-import { GetPluginsList } from '../utils/hooks';
 import { Card } from 'react-bootstrap';
+import { GetPluginsList, convertBufferToBase64 } from '../utils/hooks';
 import { Link } from 'react-router-dom';
 
 const PluginsList = () => {
@@ -16,7 +16,7 @@ const PluginsList = () => {
                         <Card.Body>
                             <Link to={`/pluginDetails/${plugins._id}`} style={{ textDecoration: 'none' }}>
                                 <Card.Title>{plugins.name}</Card.Title>
-                                <Card.Img variant="top" src={plugins.image} />
+                                <Card.Img variant="top" src={convertBufferToBase64(plugins.image)} />
                                 <Card.Text>
                                     {plugins.description}
                                 </Card.Text>

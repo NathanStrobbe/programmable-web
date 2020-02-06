@@ -1,17 +1,17 @@
-User = require('./userModel');
-Token = require('./tokenModel');
+const User = require('./userModel');
+const Token = require('./tokenModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.user = function (req, res) {
-    var email;
+    let email;
     if (req.query.token != null) {
-        var decoded = jwt.verify(req.query.token, 'flms');
+        const decoded = jwt.verify(req.query.token, 'flms');
         email = decoded.email;
     } else if (req.query.email != null) {
         email = req.query.email;
     } else {
-        return res.status(500).send(err);
+        return res.status(400).send({err: 'Bad request'});
     }
 
     User.findOne({ email: email }, function (err, user) {
@@ -28,21 +28,17 @@ exports.logIn = function (req, res) {
     User.findOne({ email: req.body.email }, function (err, user) {
         if (err) {
             console.log(err);
-            res.status(401).send(err);
+            return res.status(401).send(err);
         }
 
         if (user) {
             if (bcrypt.compareSync(req.body.password, user.password)) {
-                var token = jwt.sign({ email: user.email }, 'flms');
-                res.status(200).send({ token: token, user: user });
+                const token = jwt.sign({ email: user.email }, 'flms');
+                return res.status(200).send({ token: token, user: user });
             }
-            else {
-                res.status(401).send('Bad password');
-            }
+            return res.status(401).send('Bad password');
         }
-        else {
-            res.status(401).send('Could not found user');
-        }
+        return res.status(401).send('Could not found user');
     });
 };
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const pluginSchema = mongoose.Schema({
     name: {
@@ -21,8 +22,9 @@ const pluginSchema = mongoose.Schema({
         ref: 'user'
     },
     image: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true,
+        ref: 'image'
     },
     category: {
         type: String,
