@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { GetPlugin,AddLike, GetUser, GetComments } from '../utils/hooks.js';
-import { Button, Row, Col, Card, Container } from 'react-bootstrap';
+import { Button, Row, Col, Card, Container, Badge } from 'react-bootstrap';
 
 const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
@@ -40,9 +40,17 @@ const PluginDetails = () => {
                     <Col></Col>
                     <Col><h4>Likes : {plugin.likes.length}</h4><Button variant="primary" onClick={e => click(plugin)}>Add</Button></Col>
                 </Row>
+                <Row className="pluginDetailsSourceLink">
+                    <Col><a  href={plugin.linkgithub ? plugin.linkgithub : ''}>{plugin.linkgithub ? plugin.linkgithub : ''}</a></Col>
+                </Row>
                 <Row className="pluginDetailsPicture">
                     <Col></Col>
                     <Col>{plugin.image}</Col>
+                    <Col></Col>
+                </Row>
+                <Row className="pluginDetailsTag">
+                    <Col></Col>
+                    <Col>{plugin.tags.map((tag) => <><Badge variant="info">{tag}</Badge></>)}</Col>
                     <Col></Col>
                 </Row>
                 <br/>
@@ -57,31 +65,33 @@ const PluginDetails = () => {
                     <Col><h4>Comments:</h4></Col>
                 </Row>
                 {
-                    comments.length > 0 ? comments.map((comment, i) => (
-                        <>
-                            <Row key={i} className="pluginDetailsComment">
-                                <Card>
-                                    <Card.Body>
-                                        <Card.Title>
-                                            <div>
-                                                <span style={{float: 'left'}}><b>{comment.writer}</b></span>
-                                                <span style={{float: 'right'}}>
-                                                    {comment.date.substring(0, 10).split('-')[2]}/
-                                                    {comment.date.substring(0, 10).split('-')[1]}/
-                                                    {comment.date.substring(0, 10).split('-')[0]}
-                                                </span>
-                                            </div>
-                                            <br/>
-                                        </Card.Title>
-                                        <Card.Text>
-                                            {comment.content}
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </Row>
-                            <br/>
-                        </>
-                    )) : <br/>
+                    comments.length > 0 ? comments.map((comment, i) => {
+                        const commentDate = new Date(comment.date);
+                        return (
+                            <>
+                                <Row key={i} className="pluginDetailsComment">
+                                    <Card>
+                                        <Card.Body>
+                                            <Card.Title>
+                                                <div>
+                                                    <span style={{float: 'left'}}><b>{comment.writer}</b></span>
+                                                    <span style={{float: 'right'}}>
+                                                        {commentDate.toLocaleDateString()}                       
+                                                    </span>
+                                                </div>
+                                                <br/>
+                                            </Card.Title>
+                                            <Card.Text>
+                                                {comment.content}
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Row>
+                                <br/>
+                            </>
+                        );
+                    }
+                    ) : <br/>
                 }
             </Container>
         );

@@ -50,7 +50,7 @@ export const AddLike = (plugin, userId) => {
 };
 
 export const GetPlugin = (pluginId) => {
-    const [plugin, setPlugin] = useState({ name: '', version: '', category: '', image: '', description: '', tags: [], likes: [] });
+    const [plugin, setPlugin] = useState({ name: '', version: '', category: '', image: '', description: '', linkgithub: '', tags: [], likes: [] });
 
     useEffect(() => {
         fetch(`http://localhost:3001/api/plugin?id=${pluginId}`, {
@@ -102,7 +102,7 @@ export const GetUser = (userToken) => {
 };
 
 export const GetComments = (pluginId) => {
-    const [comments, setComments] = useState([/*{ writer: '', content: '', date: '', pluginId: '' }*/]);
+    const [comments, setComments] = useState([]);
 
     useEffect(() => {
         fetch(`http://localhost:3001/api/comments?pluginId=${pluginId}`, {
