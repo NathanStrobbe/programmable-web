@@ -1,6 +1,8 @@
 const Plugin = require('./pluginModel');
 const Image = require('./imageModel');
 const User = require('../users/userModel');
+const Category = require('./categoryModel');
+
 
 exports.getAll = function (req, res) {
     Plugin
@@ -30,14 +32,11 @@ exports.get = function (req, res) {
 };
 
 exports.addplugins = function (req, res) {
-    console.log(req.body);
     const image = req.files.image[0];
-    console.log(req.files.plugin[0]);
-
     const plugin = new Plugin();
     plugin.name = req.body.name;
     plugin.version = req.body.version;
-    plugin.category = req.body.category;
+
     plugin.description = req.body.description;
     plugin.version = req.body.version;
     plugin.likes = req.body.likes;
@@ -69,7 +68,8 @@ exports.addplugins = function (req, res) {
             imageModel.name = image.originalname;
             imageModel.mimeType = image.mimetype;
             imageModel.buffer = image.buffer;
-            return imageModel.save((err, img) => {
+
+            imageModel.save((err, img) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).send(500);
@@ -77,13 +77,38 @@ exports.addplugins = function (req, res) {
                 console.log('Image added');
                 plugin.image = img._id;
 
-                return plugin.save((err) => {
-                    if (err) {
-                        console.log(err);
-                        return res.status(500).send(err);
+                Category.findOne({name: req.body.category}, (err, category)=>{
+
+                        console.log("HELLO");
+                    if(err){
+                       console.log(err);
                     }
-                    return res.status(201).send({ message: 'Plugin added', data: plugin });
-                });
+
+                    if(category == null){
+                        const category = new Category();
+                        category.name = req.body.category;
+                        category.save((err, cat)=>{
+                            if(err){
+                                console.log(err);
+                                return res.status(500).send("Category add failed");
+                            }
+
+                            plugin.category = cat._id;
+                        })
+                    }
+                    else{
+                        plugin.category = category._id;
+                        return plugin.save((err) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(500).send(err);
+                            }
+                            return res.status(201).send({ message: 'Plugin added', data: plugin });
+                        });
+                    }
+                })
+
+
             });
         });
     });

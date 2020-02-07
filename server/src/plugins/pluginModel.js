@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+var ObjectId = require('mongodb').ObjectId;
 
 const pluginSchema = mongoose.Schema({
     name: {
@@ -29,7 +30,7 @@ const pluginSchema = mongoose.Schema({
     category: {
         type: String,
         required: true,
-        //ref: 'category'
+        ref: 'category'
     },
     tags: {
         required: true,
