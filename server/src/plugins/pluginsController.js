@@ -77,7 +77,7 @@ exports.addplugins = function (req, res) {
                 console.log('Image added');
                 plugin.image = img._id;
 
-                Category.findOne({name: req.body.category}, (err, category)=>{
+                return Category.findOne({name: req.body.category}, (err, category)=>{
 
                         console.log("HELLO");
                     if(err){

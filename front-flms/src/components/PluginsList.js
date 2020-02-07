@@ -1,22 +1,33 @@
 import React, {useState} from 'react';
-import { Card } from 'react-bootstrap';
-import { GetPluginsList, convertBufferToBase64 } from '../utils/hooks';
+import { Card,Button } from 'react-bootstrap';
+import {GetPluginsList, convertBufferToBase64, GetCategories} from '../utils/hooks';
 import { Link } from 'react-router-dom';
 import './PluginsList.css';
 
 const PluginsList = () => {
 
     const { plugins } = GetPluginsList();
-    const { filterPlugins, setFilterPlugins } = useState('');
+    const [ filterPlugins, setFilterPlugins ] = useState('all');
+    const { categories } = GetCategories();
+
+    const filterList = (id) => {
+       setFilterPlugins(id)
+    };
 
     return (
         <div>
             <div>
-                <p>Filter</p>
+                <Button onClick={ () => filterList("all") }>Tous</Button>
+                {
+                    categories.map(category =>
+                        <Button onClick={ () => filterList(category._id) }>{category.name}</Button>
+                    )
+                }
             </div>
             <div className={"containerList"}>
                 {
                     plugins.map(plugins =>
+                        filterPlugins === "all" || plugins.category === filterPlugins ?
                         <Card key={plugins._id} style={{ width: '18rem' }}>
                             <Card.Body>
                                 <Link to={`/pluginDetails/${plugins._id}`} style={{ textDecoration: 'none' }}>
@@ -28,7 +39,7 @@ const PluginsList = () => {
                                 </Link>
                                 Likes : {plugins.likes.length}<br />
                             </Card.Body>
-                        </Card>
+                        </Card>: null
                     )
                 }
             </div>

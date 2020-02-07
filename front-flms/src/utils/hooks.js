@@ -35,6 +35,31 @@ export const GetPluginsList = () => {
     return { plugins };
 };
 
+export const GetCategories = () => {
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        fetch(`http://localhost:3001/api/categories`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(res => res.json())
+            .then(json => {
+                if (json) {
+                    setCategories(json);
+                } else {
+                    setCategories([]);
+                }
+            });
+    }, []);
+
+    return { categories };
+};
+
+
 export const AddLike = (plugin, userId) => {
 
     const newArr = [];
@@ -82,6 +107,8 @@ export const GetPlugin = (pluginId) => {
 
     return plugin;
 };
+
+
 
 export const GetUser = (userToken) => {
     const [user, setUser] = useState({ username: '', password: '', email: ''});
@@ -132,3 +159,6 @@ export const GetComments = (pluginId) => {
 
     return comments;
 };
+
+
+

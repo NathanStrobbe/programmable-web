@@ -32,4 +32,9 @@ const commentsController = require('./comments/commentsController');
 router.route('/comments')
     .get(commentsController.get);
 
+
+const categoriesController = require('./plugins/categoryController');
+router.route('/categories')
+    .get(categoriesController.all);
+
 module.exports = router;
