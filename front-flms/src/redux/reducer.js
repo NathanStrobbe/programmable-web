@@ -1,9 +1,4 @@
-const initialState={
-    user: sessionStorage.getItem('jwtToken'),
-    loggedIn: !!sessionStorage.getItem('jwtToken')
-};
-
-const user = (state = {initialState}, action) => {
+const user = (state = {}, action) => {
     switch (action.type) {
         case 'LOGIN':
             return {
@@ -18,7 +13,11 @@ const user = (state = {initialState}, action) => {
                 loggedIn: false
             };
         default:
-            return state;
+            return {
+                ...state,
+                user: sessionStorage.getItem('jwtToken'),
+                loggedIn: !!sessionStorage.getItem('jwtToken')
+            };
     }
 };
 

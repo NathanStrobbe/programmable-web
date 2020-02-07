@@ -33,7 +33,7 @@ const Login = () => {
             else {
                 res.json().then(data => {
                     sessionStorage.setItem('jwtToken', data.token);
-                    dispatch(allActions.loginAction(data.user._id));
+                    dispatch(allActions.loginAction(data.token));
                     setRedirectToReferrer(true);
                 });
             }

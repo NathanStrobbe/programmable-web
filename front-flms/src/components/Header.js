@@ -21,7 +21,7 @@ const Header = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse>
                 <Nav className="ml-2">
-                    {sessionStorage.getItem('jwtToken') ?
+                    {loggedIn ?
                         <NavItem className="mr-4">
                             <NavLink to="/pluginsList"><Button>Liste des plugins</Button></NavLink>
                             <NavLink to="/publishPlugin"><Button>Publier un plugin</Button></NavLink>
