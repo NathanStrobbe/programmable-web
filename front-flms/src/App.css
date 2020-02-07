@@ -19,3 +19,14 @@
   color: #61dafb;
 }
 
+
+.App{
+    background-color: #cdcdcd17;
+    height: 100%;
+}
+
+html, body, #root{
+    margin: 0;
+    height: 100%;
+}
+

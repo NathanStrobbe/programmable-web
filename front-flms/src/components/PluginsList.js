@@ -16,15 +16,16 @@ const PluginsList = () => {
 
     return (
         <div>
-            <div>
-                <Button onClick={ () => filterList("all") }>Tous</Button>
+            <div className="filter">
+                <h4>Filter les résultats</h4>
+                <Button  variant="outline-primary" size="sm" onClick={ () => filterList("all") }>Tous les plugins</Button>
                 {
                     categories.map(category =>
-                        <Button onClick={ () => filterList(category._id) }>{category.name}</Button>
+                        <Button  size="sm" variant="outline-primary" onClick={ () => filterList(category._id) }>{category.name}</Button>
                     )
                 }
             </div>
-            <div className={"containerList"}>
+            <div className="containerList">
                 {
                     plugins.map(plugins =>
                         filterPlugins === "all" || plugins.category === filterPlugins ?

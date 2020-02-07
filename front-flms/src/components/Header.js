@@ -16,26 +16,24 @@ const Header = () => {
     };
 
     return (
-        <Navbar bg="light" expand="lg">
-            <Navbar.Brand className="mr-auto"><NavLink to="/">Store FMLS</NavLink></Navbar.Brand>
+        <Navbar className="justify-content-between" bg="dark" variant="dark">
+            <Navbar.Brand><NavLink to="/" className="title">Store FMLS</NavLink></Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse>
-                <Nav className="ml-2">
-                    {loggedIn ?
-                        <NavItem className="mr-4">
-                            <NavLink to="/pluginsList"><Button>Liste des plugins</Button></NavLink>
-                            <NavLink to="/publishPlugin"><Button>Publier un plugin</Button></NavLink>
-                            <Button onClick={handleSignOut}>Déconnexion</Button>
-                        </NavItem>
-                        :
-                        <NavItem className="mr-4">
-                            <NavLink to="/pluginsList"><Button>Liste des plugins</Button></NavLink>
-                            <NavLink to="/login"><Button>Connexion</Button></NavLink>
-                            <NavLink to="/register"><Button>Inscription</Button></NavLink>
-                        </NavItem>
-                    }
-                </Nav>
-            </Navbar.Collapse>
+            <Nav pullright="true">
+                {loggedIn ?
+                    <NavItem className="mr-sm-2">
+                        <NavLink to="/pluginsList"><Button variant="outline-light">Liste des plugins</Button></NavLink>
+                        <NavLink to="/publishPlugin"><Button variant="outline-light">Publier un plugin</Button></NavLink>
+                        <Button onClick={handleSignOut} variant="outline-light">Déconnexion</Button>
+                    </NavItem>
+                    :
+                    <NavItem className="mr-sm-2">
+                        <NavLink to="/pluginsList"><Button variant="outline-light">Liste des plugins</Button></NavLink>
+                        <NavLink to="/login"><Button variant="outline-light">Connexion</Button></NavLink>
+                        <NavLink to="/register"><Button variant="outline-light">Inscription</Button></NavLink>
+                    </NavItem>
+                }
+            </Nav>
         </Navbar>
     );
 };
