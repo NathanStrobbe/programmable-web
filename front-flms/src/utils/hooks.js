@@ -83,6 +83,25 @@ export const AddLike = (plugin, userId) => {
     });
 };
 
+export const AddComment = (plugin, userId, content) => {
+
+    var date = new Date();
+    console.log(date);
+    fetch('http://localhost:3001/api/comments', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'writer': userId,
+            'content': content,
+            'date' : date,
+            'pluginId' : plugin._id
+        })
+    });
+};
+
 export const GetPlugin = (pluginId) => {
     const [plugin, setPlugin] = useState({ name: '', version: '', category: '', image: '', description: '', linkgithub: '', tags: [], likes: [] });
 
@@ -159,6 +178,3 @@ export const GetComments = (pluginId) => {
 
     return comments;
 };
-
-
-

@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Row, Col, Card, Container, Badge } from 'react-bootstrap';
-import { GetPlugin,AddLike, GetUser, GetComments, convertBufferToBase64 } from '../utils/hooks.js';
+import { Button, Row, Col, Card, Container, Badge, Form } from 'react-bootstrap';
+import { GetPlugin,AddLike, GetUser, GetComments,AddComment, convertBufferToBase64 } from '../utils/hooks.js';
 
 const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
 
     let user = '';
+    const [comment, setComment] = useState('');
+    const [error, setError] = useState('');
     const { pluginId } = useParams();
     if (sessionStorage.getItem('jwtToken')) {
         user = GetUser(sessionStorage.getItem('jwtToken'));
@@ -24,6 +26,15 @@ const PluginDetails = () => {
         } else {
             alert('Veuillez vous connecter !');
         }
+    };
+
+    const handleSubmit = (plugin,comment) => {
+      if (sessionStorage.getItem('jwtToken')) {
+          const myId = user.username;
+          AddComment(plugin,myId,comment);
+      } else {
+          alert('Veuillez vous connecter !');
+      }
     };
 
     const plugin = GetPlugin(pluginId);
@@ -62,6 +73,17 @@ const PluginDetails = () => {
                 </Row>
                 <br/>
                 <Row className="pluginDetailsCommentsTitle">
+                    <Col>
+                        <Form>
+                        <Form.Group>
+                            <Form.Label htmlFor="commentContent">Ajouter un commentaire</Form.Label>
+                            <Form.Control name="commentContent" id="commentContent" value={comment} onChange={e => setComment(e.target.value)} />
+                        </Form.Group>
+                        <Button onClick={e => handleSubmit(plugin,comment)}>Ajouter</Button>
+                        </Form>
+                    </Col>
+                </Row>
+                <Row className="pluginDetailsAddCommentsTitle">
                     <Col><h4>Comments:</h4></Col>
                 </Row>
                 {
@@ -76,7 +98,7 @@ const PluginDetails = () => {
                                                 <div>
                                                     <span style={{float: 'left'}}><b>{comment.writer}</b></span>
                                                     <span style={{float: 'right'}}>
-                                                        {commentDate.toLocaleDateString()}                       
+                                                        {commentDate.toLocaleDateString()}
                                                     </span>
                                                 </div>
                                                 <br/>

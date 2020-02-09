@@ -30,7 +30,8 @@ router.route('/user')
 const commentsController = require('./comments/commentsController');
 
 router.route('/comments')
-    .get(commentsController.get);
+    .get(commentsController.get)
+    .post(commentsController.add);
 
 
 const categoriesController = require('./plugins/categoryController');
