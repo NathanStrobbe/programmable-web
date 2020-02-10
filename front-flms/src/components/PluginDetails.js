@@ -8,7 +8,6 @@ const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
 
     let user = '';
-    const [comment, setComment] = useState('');
     const [error, setError] = useState('');
     const { pluginId } = useParams();
     const loggedIn = useSelector(state => state.loggedIn);
@@ -32,9 +31,11 @@ const PluginDetails = () => {
 
     const handleSubmit = (e) => {
       e.preventDefault();
+      const data = new FormData(e.target);
+      const comment = Object.fromEntries(data);
       if (sessionStorage.getItem('jwtToken')) {
           const myId = user.username;
-          AddComment(plugin,myId,comment);
+          AddComment(plugin,myId, comment.commentContent);
           window.location.reload();
       } else {
           alert('Veuillez vous connecter !');
@@ -82,7 +83,7 @@ const PluginDetails = () => {
                       <Form onSubmit={handleSubmit}>
                         <Form.Group>
                             <Form.Label htmlFor="commentContent">Ajouter un commentaire</Form.Label>
-                            <Form.Control name="commentContent" id="commentContent" value={comment} onChange={e => setComment(e.target.value)} />
+                            <Form.Control name="commentContent" id="commentContent"/>
                         </Form.Group>
                         <Button type="submit" /*onClick={e => handleSubmit(plugin,comment)}*/>Ajouter</Button>
                         </Form>
