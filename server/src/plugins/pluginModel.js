@@ -18,7 +18,7 @@ const pluginSchema = mongoose.Schema({
         type: []
     },
     creator: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: 'user'
     },

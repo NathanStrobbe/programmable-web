@@ -1,0 +1,32 @@
+.card {
+    margin: 20px;
+}
+
+
+.group{
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+
+img{
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.group .form-group{
+    flex: 1;
+    margin: 5px;
+}
+
+
+
+.form-group{
+    margin: 5px;
+}
+
+.openSource{
+    margin: 15px 5px 15px 5px;
+}

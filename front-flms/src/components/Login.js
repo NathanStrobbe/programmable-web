@@ -66,10 +66,10 @@ const Login = () => {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label htmlFor="examplePassword">Mot de passe</Form.Label>
-                            <Form.Control type="password" name="password" id="password" alue={password} onChange={handlePasswordChange} />
+                            <Form.Control type="password" name="password" id="password" value={password} onChange={handlePasswordChange} />
                             {
                                 error === 401 && (
-                                    <Alert color="danger" >
+                                    <Alert variant="danger" >
                                         Connexion impossible, verifiez votre email et mot de passe
                                     </Alert>
                                 )
