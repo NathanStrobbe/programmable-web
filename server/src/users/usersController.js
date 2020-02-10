@@ -54,19 +54,20 @@ exports.logIn = function (req, res) {
 };
 
 exports.new = function (req, res) {
+    console.log(req.body);
     var user = new User();
     user.username = req.body.name;
     user.email = req.body.email;
     user.password = bcrypt.hashSync(req.body.password, 10);
-
 
     User.findOne({ email: req.body.email }, function (err, userfound) {
         if (err) {
             res.status(401).send(err);
         }
 
-        if (userfound)
+        if (userfound){
             res.status(409).send('Email already in database');
+        }
         else {
             return user.save(function (err) {
                 if (err) {

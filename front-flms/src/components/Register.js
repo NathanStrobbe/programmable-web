@@ -58,7 +58,7 @@ const Register = () => {
                         <Form.Group>
                             {
                                 error === 409 && (
-                                    <Alert color="danger" >
+                                    <Alert variant="danger" >
                                         Cet email est déjà enregistré!
                                     </Alert>
                                 )
@@ -71,6 +71,7 @@ const Register = () => {
                             <Form.Control type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
                         </Form.Group>
                         <Form.Group><Button type="submit" className="Button">Enregistrer</Button></Form.Group>
+
                     </Form>
                 </Card.Body>
             </Card>

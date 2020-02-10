@@ -22,6 +22,7 @@ exports.get = function (req, res) {
     Plugin
         .findOne({ '_id': req.query.id })
         .populate('image')
+        .populate('user')
         .exec((err, plugin) => {
             if (err) {
                 console.error(err);
