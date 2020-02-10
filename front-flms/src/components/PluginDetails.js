@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Row, Col, Card, Container, Badge, Form } from 'react-bootstrap';
 import { GetPlugin,AddLike, GetUser, GetComments,AddComment, convertBufferToBase64 } from '../utils/hooks.js';
+import {useDispatch, useSelector} from 'react-redux';
 
 const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
@@ -10,6 +11,7 @@ const PluginDetails = () => {
     const [comment, setComment] = useState('');
     const [error, setError] = useState('');
     const { pluginId } = useParams();
+    const loggedIn = useSelector(state => state.loggedIn);
     if (sessionStorage.getItem('jwtToken')) {
         user = GetUser(sessionStorage.getItem('jwtToken'));
     }
@@ -28,10 +30,12 @@ const PluginDetails = () => {
         }
     };
 
-    const handleSubmit = (plugin,comment) => {
+    const handleSubmit = (e) => {
+      e.preventDefault();
       if (sessionStorage.getItem('jwtToken')) {
           const myId = user.username;
           AddComment(plugin,myId,comment);
+          window.location.reload();
       } else {
           alert('Veuillez vous connecter !');
       }
@@ -73,18 +77,26 @@ const PluginDetails = () => {
                 </Row>
                 <br/>
                 <Row className="pluginDetailsCommentsTitle">
-                    <Col>
-                        <Form>
+                    {loggedIn ?
+                      <Col>
+                      <Form onSubmit={handleSubmit}>
                         <Form.Group>
                             <Form.Label htmlFor="commentContent">Ajouter un commentaire</Form.Label>
                             <Form.Control name="commentContent" id="commentContent" value={comment} onChange={e => setComment(e.target.value)} />
                         </Form.Group>
-                        <Button onClick={e => handleSubmit(plugin,comment)}>Ajouter</Button>
+                        <Button type="submit" /*onClick={e => handleSubmit(plugin,comment)}*/>Ajouter</Button>
                         </Form>
                     </Col>
+                    :
+                    <Col></Col>
+                  }
                 </Row>
                 <Row className="pluginDetailsAddCommentsTitle">
+                  {loggedIn ?
                     <Col><h4>Comments:</h4></Col>
+                  :
+                    <Col><h4>Comments (connectez vous pour commenter):</h4></Col>
+                  }
                 </Row>
                 {
                     comments.length > 0 ? comments.map((comment, i) => {
