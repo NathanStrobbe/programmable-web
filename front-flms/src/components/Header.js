@@ -16,7 +16,7 @@ const Header = () => {
     };
 
     return (
-        <Navbar className="justify-content-between" bg="dark" variant="dark">
+        <Navbar className="mb-5 justify-content-between" bg="dark" variant="dark">
             <Navbar.Brand><NavLink to="/" className="title">Store FMLS</NavLink></Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Nav pullright="true">

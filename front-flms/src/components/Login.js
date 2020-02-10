@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import allActions from '../actions/action';
+import './Login.css';
 
 const Login = () => {
 
@@ -56,10 +57,10 @@ const Login = () => {
             {
                 redirectToReferrer ? <Redirect to='/pluginsList' /> : null
             }
-            <Card>
+            <Card className="Card">
                 <Card.Header>Connexion</Card.Header>
                 <Card.Body>
-                    <Form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit} className="Form">
                         <Form.Group>
                             <Form.Label htmlFor="exampleEmail">Email</Form.Label>
                             <Form.Control type="email" name="email" id="email" value={email} onChange={handleEmailChange} />
@@ -75,7 +76,7 @@ const Login = () => {
                                 )
                             }
                         </Form.Group>
-                        <Button type="submit">Se connecter</Button>
+                        <Form.Group><Button type="submit" className="Button">Se connecter</Button></Form.Group>
                     </Form>
                 </Card.Body>
             </Card>

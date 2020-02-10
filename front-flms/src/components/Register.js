@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
+import './Register.css';
 
 const Register = () => {
 
@@ -46,12 +47,12 @@ const Register = () => {
             {
                 redirectToReferrer ? <Redirect to='/connexion' /> : null
             }
-            <Card>
+            <Card className="Card">
                 <Card.Header>Inscription</Card.Header>
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group>
-                            <Form.Label htmlFor="userName">User Name</Form.Label>
+                            <Form.Label htmlFor="userName">Pseudo</Form.Label>
                             <Form.Control name="userName" id="userName" value={username} onChange={e => setUsername(e.target.value)} />
                         </Form.Group>
                         <Form.Group>
@@ -69,7 +70,8 @@ const Register = () => {
                             <Form.Label htmlFor="examplePassword">Mot de passe</Form.Label>
                             <Form.Control type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
                         </Form.Group>
-                        <Button type="submit">Enregistrer</Button>
+                        <Form.Group><Button type="submit" className="Button">Enregistrer</Button></Form.Group>
+
                     </Form>
                 </Card.Body>
             </Card>

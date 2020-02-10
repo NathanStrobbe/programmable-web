@@ -11,9 +11,7 @@ const PluginsList = () => {
     const { categories } = GetCategories();
     const [ searchTerm, setSearchTerm ] = useState('');
 
-    const filterList = (id) => {
-       setFilterPlugins(id)
-    };
+    const filterList = (id) => { setFilterPlugins(id); };
 
     return (
         <div>
@@ -37,18 +35,18 @@ const PluginsList = () => {
                 {
                     plugins.filter(plugin => plugin.name.toLowerCase().includes(searchTerm)).map(plugins =>
                         filterPlugins === "all" || plugins.category === filterPlugins ?
-                        <Card key={plugins._id} style={{ width: '18rem' }}>
-                            <Card.Body>
-                                <Link to={`/pluginDetails/${plugins._id}`} style={{ textDecoration: 'none' }}>
-                                    <Card.Title>{plugins.name}</Card.Title>
-                                    <Card.Img variant="top" src={convertBufferToBase64(plugins.image)} />
-                                    <Card.Text>
-                                        {plugins.description}
-                                    </Card.Text>
-                                </Link>
-                                Likes : {plugins.likes.length}<br />
-                            </Card.Body>
-                        </Card>: null
+                            <Card key={plugins._id} style={{ width: '18rem' }}>
+                                <Card.Body>
+                                    <Link to={`/pluginDetails/${plugins._id}`} style={{ textDecoration: 'none' }}>
+                                        <Card.Title>{plugins.name}</Card.Title>
+                                        <Card.Img variant="top" src={convertBufferToBase64(plugins.image)} />
+                                        <Card.Text>
+                                            {plugins.description}
+                                        </Card.Text>
+                                    </Link>
+                                    Likes : {plugins.likes.length}<br />
+                                </Card.Body>
+                            </Card>: null
                     )
                 }
             </div>

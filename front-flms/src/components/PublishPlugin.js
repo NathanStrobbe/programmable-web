@@ -45,8 +45,13 @@ const PublishPlugin = () => {
             data.append('linkgithub', '');
         }
 
-        const plugin = JSON.stringify(Object.fromEntries(data));
+        const plugin = Object.fromEntries(data);
         console.log(plugin);
+
+        if (plugin.image.size > 100000) {
+            alert('Image trop grande (la doit être inférieure à 100 ko) !');
+            return;
+        }
 
         post('api/plugins', data)
             .then(response => {
