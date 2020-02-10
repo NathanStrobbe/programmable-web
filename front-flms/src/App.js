@@ -16,7 +16,9 @@ const App = () => {
             <BrowserRouter>
                 <Header />
                 <Switch>
-                    <Route exact path="/" />
+                    <Route exact path="/" >
+                        <Redirect to="/pluginsList"/>
+                    </Route>
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
                     <Route path="/pluginsList" component={PluginsList} />
