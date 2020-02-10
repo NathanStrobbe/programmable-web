@@ -34,9 +34,11 @@ const PluginDetails = () => {
         const data = new FormData(e.target);
         const comment = Object.fromEntries(data);
         if (sessionStorage.getItem('jwtToken')) {
-            const myId = user.username;
-            AddComment(plugin, myId, comment.commentContent);
-            window.location.reload();
+            if (comment.commentContent.trim().length > 0) {
+                const myId = user.username;
+                AddComment(plugin, myId, comment.commentContent);
+                window.location.reload();
+            }
         } else {
             alert('Veuillez vous connecter !');
         }
