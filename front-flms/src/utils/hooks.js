@@ -104,7 +104,7 @@ export const AddComment = (plugin, userId, content) => {
 };
 
 export const GetPlugin = (pluginId) => {
-    const [plugin, setPlugin] = useState({ name: '', version: '', category: '', image: '', description: '', linkgithub: '', tags: [], likes: [] });
+    const [plugin, setPlugin] = useState({ name: '', version: '', description: '', likes: [],creator: '', image: '', category: '', tags: [], video: '', linkgithub: '', openSource: '' });
 
     useEffect(() => {
         fetch(`http://localhost:3001/api/plugin?id=${pluginId}`, {

@@ -23,6 +23,17 @@ exports.user = function (req, res) {
     });
 };
 
+exports.getUserByID = function (req, res) {
+
+    User.findOne({ _id: req.query._id }, function (err, user) {
+        if (err)
+            res.status(500).send(err);
+        if (user) {
+            res.status(200).send(user);
+        }
+    });
+};
+
 
 exports.logIn = function (req, res) {
     User.findOne({ email: req.body.email }, function (err, user) {

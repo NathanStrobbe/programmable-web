@@ -27,6 +27,9 @@ router.route('/user')
     .post(usersController.new)
     .get(usersController.user);
 
+router.route('/user/getUserByID')
+    .get(usersController.getUserByID);
+
 const commentsController = require('./comments/commentsController');
 
 router.route('/comments')

@@ -70,6 +70,13 @@ const PluginDetails = () => {
                     <Col></Col>
                 </Row>
                 <br/>
+                <Row className="pluginDetailsAuthorTitle">
+                    <Col><h4>Auteur:</h4></Col>
+                </Row>
+                <Row className="pluginDetailsAuthor">
+                    <Col>{plugin.creator}</Col>
+                </Row>
+                <br/>
                 <Row className="pluginDetailsDescriptionTitle">
                     <Col><h4>Description:</h4></Col>
                 </Row>
