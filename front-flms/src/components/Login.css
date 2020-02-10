@@ -1,0 +1,13 @@
+.Card {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.form-group {
+    width: 80%;
+    margin: 10px auto;
+}
+
+.Button {
+    margin: 20px auto;
+}

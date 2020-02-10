@@ -40,7 +40,7 @@ export const GetCategories = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:3001/api/categories`, {
+        fetch('http://localhost:3001/api/categories', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -85,8 +85,7 @@ export const AddLike = (plugin, userId) => {
 };
 
 export const AddComment = (plugin, userId, content) => {
-
-    var date = new Date();
+    let date = new Date();
     console.log(date);
     fetch('http://localhost:3001/api/comments', {
         method: 'POST',
