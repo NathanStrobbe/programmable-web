@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {BaseSyntheticEvent as e, useState} from 'react';
 import {Card, Form, Button, Modal, Alert} from 'react-bootstrap';
 import { post } from '../utils/api';
 import { useHistory } from 'react-router-dom';
@@ -12,10 +12,11 @@ const PublishPlugin = () => {
     const [pluginBinary, setPluginBinary] = useState(null);
     const history = useHistory();
     const { categories } = GetCategories();
+    const [optionCat, setOptionCat] = useState('none');
+
+
+
     const [show, setShow] = useState(false);
-    const [optionsState, setOption] = useState('');
-
-
     const [nameCat, setNameCat] = useState('');
     const [error, setError] = useState('');
 
@@ -32,24 +33,34 @@ const PublishPlugin = () => {
         setPluginBinary(event.target.files[0]);
     };
 
+    const handleOptionChange = event => {
+        console.log(event.target.value);
+        setOptionCat(event.target.value);
+    };
+
     const handleSubmitForm = event => {
         event.preventDefault();
         const data = new FormData(event.target);
 
         data.append('image', imageFile, imageFile.name);
         data.append('plugin', pluginBinary, pluginBinary.name);
-        data.append('category', optionsState);
-        console.log(data);
+        data.append('category', optionCat);
+
+        console.log('category', optionCat);
 
         if (!data.linkgithub) {
             data.append('linkgithub', '');
         }
 
         const plugin = Object.fromEntries(data);
-        console.log(plugin);
 
         if (plugin.image.size > 100000) {
-            alert('Image trop grande (la doit être inférieure à 100 ko) !');
+            alert('Image trop grande (elle doit être inférieure à 100 ko) !');
+            return;
+        }
+        
+        if(optionCat === "none"){
+            alert('Vous devez selectionner une catégorie !');
             return;
         }
 
@@ -63,29 +74,31 @@ const PublishPlugin = () => {
             .catch(console.error);
     };
 
+
+    //Methods category add modale
+    const handlenameCatChange = (event) =>{
+        setError(0);
+        setNameCat(event.target.value);
+    };
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const handleCloseSubmit = (event) => {
         const data = new FormData();
         data.append('name', nameCat);
         post('api/categories', data)
             .then(res => {
-                console.log(res);
-                categories.push(res);
-                setShow(false);
-            }
-        ).catch(err => {
+                    console.log(res);
+                    categories.push(res);
+                    setShow(false);
+                }
+            ).catch(err => {
             setError(409);
             console.log(error);
         });
 
     };
-
-
-    const handlenameCatChange = (event) =>{
-        setError(0);
-        setNameCat(event.target.value);
-    };
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
     return (
         <Card>
@@ -109,10 +122,12 @@ const PublishPlugin = () => {
                     <div className={"group"}>
                         <Form.Group controlId="formGridState">
                             <Form.Label>Catégorie</Form.Label>
-                            <Form.Control as="select" onChange={e => setOption(e.currentTarget.value)}>
+                            <Form.Control as="select" defaultValue={optionCat}
+                                          onChange={handleOptionChange}>
+                                    <option selected={true} value={"none"}>Aucune</option>
                                 {
                                     categories.map(category =>
-                                        <option value={category._id}>{category.name}</option>
+                                        <option value={category.name}>{category.name}</option>
                                     )
                                 }
                             </Form.Control>

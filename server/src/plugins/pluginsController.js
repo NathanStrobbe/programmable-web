@@ -78,24 +78,18 @@ exports.addplugins = function (req, res) {
                 console.log('Image added');
                 plugin.image = img._id;
 
+                console.log(req.body.category);
                 return Category.findOne({name: req.body.category}, (err, category)=>{
                     if(err){
                        console.log(err);
+                       res.status(500).send(err);
                     }
 
                     if(category == null){
-                        const category = new Category();
-                        category.name = req.body.category;
-                        category.save((err, cat)=>{
-                            if(err){
-                                console.log(err);
-                                return res.status(500).send("Category add failed");
-                            }
-
-                            plugin.category = cat._id;
-                        })
+                       console.log("categorie not found");
+                       res.status(500).send(err);
                     }
-                    else{
+                    else {
                         plugin.category = category._id;
                         return plugin.save((err) => {
                             if (err) {
