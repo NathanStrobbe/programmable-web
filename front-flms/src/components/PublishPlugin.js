@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import './PublishPlugin.css';
 import {GetCategories} from "../utils/hooks";
 import add from '../assets/plus.png';
+import quit from '../assets/quit.png';
 
 const PublishPlugin = () => {
     const [openSource, setOpenSource] = useState(false);
@@ -13,7 +14,8 @@ const PublishPlugin = () => {
     const history = useHistory();
     const { categories } = GetCategories();
     const [optionCat, setOptionCat] = useState('none');
-
+    const [ tags, setTags ] = useState([]);
+    const [ tag, singleTag ] = useState('');
 
 
     const [show, setShow] = useState(false);
@@ -34,8 +36,26 @@ const PublishPlugin = () => {
     };
 
     const handleOptionChange = event => {
-        console.log(event.target.value);
         setOptionCat(event.target.value);
+    };
+
+    const handleAddTag = event =>{
+        setTags(old => [ ...old, tag]);
+
+        console.log(tags);
+    };
+
+    const handleDeleteTag =  (index) => {
+        console.log("remove");
+        setTags( old => {
+            old.splice(index, 1);
+            console.log(index, old)
+            return [...old];
+        });
+    };
+
+    const handleTagChange = event => {
+        singleTag(event.target.value);
     };
 
     const handleSubmitForm = event => {
@@ -58,7 +78,7 @@ const PublishPlugin = () => {
             alert('Image trop grande (elle doit être inférieure à 100 ko) !');
             return;
         }
-        
+
         if(optionCat === "none"){
             alert('Vous devez selectionner une catégorie !');
             return;
@@ -71,7 +91,7 @@ const PublishPlugin = () => {
                     history.push('/pluginsList');
                 }
             })
-            .catch(console.error);
+            .catch(setError(409));
     };
 
 
@@ -94,9 +114,8 @@ const PublishPlugin = () => {
                     setShow(false);
                 }
             ).catch(err => {
-            setError(409);
-            console.log(error);
-        });
+                setError(409);
+            });
 
     };
 
@@ -115,6 +134,13 @@ const PublishPlugin = () => {
                             <Form.Control type="text" name="version" id="publish-plugin-version" required />
                         </Form.Group>
                     </div>
+                    {
+                        error === 409 && (
+                            <Alert variant="danger" >
+                                Ce titre existe déjà
+                            </Alert>
+                        )
+                    }
                     <Form.Group>
                         <Form.Label htmlFor="publish-plugin-description">Description</Form.Label>
                         <Form.Control as="textarea" rows="3" name="description" id="publish-plugin-description" required />
@@ -122,9 +148,9 @@ const PublishPlugin = () => {
                     <div className={"group"}>
                         <Form.Group controlId="formGridState">
                             <Form.Label>Catégorie</Form.Label>
-                            <Form.Control as="select" defaultValue={optionCat}
+                            <Form.Control as="select" defaultValue={"none"}
                                           onChange={handleOptionChange}>
-                                    <option selected={true} value={"none"}>Aucune</option>
+                                    <option value={"none"}>Aucune</option>
                                 {
                                     categories.map(category =>
                                         <option value={category.name}>{category.name}</option>
@@ -134,10 +160,20 @@ const PublishPlugin = () => {
                         </Form.Group>
                         <img onClick={handleShow} src={add} alt="add" width="30px" height="30px"/>
                     </div>
-                    <Form.Group>
-                        <Form.Label htmlFor="publish-plugin-tags">Tags</Form.Label>
-                        <Form.Control type="textarea" name="tags" id="publish-plugin-tags" />
-                    </Form.Group>
+                    <Form.Label htmlFor="publish-plugin-tags">Tags</Form.Label>
+                    <div className={"group"}>
+                        {
+                            tags.map((tag, index) =>
+                                <p>{tag}<img onClick={() => handleDeleteTag(index)} src={quit} alt="quit" width="30px" height="30px"/></p>
+                            )
+                        }
+                    </div>
+                    <div className={"group"}>
+                        <Form.Group>
+                            <Form.Control type="textarea" name="tags" id="publish-plugin-tags" onChange={handleTagChange} />
+                        </Form.Group>
+                        <Button onClick={handleAddTag}>Ajouter</Button>
+                    </div>
                     <div className={"group"}>
                         <Form.Group>
                             <Form.Label htmlFor="publish-plugin-image">Image</Form.Label>
