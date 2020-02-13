@@ -68,9 +68,15 @@ const PluginDetails = () => {
                     <Col></Col>
                     <Col></Col>
                 </Row>
-                <Row className="pluginDetailsTag">
+                <Row className="elementsBelowImage">
                     <Col></Col>
-                    <Col>{plugin.tags.map((tag) => <><Badge variant="info">{tag}</Badge></>)}</Col>
+                    <Col className="elementsBelowImage">{plugin.tags.map((tag) => <><Badge variant="info">{tag}</Badge></>)}</Col>
+                    <Col></Col>
+                </Row>
+                <br/>
+                <Row className="elementsBelowImage">
+                    <Col></Col>
+                    <Col className="elementsBelowImage"><Button onClick= {() => window.open('http://localhost:8080/guitarix/', '_blank') } >Test</Button></Col>
                     <Col></Col>
                 </Row>
                 <br/>
@@ -116,7 +122,7 @@ const PluginDetails = () => {
                         return (
                             <>
                                 <Row key={i} className="pluginDetailsComment">
-                                    <Card>
+                                    <Card className="w-100">
                                         <Card.Body>
                                             <Card.Title>
                                                 <div>
