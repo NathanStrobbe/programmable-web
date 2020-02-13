@@ -89,11 +89,10 @@ const PluginDetails = () => {
                     <p>Auteur : {plugin.creator.username}</p>
 
                     <p>
-                        Catégorie :
                         {
                             categories.map((category) => {
                                 if(category._id === plugin.category)
-                                    return " " + category.name
+                                    return "Catégorie " + category.name
                             })
                         }
                     </p>
@@ -105,65 +104,60 @@ const PluginDetails = () => {
                 </div>
             </div>
 
-            <Button onClick= {() => window.open('http://localhost:8080/guitarix/', '_blank') } >Tester le plugin</Button>
-            <Row className="pluginDetailsDescriptionTitle">
-                <Col><h4>Description:</h4></Col>
-            </Row>
-            <Row className="pluginDetailsDescription">
-                <Col>{plugin.description}</Col>
-            </Row>
-            <br />
-            <Row className="pluginDetailsCommentsTitle">
+            <div className="detailsDescription">
+                <h5>Description</h5>
+                <p>{plugin.description}</p>
+                <Button variant="outline-secondary" onClick= {() => window.open('http://localhost:8080/guitarix/', '_blank') } >Tester le plugin</Button>
+            </div>
+
+            <div className="detailsComments">
+                <div>
+                    {loggedIn ?
+                        <h5>Commentaires :</h5>
+                        :
+                        <h5>Commentaires (connectez vous pour commenter):</h5>
+                    }
+                </div>
+                {
+                    comments.length > 0 ? comments.map((comment, i) => {
+                        const commentDate = new Date(comment.date);
+                        return (
+                            <>
+                                <Row key={i} className="pluginDetailsComment">
+                                    <Card className="w-100">
+                                        <Card.Body>
+                                            <Card.Title>
+                                                <div>
+                                                    <span style={{ float: 'left' }}><b>{comment.writer}</b></span>
+                                                    <span style={{ float: 'right' }}>
+                                                        {commentDate.toLocaleDateString()}
+                                                    </span>
+                                                </div>
+                                                <br />
+                                            </Card.Title>
+                                            <Card.Text>
+                                                {comment.content}
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Row>
+                            </>
+                        );
+                    }
+                    ) : <br />
+                }
                 {loggedIn ?
-                    <Col>
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group>
-                                <Form.Label htmlFor="commentContent">Ajouter un commentaire</Form.Label>
-                                <Form.Control as="textarea" rows="3" name="commentContent" id="commentContent" required />
-                            </Form.Group>
-                            <Button type="submit">Ajouter</Button>
-                        </Form>
-                    </Col>
+                    <Form onSubmit={handleSubmit} className="detailsAddComment">
+                        <Form.Group>
+                            <Form.Label htmlFor="commentContent">Ajouter un commentaire</Form.Label>
+                            <Form.Control as="textarea" rows="3" name="commentContent" id="commentContent" required />
+                        </Form.Group>
+                        <Button type="submit">Commenter</Button>
+                    </Form>
                     :
-                    <Col></Col>
+                    <p></p>
                 }
-            </Row>
-            <Row className="pluginDetailsAddCommentsTitle">
-                {loggedIn ?
-                    <Col><h4>Commentaires :</h4></Col>
-                    :
-                    <Col><h4>Commentaires (connectez vous pour commenter):</h4></Col>
-                }
-            </Row>
-            {
-                comments.length > 0 ? comments.map((comment, i) => {
-                    const commentDate = new Date(comment.date);
-                    return (
-                        <>
-                            <Row key={i} className="pluginDetailsComment">
-                                <Card className="w-100">
-                                    <Card.Body>
-                                        <Card.Title>
-                                            <div>
-                                                <span style={{ float: 'left' }}><b>{comment.writer}</b></span>
-                                                <span style={{ float: 'right' }}>
-                                                    {commentDate.toLocaleDateString()}
-                                                </span>
-                                            </div>
-                                            <br />
-                                        </Card.Title>
-                                        <Card.Text>
-                                            {comment.content}
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </Row>
-                            <br />
-                        </>
-                    );
-                }
-                ) : <br />
-            }
+            </div>
             <SweetAlert
                 show={alertMessage}
                 title="Erreur"

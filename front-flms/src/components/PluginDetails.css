@@ -1,5 +1,5 @@
 .Image {
-    max-width: 500px;
+    max-width: 200px;
 }
 
 
@@ -31,5 +31,44 @@
 
 .detailsGroup img{
     margin: 0px 5px 0px 5px;
+}
+
+
+.detailsDescription{
+    margin: 20px 10px 10px 10px;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    padding-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.detailsDescription button{
+    align-self: center;
+}
+
+.detailsComments{
+    margin: 30px 40px 40px 40px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.pluginDetailsComment span{
+    color: #0062cc;
+    font-weight: lighter;
+    font-size: initial;
+}
+
+.detailsAddComment{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.detailsAddComment form-group, .detailsAddComment form{
+    width: 100%;
+    margin: 0px;
 }
 
