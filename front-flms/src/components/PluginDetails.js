@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Row, Col, Card, Container, Badge, Form } from 'react-bootstrap';
-import { GetPlugin,AddLike, GetUser, GetComments,AddComment, convertBufferToBase64 } from '../utils/hooks.js';
-import {useDispatch, useSelector} from 'react-redux';
+import { GetPlugin, AddLike, GetUser, GetComments, AddComment, convertBufferToBase64 } from '../utils/hooks.js';
+import { useSelector } from 'react-redux';
+import SweetAlert from 'sweetalert2-react';
+import './PluginDetails.css';
 
 const PluginDetails = () => {
     //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
 
     let user = '';
-    const [error, setError] = useState('');
+    const [alertMessage, setAlertMessage] = useState(null);
     const { pluginId } = useParams();
     const loggedIn = useSelector(state => state.loggedIn);
     if (sessionStorage.getItem('jwtToken')) {
@@ -21,11 +23,11 @@ const PluginDetails = () => {
             if(!plugin.likes.includes(myId)){
                 AddLike(plugin,myId);
                 window.location.reload();
-            }else {
-                alert('Vous avez deja aimé !');
+            } else {
+                setAlertMessage('Vous avez déjà aimé !');
             }
         } else {
-            alert('Veuillez vous connecter !');
+            setAlertMessage('Veuillez vous connecter !');
         }
     };
 
@@ -55,8 +57,8 @@ const PluginDetails = () => {
             <Container className="pluginDetails">
                 <Row className="pluginDetailsHeader">
                     <Col><h1>{plugin.name}</h1></Col>
-                    <Col><img src={convertBufferToBase64(plugin.image)} /></Col>
-                    <Col><h4>Likes : {plugin.likes.length}</h4><Button variant="primary" onClick={e => click(plugin)}>Add</Button></Col>
+                    <Col><img className="Image" src={convertBufferToBase64(plugin.image)} /></Col>
+                    <Col><h4>Likes : {plugin.likes.length}</h4><Button variant="primary" onClick={() => click(plugin)}>Add</Button></Col>
                 </Row>
                 <Row className="pluginDetailsSourceLink">
                     <Col><a  href={plugin.linkgithub ? plugin.linkgithub : ''}>{plugin.linkgithub ? plugin.linkgithub : ''}</a></Col>
@@ -137,6 +139,13 @@ const PluginDetails = () => {
                     }
                     ) : <br/>
                 }
+                <SweetAlert
+                    show={alertMessage}
+                    title="Erreur"
+                    text={alertMessage}
+                    type="error"
+                    onConfirm={() => setAlertMessage('')}
+                />
             </Container>
         );
     }
