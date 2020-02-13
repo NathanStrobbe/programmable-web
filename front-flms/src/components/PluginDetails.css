@@ -1,3 +1,35 @@
 .Image {
     max-width: 500px;
 }
+
+
+.detailsHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detailsHeader p{
+    margin: 0;
+
+}
+.detailsText{
+    align-self: baseline;
+}
+
+.badge-info{
+    padding: 5px 10px 5px 10px;
+    margin-right: 5px;
+}
+
+
+.detailsGroup{
+    display: flex;
+    align-items: center;
+}
+
+
+.detailsGroup img{
+    margin: 0px 5px 0px 5px;
+}
+

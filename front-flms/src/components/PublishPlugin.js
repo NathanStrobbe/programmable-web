@@ -8,6 +8,7 @@ import add from '../assets/plus.png';
 import quit from '../assets/quit.png';
 
 const PublishPlugin = () => {
+
     const [openSource, setOpenSource] = useState(false);
     const [imageFile, setImageFile] = useState(null);
     const [pluginBinary, setPluginBinary] = useState(null);

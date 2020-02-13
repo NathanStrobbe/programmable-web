@@ -5,14 +5,21 @@ import { GetPlugin, AddLike, GetUser, GetComments, AddComment, convertBufferToBa
 import { useSelector } from 'react-redux';
 import SweetAlert from 'sweetalert2-react';
 import './PluginDetails.css';
+import {GetCategories} from "../utils/hooks";
 
 const PluginDetails = () => {
-    //const [plugin, setPlugin] = useState({name: '', version: '', category: '', image: '', description: '', tags: [], likes: []});
 
+
+    let heart = require("../assets/heart.png");
+    let heartBlank = require("../assets/heart_blank.png");
     let user = '';
     const [alertMessage, setAlertMessage] = useState(null);
+
+    const { categories } = GetCategories();
     const { pluginId } = useParams();
     const loggedIn = useSelector(state => state.loggedIn);
+
+
     if (sessionStorage.getItem('jwtToken')) {
         user = GetUser(sessionStorage.getItem('jwtToken'));
     }
@@ -48,46 +55,57 @@ const PluginDetails = () => {
 
     const plugin = GetPlugin(pluginId);
     const comments = GetComments(pluginId);
-    console.log('renderPluginDetails');
-    console.log(plugin);
+
+
     if (plugin === []) return null;
+
+
     if (comments) {
         console.log(comments);
     }
+
+    function getHeart(){
+        plugin.likes.map(like => {
+            if (like === user._id) {
+                return heart;
+            } else {
+                return heartBlank;
+            }
+        });
+    };
+
+
     return (
         <Container className="pluginDetails">
-            <Row className="pluginDetailsHeader">
-                <Col><h1>{plugin.name}</h1></Col>
-                <Col><img className="Image" src={convertBufferToBase64(plugin.image)} alt="Plugin" /></Col>
-                <Col><h4>Likes : {plugin.likes.length}</h4><Button variant="primary" onClick={() => click(plugin)}>Add</Button></Col>
-            </Row>
-            <Row className="pluginDetailsSourceLink">
-                <Col><a href={plugin.linkgithub ? plugin.linkgithub : ''}>{plugin.linkgithub ? plugin.linkgithub : ''}</a></Col>
-            </Row>
-            <Row className="pluginDetailsPicture">
-                <Col></Col>
-                <Col></Col>
-                <Col></Col>
-            </Row>
-            <Row className="pluginDetailsTag">
-                <Col></Col>
-                <Col>{plugin.tags.map((tag) => <><Badge variant="info">{tag}</Badge></>)}</Col>
-                <Col></Col>
-            </Row>
-            <br />
-            <Row className="elementsBelowImage">
-                <Col></Col>
-                <Col className="elementsBelowImage"><Button onClick= {() => window.open('http://localhost:8080/guitarix/', '_blank') } >Test</Button></Col>
-                <Col></Col>
-            </Row>
-            <br/>
-            <Row className="pluginDetailsAuthorTitle">
-                <Col><h4>Auteur:</h4></Col>
-            </Row>
-            <Row className="pluginDetailsAuthor">
-                <Col>{plugin.creator.username}</Col>
-            </Row>
-            <br />
+            <div className="detailsHeader">
+                <img className="Image" src={convertBufferToBase64(plugin.image)} alt="Plugin" />
+                <div className="detailsText">
+                    <div className="detailsGroup">
+                        <h3>{plugin.name} {plugin.version}</h3>
+                        <img onClick={() => click(plugin)} src={heart} alt="add" width="20"
+                             height="20px"/>
+                        {plugin.likes.length}
+                    </div>
+                    <p>Auteur : {plugin.creator.username}</p>
+
+                    <p>
+                        Catégorie :
+                        {
+                            categories.map((category) => {
+                                if(category._id === plugin.category)
+                                    return " " + category.name
+                            })
+                        }
+                    </p>
+                    <div>
+                        {plugin.tags.map((tag) => <><Badge variant="info">{tag}</Badge></>)}
+                    </div>
+                    <a href={plugin.video ? plugin.video : ''} target="_blank"> {plugin.video ? "Vidéo" : ''} </a>
+                    <a href={plugin.linkgithub ? plugin.linkgithub : ''}> {plugin.linkgithub ? "GitHub" : ''} </a>
+                </div>
+            </div>
+
+            <Button onClick= {() => window.open('http://localhost:8080/guitarix/', '_blank') } >Tester le plugin</Button>
             <Row className="pluginDetailsDescriptionTitle">
                 <Col><h4>Description:</h4></Col>
             </Row>
@@ -101,7 +119,7 @@ const PluginDetails = () => {
                         <Form onSubmit={handleSubmit}>
                             <Form.Group>
                                 <Form.Label htmlFor="commentContent">Ajouter un commentaire</Form.Label>
-                                <Form.Control name="commentContent" id="commentContent" required />
+                                <Form.Control as="textarea" rows="3" name="commentContent" id="commentContent" required />
                             </Form.Group>
                             <Button type="submit">Ajouter</Button>
                         </Form>
@@ -112,9 +130,9 @@ const PluginDetails = () => {
             </Row>
             <Row className="pluginDetailsAddCommentsTitle">
                 {loggedIn ?
-                    <Col><h4>Comments:</h4></Col>
+                    <Col><h4>Commentaires :</h4></Col>
                     :
-                    <Col><h4>Comments (connectez vous pour commenter):</h4></Col>
+                    <Col><h4>Commentaires (connectez vous pour commenter):</h4></Col>
                 }
             </Row>
             {
