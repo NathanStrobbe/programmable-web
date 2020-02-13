@@ -9,6 +9,7 @@ import { Route, BrowserRouter, Redirect } from 'react-router-dom';
 import { Switch } from 'react-router-dom';
 import PublishPlugin from './components/PublishPlugin';
 import PluginDetails from './components/PluginDetails';
+import Shop from './components/Shop';
 
 const App = () => {
     return (
@@ -17,13 +18,14 @@ const App = () => {
                 <Header />
                 <Switch>
                     <Route exact path="/" >
-                        <Redirect to="/pluginsList"/>
+                        <Redirect to="/login"/>
                     </Route>
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
                     <Route path="/pluginsList" component={PluginsList} />
                     <Route path="/publishPlugin" component={PublishPlugin} />
                     <Route path="/pluginDetails/:pluginId" component={PluginDetails} />
+                    <Route path="/shop" component={Shop} />
                     <Redirect from='*' to='/' />
                 </Switch>
             </BrowserRouter>

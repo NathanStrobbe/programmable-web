@@ -1,9 +1,9 @@
-import React, {BaseSyntheticEvent as e, useState} from 'react';
-import {Card, Form, Button, Modal, Alert} from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Card, Form, Button, Modal, Alert } from 'react-bootstrap';
 import { post } from '../utils/api';
 import { useHistory } from 'react-router-dom';
 import './PublishPlugin.css';
-import {GetCategories} from "../utils/hooks";
+import { GetCategories } from '../utils/hooks';
 import add from '../assets/plus.png';
 import quit from '../assets/quit.png';
 
@@ -78,7 +78,7 @@ const PublishPlugin = () => {
             return;
         }
 
-        if(optionCat === "none"){
+        if (optionCat === 'none') {
             alert('Vous devez selectionner une catégorie !');
             return;
         }
@@ -98,7 +98,7 @@ const PublishPlugin = () => {
 
 
     //Methods category add modale
-    const handlenameCatChange = (event) =>{
+    const handlenameCatChange = (event) => {
         setError(0);
         setNameCat(event.target.value);
     };
@@ -106,19 +106,18 @@ const PublishPlugin = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const handleCloseSubmit = (event) => {
+    const handleCloseSubmit = () => {
         const data = new FormData();
         data.append('name', nameCat);
         post('api/categories', data)
             .then(res => {
-                    console.log(res);
-                    categories.push(res);
-                    setShow(false);
-                }
+                console.log(res);
+                categories.push(res);
+                setShow(false);
+            }
             ).catch(err => {
                 setError(409);
             });
-
     };
 
     return (
@@ -126,7 +125,7 @@ const PublishPlugin = () => {
             <Card.Header>Publier un plugin</Card.Header>
             <Card.Body>
                 <Form onSubmit={handleSubmitForm}>
-                    <div className={"group"}>
+                    <div className="group">
                         <Form.Group>
                             <Form.Label htmlFor="publish-plugin-name">Nom du plugin</Form.Label>
                             <Form.Control type="text" name="name" id="publish-plugin-name" required />
@@ -147,36 +146,36 @@ const PublishPlugin = () => {
                         <Form.Label htmlFor="publish-plugin-description">Description</Form.Label>
                         <Form.Control as="textarea" rows="3" name="description" id="publish-plugin-description" required />
                     </Form.Group>
-                    <div className={"group"}>
+                    <div className="group">
                         <Form.Group controlId="formGridState">
                             <Form.Label>Catégorie</Form.Label>
                             <Form.Control as="select" defaultValue={"none"}
                                           onChange={handleOptionChange}>
                                     <option value={"none"}>Aucune</option>
                                 {
-                                    categories.map(category =>
-                                        <option value={category.name}>{category.name}</option>
+                                    categories.map((category,i) =>
+                                        <option key={i} value={category.name}>{category.name}</option>
                                     )
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <img onClick={handleShow} src={add} alt="add" width="30px" height="30px"/>
+                        <img onClick={handleShow} src={add} alt="add" width="30px" height="30px" />
                     </div>
                     <Form.Label htmlFor="publish-plugin-tags">Tags</Form.Label>
-                    <div className={"group"}>
+                    <div className="group">
                         {
                             tags.map((tag, index) =>
                                 <p>{tag}<img onClick={() => handleDeleteTag(index)} src={quit} alt="quit" width="30px" height="30px"/></p>
                             )
                         }
                     </div>
-                    <div className={"group"}>
+                    <div className="group">
                         <Form.Group>
                             <Form.Control type="textarea" name="tags" id="publish-plugin-tags" onChange={handleTagChange} />
                         </Form.Group>
                         <Button onClick={handleAddTag}>Ajouter</Button>
                     </div>
-                    <div className={"group"}>
+                    <div className="group">
                         <Form.Group>
                             <Form.Label htmlFor="publish-plugin-image">Image</Form.Label>
                             <Form.Control as="input" type="file" id="publish-plugin-image" accept="image/*" required onChange={handleImageUpload} />
@@ -190,7 +189,7 @@ const PublishPlugin = () => {
                         <Form.Label htmlFor="publish-plugin-video">Lien du tuto</Form.Label>
                         <Form.Control type="text" name="video" id="publish-plugin-video" />
                     </Form.Group>
-                    <Form.Group className={"openSource"}>
+                    <Form.Group className="openSource">
                         <Form.Check
                             type="switch"
                             id="publish-plugin-opensource"
@@ -218,7 +217,7 @@ const PublishPlugin = () => {
                     <Form onSubmit={handleCloseSubmit}>
                         <Form.Group>
                             <Form.Label htmlFor="nom">Nom</Form.Label>
-                            <Form.Control type="" name="nom" id="nom" value={nameCat} onChange={handlenameCatChange}/>
+                            <Form.Control type="" name="nom" id="nom" value={nameCat} onChange={handlenameCatChange} />
                         </Form.Group>
                         {
                             error === 409 && (
@@ -239,8 +238,6 @@ const PublishPlugin = () => {
                 </Modal.Footer>
             </Modal>
         </Card>
-
-
     );
 };
 

@@ -22,7 +22,7 @@ exports.get = function (req, res) {
     Plugin
         .findOne({ '_id': req.query.id })
         .populate('image')
-        .populate('user')
+        .populate('creator')
         .exec((err, plugin) => {
             if (err) {
                 console.error(err);
@@ -79,29 +79,27 @@ exports.addplugins = function (req, res) {
                 plugin.image = img._id;
 
                 console.log(req.body.category);
-                return Category.findOne({name: req.body.category}, (err, category)=>{
-                    if(err){
-                       console.log(err);
-                       res.status(500).send(err);
+                return Category.findOne({ name: req.body.category }, (err, category) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send(err);
                     }
 
-                    if(category == null){
-                       console.log("categorie not found");
-                       res.status(500).send(err);
+                    if (category == null) {
+                        console.log('category not found');
+                        return res.status(400).send(err);
                     }
-                    else {
-                        plugin.category = category._id;
-                        return plugin.save((err) => {
-                            if (err) {
-                                console.log(err);
-                                return res.status(500).send(err);
-                            }
-                            return res.status(201).send({ message: 'Plugin added', data: plugin });
-                        });
-                    }
-                })
 
+                    plugin.category = category._id;
+                    return plugin.save((err) => {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send(err);
+                        }
+                        return res.status(201).send({ message: 'Plugin added', data: plugin });
+                    });
 
+                });
             });
         });
     });
