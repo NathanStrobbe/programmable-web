@@ -17,18 +17,22 @@ const Header = () => {
 
     return (
         <Navbar className="mb-5 justify-content-between" bg="dark" variant="dark">
-            <Navbar.Brand><NavLink to="/" className="title">Store FMLS</NavLink></Navbar.Brand>
+            {loggedIn ?
+              <Navbar.Brand><NavLink to="/pluginsList" className="title">Store FMLS</NavLink></Navbar.Brand>
+            :
+              <Navbar.Brand><NavLink to="/" className="title">Store FMLS</NavLink></Navbar.Brand>
+            }
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Nav pullright="true">
                 {loggedIn ?
                     <NavItem className="mr-sm-2">
                         <NavLink to="/pluginsList"><Button variant="outline-light">Liste des plugins</Button></NavLink>
                         <NavLink to="/publishPlugin"><Button variant="outline-light">Publier un plugin</Button></NavLink>
-                        <Button onClick={handleSignOut} variant="outline-light">Déconnexion</Button>
+                        <NavLink to="/shop"><Button onClick={handleSignOut} variant="outline-light">Déconnexion</Button></NavLink>
                     </NavItem>
                     :
                     <NavItem className="mr-sm-2">
-                        <NavLink to="/pluginsList"><Button variant="outline-light">Liste des plugins</Button></NavLink>
+                        <NavLink to="/shop"><Button variant="outline-light">Magasin</Button></NavLink>
                         <NavLink to="/login"><Button variant="outline-light">Connexion</Button></NavLink>
                         <NavLink to="/register"><Button variant="outline-light">Inscription</Button></NavLink>
                     </NavItem>

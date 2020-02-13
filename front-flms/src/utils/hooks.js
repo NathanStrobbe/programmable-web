@@ -102,8 +102,22 @@ export const AddComment = (plugin, userId, content) => {
     });
 };
 
+const defaultPlugin = {
+    name: '',
+    version: '',
+    description: '',
+    likes: [],
+    creator: {},
+    image: null,
+    category: '',
+    tags: [],
+    video: '',
+    linkgithub: '',
+    openSource: false
+};
+
 export const GetPlugin = (pluginId) => {
-    const [plugin, setPlugin] = useState({ name: '', version: '', description: '', likes: [],creator: '', image: '', category: '', tags: [], video: '', linkgithub: '', openSource: '' });
+    const [plugin, setPlugin] = useState(defaultPlugin);
 
     useEffect(() => {
         fetch(`http://localhost:3001/api/plugin?id=${pluginId}`, {
@@ -122,11 +136,10 @@ export const GetPlugin = (pluginId) => {
                     setPlugin();
                 }
             });
-    }, []);
+    }, [pluginId]);
 
     return plugin;
 };
-
 
 
 export const GetUser = (userToken) => {
@@ -149,7 +162,7 @@ export const GetUser = (userToken) => {
                     setUser();
                 }
             });
-    }, []);
+    }, [userToken]);
 
     return user;
 };
@@ -174,7 +187,7 @@ export const GetComments = (pluginId) => {
                     setComments();
                 }
             });
-    }, []);
+    }, [pluginId]);
 
     return comments;
 };
