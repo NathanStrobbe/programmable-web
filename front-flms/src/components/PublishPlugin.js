@@ -41,15 +41,12 @@ const PublishPlugin = () => {
 
     const handleAddTag = event =>{
         setTags(old => [ ...old, tag]);
-
         console.log(tags);
     };
 
     const handleDeleteTag =  (index) => {
-        console.log("remove");
         setTags( old => {
             old.splice(index, 1);
-            console.log(index, old)
             return [...old];
         });
     };
@@ -62,11 +59,13 @@ const PublishPlugin = () => {
         event.preventDefault();
         const data = new FormData(event.target);
 
+        setError(0);
+
         data.append('image', imageFile, imageFile.name);
         data.append('plugin', pluginBinary, pluginBinary.name);
         data.append('category', optionCat);
-
-        console.log('category', optionCat);
+        data.delete('tags');
+        data.append('tags', tags);
 
         if (!data.linkgithub) {
             data.append('linkgithub', '');
@@ -91,7 +90,10 @@ const PublishPlugin = () => {
                     history.push('/pluginsList');
                 }
             })
-            .catch(setError(409));
+            .catch(err=>{
+                if(err)
+                    setError(410)
+            });
     };
 
 
@@ -135,7 +137,7 @@ const PublishPlugin = () => {
                         </Form.Group>
                     </div>
                     {
-                        error === 409 && (
+                        error === 410 && (
                             <Alert variant="danger" >
                                 Ce titre existe déjà
                             </Alert>
