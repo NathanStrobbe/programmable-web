@@ -15,7 +15,7 @@ const PublishPlugin = () => {
     const { categories } = GetCategories();
     const [optionCat, setOptionCat] = useState('none');
     const [ tags, setTags ] = useState([]);
-    const [ tag, singleTag ] = useState('');
+    const [ tag, setTag ] = useState('');
 
 
     const [show, setShow] = useState(false);
@@ -40,8 +40,11 @@ const PublishPlugin = () => {
     };
 
     const handleAddTag = event =>{
-        setTags(old => [ ...old, tag]);
-        console.log(tags);
+        if(tag !== "" && tags.indexOf(tag) === -1){
+            setTags(old => [ ...old, tag]);
+            setTag("");
+        }
+
     };
 
     const handleDeleteTag =  (index) => {
@@ -52,7 +55,7 @@ const PublishPlugin = () => {
     };
 
     const handleTagChange = event => {
-        singleTag(event.target.value);
+        setTag(event.target.value);
     };
 
     const handleSubmitForm = event => {
@@ -165,13 +168,13 @@ const PublishPlugin = () => {
                     <div className="group">
                         {
                             tags.map((tag, index) =>
-                                <p>{tag}<img onClick={() => handleDeleteTag(index)} src={quit} alt="quit" width="30px" height="30px"/></p>
+                                <div className="tags"><p>{tag}</p><img onClick={() => handleDeleteTag(index)} src={quit} alt="quit" width="30px" height="30px"/></div>
                             )
                         }
                     </div>
-                    <div className="group">
+                    <div className="groupAddTag">
                         <Form.Group>
-                            <Form.Control type="textarea" name="tags" id="publish-plugin-tags" onChange={handleTagChange} />
+                            <Form.Control type="textarea" name="tags" id="publish-plugin-tags" value={tag} onChange={handleTagChange} />
                         </Form.Group>
                         <Button onClick={handleAddTag}>Ajouter</Button>
                     </div>

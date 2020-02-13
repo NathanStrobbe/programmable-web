@@ -27,3 +27,37 @@ img{
 .openSource{
     margin: 15px 5px 15px 5px;
 }
+
+.groupAddTag {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.groupAddTag .form-group{
+    width: 10%;
+}
+
+.groupAddTag input{
+    max-width: 100px;
+}
+
+.tags{
+    display: flex;
+    border-radius: 2px;
+    align-items: baseline;
+    padding: 2px 10px 5px 5px;
+    background-color: #cdcdcd4f;
+}
+
+.tags img{
+    margin: 0;
+    width: 10px;
+    height: 10px;
+}
+
+.tags p{
+    margin: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
