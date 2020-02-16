@@ -107,7 +107,7 @@ const PluginDetails = () => {
             <div className="detailsDescription">
                 <h5>Description</h5>
                 <p>{plugin.description}</p>
-                <Button variant="outline-secondary" onClick= {() => window.open('http://localhost:8080/guitarix/', '_blank') } >Tester le plugin</Button>
+                <Button variant="outline-secondary" onClick= {() => window.open(`http://localhost:8000/${encodeURI(plugin.name)}`, '_blank') } >Essayer le plugin</Button>
             </div>
 
             <div className="detailsComments">
