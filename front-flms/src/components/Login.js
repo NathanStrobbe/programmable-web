@@ -6,17 +6,15 @@ import allActions from '../actions/action';
 import './Login.css';
 
 const Login = () => {
-
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-
     const [error, setError] = useState('');
     const [redirectToReferrer, setRedirectToReferrer] = useState('');
 
     const dispatch = useDispatch();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = event => {
+        event.preventDefault();
         return fetch('http://localhost:3001/api/user/connect', {
             method: 'POST',
             headers: {
@@ -27,29 +25,28 @@ const Login = () => {
                 'password': password,
                 'email': email
             })
-        }).then(res => {
-            if (res.status === 401) {
+        }).then(response => {
+            if (response.status === 401) {
                 setError(401);
-            }
-            else {
-                res.json().then(data => {
+            } else {
+                response.json().then(data => {
                     sessionStorage.setItem('jwtToken', data.token);
                     dispatch(allActions.loginAction(data.token));
                     setRedirectToReferrer(true);
                 });
             }
-            return res;
+            return response;
         });
     };
 
-    const handleEmailChange = (e) => {
+    const handleEmailChange = event => {
         setError(0);
-        setEmail(e.target.value);
+        setEmail(event.target.value);
     };
 
-    const handlePasswordChange = (e) => {
+    const handlePasswordChange = event => {
         setError(0);
-        setPassword(e.target.value);
+        setPassword(event.target.value);
     };
 
     return (

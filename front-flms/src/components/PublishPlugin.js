@@ -15,8 +15,8 @@ const PublishPlugin = () => {
     const history = useHistory();
     const { categories } = GetCategories();
     const [optionCat, setOptionCat] = useState('none');
-    const [ tags, setTags ] = useState([]);
-    const [ tag, setTag ] = useState('');
+    const [tags, setTags] = useState([]);
+    const [tag, setTag] = useState('');
 
 
     const [show, setShow] = useState(false);
@@ -41,16 +41,15 @@ const PublishPlugin = () => {
         setOptionCat(event.target.value);
     };
 
-    const handleAddTag = event =>{
-        if(tag !== "" && tags.indexOf(tag) === -1){
-            setTags(old => [ ...old, tag]);
-            setTag("");
+    const handleAddTag = () => {
+        if (tag !== '' && tags.indexOf(tag) === -1) {
+            setTags(old => [...old, tag]);
+            setTag('');
         }
-
     };
 
-    const handleDeleteTag =  (index) => {
-        setTags( old => {
+    const handleDeleteTag = index => {
+        setTags(old => {
             old.splice(index, 1);
             return [...old];
         });
@@ -97,15 +96,15 @@ const PublishPlugin = () => {
                     history.push('/pluginsList');
                 }
             })
-            .catch(err=>{
-                if(err)
+            .catch(err => {
+                if (err)
                     setError(410);
             });
     };
 
 
     //Methods category add modale
-    const handlenameCatChange = (event) => {
+    const handlenameCatChange = event => {
         setError(0);
         setNameCat(event.target.value);
     };
@@ -121,8 +120,7 @@ const PublishPlugin = () => {
                 console.log(res);
                 categories.push(res);
                 setShow(false);
-            }
-            ).catch(err => {
+            }).catch(() => {
                 setError(409);
             });
     };
@@ -156,11 +154,11 @@ const PublishPlugin = () => {
                     <div className="group">
                         <Form.Group controlId="formGridState">
                             <Form.Label>Catégorie</Form.Label>
-                            <Form.Control as="select" defaultValue={"none"}
-                                          onChange={handleOptionChange}>
-                                    <option value={"none"}>Aucune</option>
+                            <Form.Control as="select" defaultValue={'none'}
+                                onChange={handleOptionChange}>
+                                <option value={'none'}>Aucune</option>
                                 {
-                                    categories.map((category,i) =>
+                                    categories.map((category, i) =>
                                         <option key={i} value={category.name}>{category.name}</option>
                                     )
                                 }
@@ -172,7 +170,10 @@ const PublishPlugin = () => {
                     <div className="group">
                         {
                             tags.map((tag, index) =>
-                                <div className="tags"><p>{tag}</p><img onClick={() => handleDeleteTag(index)} src={quit} alt="quit" width="30px" height="30px"/></div>
+                                <div key={index} iclassName="tags">
+                                    <p>{tag}</p>
+                                    <img onClick={() => handleDeleteTag(index)} src={quit} alt="quit" width="30px" height="30px" />
+                                </div>
                             )
                         }
                     </div>
@@ -212,9 +213,6 @@ const PublishPlugin = () => {
                     <Button type="submit" pullright="true">Enregistrer</Button>
                 </Form>
             </Card.Body>
-
-
-
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

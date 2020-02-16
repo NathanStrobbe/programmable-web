@@ -4,16 +4,14 @@ import { Card, Form, Button, Alert } from 'react-bootstrap';
 import './Register.css';
 
 const Register = () => {
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-
     const [error, setError] = useState('');
     const [redirectToReferrer, setRedirectToReferrer] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = event => {
+        event.preventDefault();
         return fetch('http://localhost:3001/api/user', {
             method: 'POST',
             headers: {
@@ -36,16 +34,23 @@ const Register = () => {
         });
     };
 
-    const handleEmailChange = (e) => {
+    const handleEmailChange = event => {
         setError(0);
-        setEmail(e.target.value);
+        setEmail(event.target.value);
     };
 
+    const handleUsernameChange = event => {
+        setUsername(event.target.value);
+    };
+
+    const handlePasswordChange = event => {
+        setPassword(event.target.value);
+    };
 
     return (
         <div className="register content">
             {
-                redirectToReferrer ? <Redirect to='/connexion' /> : null
+                redirectToReferrer ? <Redirect to='/login' /> : null
             }
             <Card className="Card">
                 <Card.Header>Inscription</Card.Header>
@@ -53,7 +58,7 @@ const Register = () => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group>
                             <Form.Label htmlFor="userName">Pseudo</Form.Label>
-                            <Form.Control name="userName" id="userName" value={username} onChange={e => setUsername(e.target.value)} />
+                            <Form.Control name="userName" id="userName" value={username} onChange={handleUsernameChange} />
                         </Form.Group>
                         <Form.Group>
                             {
@@ -68,7 +73,7 @@ const Register = () => {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label htmlFor="examplePassword">Mot de passe</Form.Label>
-                            <Form.Control type="password" name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
+                            <Form.Control type="password" name="password" id="password" value={password} onChange={handlePasswordChange} />
                         </Form.Group>
                         <Form.Group><Button type="submit" className="Button">Enregistrer</Button></Form.Group>
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
 import './Header.css';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import allActions from '../actions/action';
 
 const Header = () => {
@@ -18,9 +18,9 @@ const Header = () => {
     return (
         <Navbar className="mb-5 justify-content-between" bg="dark" variant="dark">
             {loggedIn ?
-              <Navbar.Brand><NavLink to="/pluginsList" className="title">Store FMLS</NavLink></Navbar.Brand>
-            :
-              <Navbar.Brand><NavLink to="/" className="title">Store FMLS</NavLink></Navbar.Brand>
+                <Navbar.Brand><NavLink to="/pluginsList" className="title">Store FMLS</NavLink></Navbar.Brand>
+                :
+                <Navbar.Brand><NavLink to="/" className="title">Store FMLS</NavLink></Navbar.Brand>
             }
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Nav pullright="true">

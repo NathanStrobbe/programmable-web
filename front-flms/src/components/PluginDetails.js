@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Row, Col, Card, Container, Badge, Form } from 'react-bootstrap';
+import { Button, Row, Card, Container, Badge, Form } from 'react-bootstrap';
 import { GetPlugin, AddLike, GetUser, GetComments, AddComment, convertBufferToBase64 } from '../utils/hooks.js';
 import { useSelector } from 'react-redux';
 import SweetAlert from 'sweetalert2-react';
 import './PluginDetails.css';
-import {GetCategories} from "../utils/hooks";
+import { GetCategories } from '../utils/hooks';
+import heartFill from '../assets/heart.png';
+import heartBlank from '../assets/heart_blank.png';
 
 const PluginDetails = () => {
-
-
-    let heart = require("../assets/heart.png");
-    let heartBlank = require("../assets/heart_blank.png");
     let user = '';
     const [alertMessage, setAlertMessage] = useState(null);
 
@@ -38,9 +36,9 @@ const PluginDetails = () => {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const data = new FormData(e.target);
+    const handleSubmit = event => {
+        event.preventDefault();
+        const data = new FormData(event.target);
         const comment = Object.fromEntries(data);
         if (sessionStorage.getItem('jwtToken')) {
             if (comment.commentContent.trim().length > 0) {
@@ -64,14 +62,13 @@ const PluginDetails = () => {
         console.log(comments);
     }
 
-    function getHeart(){
-        plugin.likes.map(like => {
+    const heart = () => {
+        for (let like of plugin.likes) {
             if (like === user._id) {
-                return heart;
-            } else {
-                return heartBlank;
+                return heartFill;
             }
-        });
+        }
+        return heartBlank;
     };
 
 
@@ -82,32 +79,34 @@ const PluginDetails = () => {
                 <div className="detailsText">
                     <div className="detailsGroup">
                         <h3>{plugin.name} {plugin.version}</h3>
-                        <img onClick={() => click(plugin)} src={heart} alt="add" width="20"
-                             height="20px"/>
+                        <img onClick={() => click(plugin)} src={heart()} alt="Add a like" width="20" height="20px" />
                         {plugin.likes.length}
                     </div>
                     <p>Auteur : {plugin.creator.username}</p>
 
                     <p>
                         {
-                            categories.map((category) => {
-                                if(category._id === plugin.category)
-                                    return "Catégorie " + category.name
+                            categories.map(category => {
+                                if (category._id === plugin.category)
+                                    return 'Catégorie ' + category.name;
+                                return '';
                             })
                         }
                     </p>
                     <div>
-                        {plugin.tags.map((tag) => <><Badge variant="info">{tag}</Badge></>)}
+                        {
+                            plugin.tags.map((tag, i) => <Badge key={i} variant="info">{tag}</Badge>)
+                        }
                     </div>
-                    <a href={plugin.video ? plugin.video : ''} target="_blank"> {plugin.video ? "Vidéo" : ''} </a>
-                    <a href={plugin.linkgithub ? plugin.linkgithub : ''}> {plugin.linkgithub ? "GitHub" : ''} </a>
+                    <a href={plugin.video ? plugin.video : ''} target="_blank" rel="noopener noreferrer"> {plugin.video ? 'Vidéo' : ''} </a>
+                    <a href={plugin.linkgithub ? plugin.linkgithub : ''}> {plugin.linkgithub ? 'GitHub' : ''} </a>
                 </div>
             </div>
 
             <div className="detailsDescription">
                 <h5>Description</h5>
                 <p>{plugin.description}</p>
-                <Button variant="outline-secondary" onClick= {() => window.open(`http://localhost:8000/${encodeURI(plugin.name)}`, '_blank') } >Essayer le plugin</Button>
+                <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/${encodeURI(plugin.name)}`, '_blank')} >Essayer le plugin</Button>
             </div>
 
             <div className="detailsComments">
