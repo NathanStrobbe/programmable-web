@@ -8,11 +8,11 @@ let cors = require('cors');
 const app = express();
 const http = require('http').Server(app);
 const upload = multer();
-//var io = require('socket.io')(http);
+const httpServer = require('http-server');
 
 app.use(cors());
 
-app.use(function(req,res,next){
+app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('');
@@ -29,19 +29,18 @@ app.use(upload.fields([{ name: 'image', maxCount: 1 }, { name: 'plugin', maxCoun
 let apiRoutes = require('./api-routes');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb+srv://flms:flms@flms-cpwc5.gcp.mongodb.net/test?retryWrites=true&w=majority').then(()=> {
+mongoose.connect('mongodb+srv://flms:flms@flms-cpwc5.gcp.mongodb.net/test?retryWrites=true&w=majority').then(() => {
     console.log('Connected to BDD');
 }).catch(console.error);
 
-const db = mongoose.connection;
-
 app.get('/', (req, res) => res.send('Hello World!'));
 app.use('/api', apiRoutes);
-
-/*io.on('connection', (socket) => {
-});*/
 
 
 http.listen(3001, () => {
     console.info('Server listen on 3001');
 });
+
+httpServer.createServer({
+    root: 'plugins'
+}).listen(8000);
