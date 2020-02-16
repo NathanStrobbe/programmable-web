@@ -4,6 +4,7 @@ const User = require('../users/userModel');
 const Category = require('./categoryModel');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+const unzipper = require('unzipper');
 
 exports.getAll = function (req, res) {
     Plugin
@@ -81,15 +82,22 @@ exports.addplugins = function (req, res) {
                 console.log('Image added');
                 plugin.image = img._id;
 
-                const pluginPath = `plugins/${pluginFile.originalname}`;
-                fs.writeFile(pluginPath, pluginFile.buffer, (err) => {
+                const pluginPath = `plugins/${plugin.name}`;
+                if (!fs.existsSync(pluginPath)) {
+                    fs.mkdirSync(pluginPath);
+                }
+
+                const pluginZipPath = `${pluginPath}/${pluginFile.originalname}`;
+                fs.writeFile(pluginZipPath, pluginFile.buffer, (err) => {
                     if (err) {
                         console.error(err);
                         return res.status(500).send(err);
                     }
                     console.log('The plugin has been saved!');
                     plugin.sourcePath = pluginPath;
-                    
+
+                    fs.createReadStream(pluginZipPath).pipe(unzipper.Extract({ path: pluginPath }));
+
                     console.log(req.body.category);
                     return Category.findOne({ name: req.body.category }, (err, category) => {
                         if (err) {
