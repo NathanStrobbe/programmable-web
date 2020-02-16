@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-var ObjectId = require('mongodb').ObjectId;
 
 const pluginSchema = mongoose.Schema({
     name: {
@@ -44,6 +43,9 @@ const pluginSchema = mongoose.Schema({
     },
     openSource: {
         type: Boolean
+    },
+    sourcePath: {
+        type: String
     }
 });
 

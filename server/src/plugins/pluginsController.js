@@ -2,7 +2,8 @@ const Plugin = require('./pluginModel');
 const Image = require('./imageModel');
 const User = require('../users/userModel');
 const Category = require('./categoryModel');
-
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 exports.getAll = function (req, res) {
     Plugin
@@ -33,19 +34,21 @@ exports.get = function (req, res) {
 };
 
 exports.addplugins = function (req, res) {
-    const image = req.files.image[0];
+    const imageFile = req.files.image[0];
+    const pluginFile = req.files.plugin[0];
+
     const plugin = new Plugin();
     plugin.name = req.body.name;
     plugin.version = req.body.version;
-
     plugin.description = req.body.description;
     plugin.version = req.body.version;
     plugin.likes = req.body.likes;
     plugin.creator = req.body.creator;
-    plugin.tags = req.body.tags.split(",");
+    plugin.tags = req.body.tags.split(',');
     plugin.video = req.body.video;
     plugin.linkgithub = req.body.linkgithub;
     plugin.openSource = req.body.openSource;
+    plugin.sourcePath = '';
     plugin.creator = '';
 
     Plugin.findOne({ name: plugin.name }, (err, pluginFound) => {
@@ -57,20 +60,20 @@ exports.addplugins = function (req, res) {
             return res.status(409).send('Plugin name already in database');
         }
 
-        console.log('findOne');
-        /* TODO change it */
-        return User.findOne({}, (err, user) => {
+        const { email } = jwt.verify(req.body.creator, 'flms');
+
+        return User.findOne({ email: email }, (err, user) => {
             if (err) {
                 return console.error(err);
             }
             plugin.creator = user._id;
 
-            const imageModel = new Image();
-            imageModel.name = image.originalname;
-            imageModel.mimeType = image.mimetype;
-            imageModel.buffer = image.buffer;
+            const image = new Image();
+            image.name = imageFile.originalname;
+            image.mimeType = imageFile.mimetype;
+            image.buffer = imageFile.buffer;
 
-            imageModel.save((err, img) => {
+            return image.save((err, img) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).send(500);
@@ -78,27 +81,36 @@ exports.addplugins = function (req, res) {
                 console.log('Image added');
                 plugin.image = img._id;
 
-                console.log(req.body.category);
-                return Category.findOne({ name: req.body.category }, (err, category) => {
+                const pluginPath = `plugins/${pluginFile.originalname}`;
+                fs.writeFile(pluginPath, pluginFile.buffer, (err) => {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         return res.status(500).send(err);
                     }
-
-                    if (category == null) {
-                        console.log('category not found');
-                        return res.status(400).send(err);
-                    }
-
-                    plugin.category = category._id;
-                    return plugin.save((err) => {
+                    console.log('The plugin has been saved!');
+                    plugin.sourcePath = pluginPath;
+                    
+                    console.log(req.body.category);
+                    return Category.findOne({ name: req.body.category }, (err, category) => {
                         if (err) {
                             console.log(err);
                             return res.status(500).send(err);
                         }
-                        return res.status(201).send({ message: 'Plugin added', data: plugin });
-                    });
 
+                        if (category == null) {
+                            console.log('category not found');
+                            return res.status(400).send(err);
+                        }
+
+                        plugin.category = category._id;
+                        return plugin.save((err) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(500).send(err);
+                            }
+                            return res.status(201).send({ message: 'Plugin added', data: plugin });
+                        });
+                    });
                 });
             });
         });

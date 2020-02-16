@@ -33,6 +33,7 @@ const PublishPlugin = () => {
     };
 
     const handlePluginUpload = event => {
+        console.log(event.target.files[0]);
         setPluginBinary(event.target.files[0]);
     };
 
@@ -65,7 +66,9 @@ const PublishPlugin = () => {
 
         setError(0);
 
+        data.append('creator', sessionStorage.getItem('jwtToken'));
         data.append('image', imageFile, imageFile.name);
+        console.log(pluginBinary);
         data.append('plugin', pluginBinary, pluginBinary.name);
         data.append('category', optionCat);
         data.delete('tags');
@@ -83,7 +86,7 @@ const PublishPlugin = () => {
         }
 
         if (optionCat === 'none') {
-            alert('Vous devez selectionner une catégorie !');
+            alert('Vous devez sélectionner une catégorie !');
             return;
         }
 
@@ -96,7 +99,7 @@ const PublishPlugin = () => {
             })
             .catch(err=>{
                 if(err)
-                    setError(410)
+                    setError(410);
             });
     };
 

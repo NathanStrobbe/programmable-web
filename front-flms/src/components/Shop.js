@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import { Card, Form, Button, Alert } from 'react-bootstrap';
+import React from 'react';
 
 const Shop = () => {
 
-  return (
+    return (
         <div className="shop content">Yolo</div>
     );
 };
