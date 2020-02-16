@@ -3,42 +3,40 @@ const Token = require('./tokenModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-exports.user = function (req, res) {
+exports.user = (req, res) => {
     let email;
     if (req.query.token != null) {
-        const decoded = jwt.verify(req.query.token, 'flms');
-        email = decoded.email;
+        email = jwt.verify(req.query.token, 'flms').email;
     } else if (req.query.email != null) {
         email = req.query.email;
     } else {
-        return res.status(400).send({err: 'Bad request'});
+        return res.status(400).send({ err: 'Bad request' });
     }
 
-    User.findOne({ email: email }, function (err, user) {
-        if (err)
-            res.status(500).send(err);
-        if (user) {
-            res.status(200).send(user);
-        }
-    });
-};
-
-exports.getUserByID = function (req, res) {
-
-    User.findOne({ _id: req.query._id }, function (err, user) {
-        if (err)
-            res.status(500).send(err);
-        if (user) {
-            res.status(200).send(user);
-        }
-    });
-};
-
-
-exports.logIn = function (req, res) {
-    User.findOne({ email: req.body.email }, function (err, user) {
+    User.findOne({ email: email }, (err, user) => {
         if (err) {
-            console.log(err);
+            console.error(err);
+            return res.status(500).send(err);
+        }
+        return res.status(200).send(user);
+    });
+};
+
+exports.getUserByID = (req, res) => {
+    User.findOne({ _id: req.query._id }, (err, user) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send(err);
+        }
+        return res.status(200).send(user);
+    });
+};
+
+
+exports.logIn = (req, res) => {
+    User.findOne({ email: req.body.email }, (err, user) => {
+        if (err) {
+            console.error(err);
             return res.status(401).send(err);
         }
 
@@ -53,38 +51,39 @@ exports.logIn = function (req, res) {
     });
 };
 
-exports.new = function (req, res) {
+exports.new = (req, res) => {
     console.log(req.body);
-    var user = new User();
+    const user = new User();
     user.username = req.body.name;
     user.email = req.body.email;
     user.password = bcrypt.hashSync(req.body.password, 10);
 
-    User.findOne({ email: req.body.email }, function (err, userfound) {
+    User.findOne({ email: req.body.email }, (err, userfound) => {
         if (err) {
-            res.status(401).send(err);
+            console.error(err);
+            return res.status(401).send(err);
         }
 
-        if (userfound){
-            res.status(409).send('Email already in database');
+        if (userfound) {
+            return res.status(409).send('Email already in database');
         }
-        else {
-            return user.save(function (err) {
+
+        return user.save(err => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send(err);
+            }
+
+            const token = new Token({ email: user.email, token: jwt.sign({ email: user.email }, 'fmls') });
+
+            console.log('User created');
+            return token.save(err => {
                 if (err) {
-                    res.status(500).send(err);
+                    console.error(err);
+                    return res.status(500).send(err);
                 }
-
-                var token = new Token({ email: user.email, token: jwt.sign({ email: user.email }, 'fmls') });
-
-                console.log('User created');
-
-                return token.save(function (err) {
-                    if (err) {
-                        return res.status(500).send(err);
-                    }
-                    return res.status(200).send({ msg: 'Account created ' + user.email + '.' });
-                });
+                return res.status(200).send({ msg: 'Account created ' + user.email + '.' });
             });
-        }
+        });
     });
 };

@@ -10,6 +10,7 @@ const imageSchema = mongoose.Schema({
         required: true,
     },
     buffer: {
+        // eslint-disable-next-line no-undef
         type: Buffer,
         required: true
     }
@@ -17,7 +18,6 @@ const imageSchema = mongoose.Schema({
 
 const Image = module.exports = mongoose.model('image', imageSchema);
 
-module.exports.get = function (callback, limit) {
+module.exports.get = (callback, limit) => {
     Image.find(callback).limit(limit);
 };
-

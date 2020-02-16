@@ -52,7 +52,7 @@ const pluginSchema = mongoose.Schema({
 
 const Plugin = module.exports = mongoose.model('plugin', pluginSchema);
 
-module.exports.get = function (callback, limit) {
+module.exports.get = (callback, limit) => {
     Plugin.find(callback).limit(limit);
 };
 

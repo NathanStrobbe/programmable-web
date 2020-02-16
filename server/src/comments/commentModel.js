@@ -23,6 +23,6 @@ const commentSchema = mongoose.Schema({
 
 const Comment = module.exports = mongoose.model('comment', commentSchema);
 
-module.exports.get = function (callback, limit) {
+module.exports.get = (callback, limit) => {
     Comment.find(callback).limit(limit);
 };

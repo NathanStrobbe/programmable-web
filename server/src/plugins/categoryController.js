@@ -1,36 +1,39 @@
 const Category = require('./categoryModel');
 
-exports.all = function(req, res){
-	
-	Category.get(function(err, categories){
-		if(err)
-			res.status(500).send(err);
+exports.all = (req, res) => {
 
-		res.status(200).send(categories);
-	});
-}
+    Category.get((err, categories) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send(err);
+        }
+
+        return res.status(200).send(categories);
+    });
+};
 
 
-exports.add = function (req, res) {
+exports.add = (req, res) => {
     console.log(req.body);
-    var cat = new Category();
+    const cat = new Category();
     cat.name = req.body.name;
 
-    Category.findOne({ name: req.body.name }, function (err, categoryFound) {
+    Category.findOne({ name: req.body.name }, (err, categoryFound) => {
         if (err) {
-            res.status(401).send(err);
+            console.error(err);
+            return res.status(401).send(err);
         }
 
-        if (categoryFound){
-            res.status(409).send('Categorie already in database');
+        if (categoryFound) {
+            return res.status(409).send('Categorie already in database');
         }
-        else {
-            return cat.save(function (err, category) {
-                if (err) {
-                    res.status(500).send(err);
-                }           
-                return res.status(200).send(category);
-            });
-        }
+
+        return cat.save((err, category) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send(err);
+            }
+            return res.status(200).send(category);
+        });
     });
 };

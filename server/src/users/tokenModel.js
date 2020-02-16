@@ -1,5 +1,4 @@
-var mongoose = require('mongoose');
-
+const mongoose = require('mongoose');
 
 const tokenSchema = new mongoose.Schema({
     email: {
@@ -11,8 +10,8 @@ const tokenSchema = new mongoose.Schema({
     createdAt: { type: Date, required: true, default: Date.now }
 });
 
-var Token = module.exports = mongoose.model('token', tokenSchema);
+const Token = module.exports = mongoose.model('token', tokenSchema);
 
-module.exports.get = function (callback, limit) {
+module.exports.get = (callback, limit) => {
     Token.find(callback).limit(limit);
 };

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const unzipper = require('unzipper');
 
-exports.getAll = function (req, res) {
+exports.getAll = (req, res) => {
     Plugin
         .find({})
         .populate('image')
@@ -19,7 +19,7 @@ exports.getAll = function (req, res) {
         });
 };
 
-exports.get = function (req, res) {
+exports.get = (req, res) => {
     console.log(req.query);
     Plugin
         .findOne({ '_id': req.query.id })
@@ -34,7 +34,7 @@ exports.get = function (req, res) {
         });
 };
 
-exports.addplugins = function (req, res) {
+exports.addplugins = (req, res) => {
     const imageFile = req.files.image[0];
     const pluginFile = req.files.plugin[0];
 
@@ -65,7 +65,8 @@ exports.addplugins = function (req, res) {
 
         return User.findOne({ email: email }, (err, user) => {
             if (err) {
-                return console.error(err);
+                console.error(err);
+                return res.status(500).send(err);
             }
             plugin.creator = user._id;
 
@@ -77,7 +78,7 @@ exports.addplugins = function (req, res) {
             return image.save((err, img) => {
                 if (err) {
                     console.error(err);
-                    return res.status(500).send(500);
+                    return res.status(500).send(err);
                 }
                 console.log('Image added');
                 plugin.image = img._id;
@@ -107,7 +108,7 @@ exports.addplugins = function (req, res) {
 
                         if (category == null) {
                             console.log('category not found');
-                            return res.status(400).send(err);
+                            return res.status(404).send(err);
                         }
 
                         plugin.category = category._id;
@@ -125,15 +126,17 @@ exports.addplugins = function (req, res) {
     });
 };
 
-exports.addLike = function (req, res) {
+exports.addLike = (req, res) => {
     const users = req.body.users;
     const plugin = req.body.name;
     const target = { name: plugin };
     const newValue = { $set: { likes: users } };
 
-    Plugin.collection.updateOne(target, newValue, function (err, yolo) {
-        if (err)
-            res.status(500).send(err);
-        res.status(200).send({ msg: 'Plugins updated', data: plugin });
+    Plugin.collection.updateOne(target, newValue, (err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send(err);
+        }
+        return res.status(200).send({ msg: 'Plugins updated', data: plugin });
     });
 };
