@@ -106,3 +106,5 @@ dist
 front-flms/.vscode/settings.json
 
 server/.vscode/settings.json
+
+plugins/
