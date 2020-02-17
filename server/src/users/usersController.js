@@ -10,7 +10,7 @@ exports.user = (req, res) => {
     } else if (req.query.email != null) {
         email = req.query.email;
     } else {
-        return res.status(400).send({ err: 'Bad request' });
+        return res.status(400).send({err: 'Bad request' });
     }
 
     User.findOne({ email: email }, (err, user) => {
@@ -31,6 +31,21 @@ exports.getUserByID = (req, res) => {
         return res.status(200).send(user);
     });
 };
+
+
+
+
+exports.delete = (req, res) =>{
+    User.remove({}, (err, user) =>{
+        if(err)
+            return res.status(500).send(err);
+        Token.remove({}, (err, token)=>{
+            if(err)
+                return res.status(500).send(err);
+            return res.status(200).send(token);
+        });
+    });
+}
 
 
 exports.logIn = (req, res) => {

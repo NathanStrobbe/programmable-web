@@ -12,6 +12,14 @@ exports.all = (req, res) => {
     });
 };
 
+exports.delete = (req, res) =>{
+    Category.remove({}, (err, cat)=>{
+        if(err)
+            return res.status(500).send(err);
+        return res.status(200).send(cat);
+    })
+};
+
 
 exports.add = (req, res) => {
     console.log(req.body);

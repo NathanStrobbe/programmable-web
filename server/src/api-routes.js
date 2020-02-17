@@ -23,6 +23,9 @@ router.route('/download')
 
 const usersController = require('./users/usersController');
 
+router.route('/user/delete')
+    .get(usersController.delete);
+
 router.route('/user/connect')
     .post(usersController.logIn);
 
@@ -44,5 +47,8 @@ const categoriesController = require('./plugins/categoryController');
 router.route('/categories')
     .get(categoriesController.all)
     .post(categoriesController.add);
+
+router.route('/categories/delete')
+    .get(categoriesController.delete);
 
 module.exports = router;

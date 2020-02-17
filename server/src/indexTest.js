@@ -8,7 +8,6 @@ let cors = require('cors');
 const app = express();
 const http = require('http').Server(app);
 const upload = multer();
-const httpServer = require('http-server');
 
 app.use(cors());
 
@@ -36,12 +35,4 @@ mongoose.connect('mongodb+srv://flms:flms@flms-cpwc5.gcp.mongodb.net/dev?retryWr
 app.get('/', (req, res) => res.send('Hello World!'));
 app.use('/api', apiRoutes);
 
-
-module.exports = http.listen(3001, () => {
-    console.info('Server listen on 3001');
-});
-
-httpServer.createServer({
-    root: 'plugins'
-}).listen(8000);
-
+module.exports = app;
