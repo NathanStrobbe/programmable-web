@@ -11,31 +11,6 @@ export const convertBufferToBase64 = image => {
     return `data:;base64,${binary}`;
 };
 
-export const GetPluginsList = () => {
-    const [plugins, setPlugins] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:3001/api/plugins', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(res => res.json())
-            .then(json => {
-                if (json) {
-                    console.log(json);
-                    setPlugins(json);
-                } else {
-                    setPlugins([]);
-                }
-            });
-    }, []);
-
-    return { plugins };
-};
-
 export const GetCategories = () => {
     const [categories, setCategories] = useState([]);
 

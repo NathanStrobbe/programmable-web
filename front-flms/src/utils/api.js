@@ -1,21 +1,17 @@
-import axios from 'axios';
 import join from 'url-join';
 
 const host = 'http://localhost:3001';
 
-const request = method => async (url, data) => {
-    const response = await axios({
-        method,
-        url: join(host, url),
+const request = method => (url, data) => {
+    return fetch(join(host, url), {
+        method: method,
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
-        data,
+        body: data
     });
-
-    return response.data;
 };
 
-export const get = request('get');
-export const post = request('post');
+export const get = request('GET');
+export const post = request('POST');
