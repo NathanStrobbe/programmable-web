@@ -19,6 +19,24 @@ exports.getAll = (req, res) => {
         });
 };
 
+exports.validate = (req, res) => {
+    console.log(req.body.validate);
+    if(req.body.validate){
+        Plugin
+            .findOne({'name': req.body.name}, (err, plugin)=>{
+                plugin.validated = true;
+                plugin.save((err, newPlugin)=>{
+                    if(err)
+                        return res.status(500).send(err);
+                    console.log(newPlugin);
+                    return res.status(200).send(newPlugin);
+                });
+            });
+    }else{
+        return res.status(500).send("Plugin not validated");
+    }
+}
+
 exports.download = (req, res,next) => {
   console.log(req.query);
   let path = '';
