@@ -13,6 +13,9 @@ router.route('/plugins')
     .post(pluginsController.addplugins)
     .get(pluginsController.getAll);
 
+router.route('/plugins/shop')
+    .get(pluginsController.getOfficiel);
+
 router.route('/plugin')
     .post(pluginsController.addLike)
     .get(pluginsController.get);

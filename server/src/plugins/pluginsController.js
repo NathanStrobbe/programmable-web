@@ -19,6 +19,19 @@ exports.getAll = (req, res) => {
         });
 };
 
+exports.getOfficiel = (req, res) => {
+    Plugin
+        .find({validated: true})
+        .populate('image')
+        .exec((err, plugins) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send(err);
+            }
+            return res.status(200).send(plugins);
+        });
+};
+
 exports.validate = (req, res) => {
     console.log(req.body.validate);
     if(req.body.validate){
