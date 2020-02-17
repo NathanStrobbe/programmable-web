@@ -19,7 +19,7 @@ exports.getAll = (req, res) => {
         });
 };
 
-exports.download = (req, res) => {
+exports.download = (req, res,next) => {
   console.log(req.query);
   let path = '';
   Plugin
@@ -30,9 +30,14 @@ exports.download = (req, res) => {
               return res.status(500).send(err);
           }
           path = '../' + plugin.sourcePath;
-          res.download(path, function (err) {
+          if(path !== '/'){
+            res.download(path, function (err) {
               console.log(err);
             });
+          }else{
+            next();
+            return res.status(200).send(plugin);
+          }
       });
 };
 
