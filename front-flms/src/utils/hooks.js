@@ -77,46 +77,6 @@ export const AddComment = (plugin, userId, content) => {
     });
 };
 
-const defaultPlugin = {
-    name: '',
-    version: '',
-    description: '',
-    likes: [],
-    creator: {},
-    image: null,
-    category: '',
-    tags: [],
-    video: '',
-    linkgithub: '',
-    openSource: false
-};
-
-export const GetPlugin = (pluginId) => {
-    const [plugin, setPlugin] = useState(defaultPlugin);
-
-    useEffect(() => {
-        fetch(`http://localhost:3001/api/plugin?id=${pluginId}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(res => res.json())
-            .then(json => {
-                if (json) {
-                    console.log(json);
-                    setPlugin(json);
-                } else {
-                    setPlugin();
-                }
-            });
-    }, [pluginId]);
-
-    return plugin;
-};
-
-
 export const GetUser = (userToken) => {
     const [user, setUser] = useState({ username: '', password: '', email: ''});
 
@@ -140,29 +100,4 @@ export const GetUser = (userToken) => {
     }, [userToken]);
 
     return user;
-};
-
-export const GetComments = (pluginId) => {
-    const [comments, setComments] = useState([]);
-
-    useEffect(() => {
-        fetch(`http://localhost:3001/api/comments?pluginId=${pluginId}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(res => res.json())
-            .then(json => {
-                console.log(json);
-                if (json) {
-                    setComments(json);
-                } else {
-                    setComments();
-                }
-            });
-    }, [pluginId]);
-
-    return comments;
 };

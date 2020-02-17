@@ -1,28 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Row, Card, Container, Badge, Form } from 'react-bootstrap';
-import { GetPlugin, AddLike, GetUser, GetComments, AddComment, convertBufferToBase64 } from '../utils/hooks.js';
+import { AddLike, GetUser, AddComment, convertBufferToBase64 } from '../utils/hooks.js';
 import { useSelector } from 'react-redux';
 import SweetAlert from 'sweetalert2-react';
 import './PluginDetails.css';
-import { GetCategories } from '../utils/hooks';
 import heartFill from '../assets/heart.png';
 import heartBlank from '../assets/heart_blank.png';
+import { get } from '../utils/api.js';
+
+const defaultPlugin = {
+    name: '',
+    version: '',
+    description: '',
+    likes: [],
+    creator: {},
+    image: null,
+    category: '',
+    tags: [],
+    video: '',
+    linkgithub: '',
+    openSource: false
+};
+
+const defaultCategory = {
+    name: ''
+};
 
 const PluginDetails = () => {
-    let user = '';
+    const { pluginId } = useParams();
+
+    const [plugin, setPlugin] = useState(defaultPlugin);
+    const [category, setCategory] = useState(defaultCategory);
+    const [comments, setComments] = useState([]);
     const [alertMessage, setAlertMessage] = useState(null);
 
-    const { categories } = GetCategories();
-    const { pluginId } = useParams();
+    let user = '';
     const loggedIn = useSelector(state => state.loggedIn);
 
+    useEffect(() => {
+        get(`api/plugin?id=${pluginId}`)
+            .then(res => res.json())
+            .then(plugin => setPlugin(plugin));
+
+        get(`api/comments?pluginId=${pluginId}`)
+            .then(res => res.json())
+            .then(comments => setComments(comments));
+    }, [pluginId]);
+
+    useEffect(() => {
+        if (plugin.category) {
+            get(`api/category?id=${plugin.category}`)
+                .then(res => res.json())
+                .then(category => setCategory(category));
+        }
+    }, [plugin]);
 
     if (sessionStorage.getItem('jwtToken')) {
         user = GetUser(sessionStorage.getItem('jwtToken'));
     }
 
-    const click = (plugin) => {
+    const click = plugin => {
         if (sessionStorage.getItem('jwtToken')) {
             const myId = user._id;
             if (!plugin.likes.includes(myId)) {
@@ -51,12 +89,7 @@ const PluginDetails = () => {
         }
     };
 
-    const plugin = GetPlugin(pluginId);
-    const comments = GetComments(pluginId);
-
-
     if (plugin === []) return null;
-
 
     if (comments) {
         console.log(comments);
@@ -71,7 +104,6 @@ const PluginDetails = () => {
         return heartBlank;
     };
 
-
     return (
         <Container className="pluginDetails">
             <div className="detailsHeader">
@@ -84,15 +116,7 @@ const PluginDetails = () => {
                     </div>
                     <p>Auteur : {plugin.creator.username}</p>
 
-                    <p>
-                        {
-                            categories.map(category => {
-                                if (category._id === plugin.category)
-                                    return 'Catégorie ' + category.name;
-                                return '';
-                            })
-                        }
-                    </p>
+                    <p>Catégorie : {category.name}</p>
                     <div>
                         {
                             plugin.tags.map((tag, i) => <Badge key={i} variant="info">{tag}</Badge>)

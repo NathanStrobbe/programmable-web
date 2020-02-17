@@ -42,4 +42,7 @@ router.route('/categories')
     .get(categoriesController.all)
     .post(categoriesController.add);
 
+router.route('/category')
+    .get(categoriesController.findById);
+
 module.exports = router;
