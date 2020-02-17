@@ -1,5 +1,4 @@
 const Category = require('./categoryModel');
-const ObjectId = require('mongoose').Types.ObjectId;
 
 exports.all = (req, res) => {
 

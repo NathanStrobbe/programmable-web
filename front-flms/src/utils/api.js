@@ -6,8 +6,7 @@ const request = method => (url, data) => {
     return fetch(join(host, url), {
         method: method,
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         },
         body: data
     });

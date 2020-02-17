@@ -29,7 +29,7 @@ app.use(upload.fields([{ name: 'image', maxCount: 1 }, { name: 'plugin', maxCoun
 let apiRoutes = require('./api-routes');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb+srv://flms:flms@flms-cpwc5.gcp.mongodb.net/test?retryWrites=true&w=majority').then(() => {
+mongoose.connect('mongodb+srv://flms:flms@flms-cpwc5.gcp.mongodb.net/prod?retryWrites=true&w=majority').then(() => {
     console.log('Connected to BDD');
 }).catch(console.error);
 
