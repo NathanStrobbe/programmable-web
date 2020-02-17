@@ -17,6 +17,9 @@ router.route('/plugin')
     .post(pluginsController.addLike)
     .get(pluginsController.get);
 
+router.route('/plugin/validate')
+    .post(pluginsController.validate);
+
 router.route('/download')
     .get(pluginsController.download);
 
