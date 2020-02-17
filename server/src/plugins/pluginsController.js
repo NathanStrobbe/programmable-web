@@ -19,6 +19,23 @@ exports.getAll = (req, res) => {
         });
 };
 
+exports.download = (req, res) => {
+  console.log(req.query);
+  let path = '';
+  Plugin
+      .findOne({ '_id': req.query.id })
+      .exec((err, plugin) => {
+          if (err) {
+              console.error(err);
+              return res.status(500).send(err);
+          }
+          path = '../' + plugin.sourcePath;
+          res.download(path, function (err) {
+              console.log(err);
+            });
+      });
+};
+
 exports.get = (req, res) => {
     console.log(req.query);
     Plugin
