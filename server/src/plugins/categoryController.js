@@ -12,6 +12,19 @@ exports.all = (req, res) => {
     });
 };
 
+exports.findById = (req, res) => {
+    Category.findOne({_id: req.query.id}, (err, category) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send(err);
+        }
+        if (category) {
+            return res.status(200).send(category);
+        }
+        return res.status(404).send('Category not found');
+    });
+};
+
 exports.delete = (req, res) =>{
     Category.remove({}, (err, cat)=>{
         if(err)

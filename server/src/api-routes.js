@@ -57,4 +57,7 @@ router.route('/categories')
 router.route('/categories/delete')
     .get(categoriesController.delete);
 
+router.route('/category')
+    .get(categoriesController.findById);
+
 module.exports = router;

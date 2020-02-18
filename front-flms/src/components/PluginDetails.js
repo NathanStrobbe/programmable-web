@@ -1,33 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Row, Card, Container, Badge, Form } from 'react-bootstrap';
-import { GetPlugin, AddLike, GetUser, GetComments, AddComment, convertBufferToBase64 } from '../utils/hooks.js';
+import { GetUser, convertBufferToBase64 } from '../utils/hooks.js';
 import { useSelector } from 'react-redux';
 import SweetAlert from 'sweetalert2-react';
 import './PluginDetails.css';
-import { GetCategories } from '../utils/hooks';
 import heartFill from '../assets/heart.png';
 import heartBlank from '../assets/heart_blank.png';
+import { get, post } from '../utils/api.js';
+
+const defaultPlugin = {
+    name: '',
+    version: '',
+    description: '',
+    likes: [],
+    creator: {},
+    image: null,
+    category: '',
+    tags: [],
+    video: '',
+    linkgithub: '',
+    openSource: false
+};
+
+const defaultCategory = {
+    name: ''
+};
 
 const PluginDetails = () => {
-    let user = '';
+    const { pluginId } = useParams();
+
+    const [plugin, setPlugin] = useState(defaultPlugin);
+    const [category, setCategory] = useState(defaultCategory);
+    const [comments, setComments] = useState([]);
     const [alertMessage, setAlertMessage] = useState(null);
 
-    const { categories } = GetCategories();
-    const { pluginId } = useParams();
+    let user = '';
     const loggedIn = useSelector(state => state.loggedIn);
 
+    useEffect(() => {
+        get(`api/plugin?id=${pluginId}`)
+            .then(res => res.json())
+            .then(plugin => setPlugin(plugin));
+
+        get(`api/comments?pluginId=${pluginId}`)
+            .then(res => res.json())
+            .then(comments => setComments(comments));
+    }, [pluginId]);
+
+    useEffect(() => {
+        if (plugin.category) {
+            get(`api/category?id=${plugin.category}`)
+                .then(res => res.json())
+                .then(category => setCategory(category));
+        }
+    }, [plugin]);
 
     if (sessionStorage.getItem('jwtToken')) {
         user = GetUser(sessionStorage.getItem('jwtToken'));
     }
 
-    const click = (plugin) => {
+    const click = plugin => {
         if (sessionStorage.getItem('jwtToken')) {
             const myId = user._id;
             if (!plugin.likes.includes(myId)) {
-                AddLike(plugin, myId);
-                window.location.reload();
+                post('api/plugin', JSON.stringify({
+                    'name': plugin.name,
+                    'user': myId
+                }), 'application/json')
+                    .then(res => res.json())
+                    .then(updatedPlugin => setPlugin(updatedPlugin.data));
             } else {
                 setAlertMessage('Vous avez déjà aimé !');
             }
@@ -42,21 +84,27 @@ const PluginDetails = () => {
         const comment = Object.fromEntries(data);
         if (sessionStorage.getItem('jwtToken')) {
             if (comment.commentContent.trim().length > 0) {
-                const myId = user.username;
-                AddComment(plugin, myId, comment.commentContent);
-                window.location.reload();
+                const now = new Date();
+                console.log(now);
+
+                post('api/comments', JSON.stringify({
+                    'writer': user.username,
+                    'content': comment.commentContent.trim(),
+                    'date': now,
+                    'pluginId': plugin._id
+                }), 'application/json')
+                    .then(res => res.json())
+                    .then(comments => {
+                        setComments(comments);
+                        document.getElementById('commentContent').value = '';
+                    });
             }
         } else {
             alert('Veuillez vous connecter !');
         }
     };
 
-    const plugin = GetPlugin(pluginId);
-    const comments = GetComments(pluginId);
-
-
     if (plugin === []) return null;
-
 
     if (comments) {
         console.log(comments);
@@ -71,7 +119,6 @@ const PluginDetails = () => {
         return heartBlank;
     };
 
-
     return (
         <Container className="pluginDetails">
             <div className="detailsHeader">
@@ -79,20 +126,12 @@ const PluginDetails = () => {
                 <div className="detailsText">
                     <div className="detailsGroup">
                         <h3>{plugin.name} {plugin.version}</h3>
-                        <img onClick={() => click(plugin)} src={heart()} alt="Add a like" width="20" height="20px" />
+                        <img onClick={() => click(plugin)} src={heart()} alt="Add a like" width="20" height="20px" style={{ cursor: 'pointer' }} />
                         {plugin.likes.length}
                     </div>
                     <p>Auteur : {plugin.creator.username}</p>
 
-                    <p>
-                        {
-                            categories.map(category => {
-                                if (category._id === plugin.category)
-                                    return 'Catégorie ' + category.name;
-                                return '';
-                            })
-                        }
-                    </p>
+                    <p>Catégorie : {category.name}</p>
                     <div>
                         {
                             plugin.tags.map((tag, i) => <Badge key={i} variant="info">{tag}</Badge>)

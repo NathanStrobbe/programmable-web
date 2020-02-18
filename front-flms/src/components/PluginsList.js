@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Col, Row } from 'react-bootstrap';
-import { GetPluginsList, convertBufferToBase64, GetCategories } from '../utils/hooks';
+import { convertBufferToBase64 } from '../utils/hooks';
 import { Link } from 'react-router-dom';
 import './PluginsList.css';
+import { get } from '../utils/api';
 
 const PluginsList = () => {
-
-    const { plugins } = GetPluginsList();
+    const [plugins, setPlugins] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [filterPlugins, setFilterPlugins] = useState('all');
-    const { categories } = GetCategories();
     const [searchTerm, setSearchTerm] = useState('');
 
     const filterList = id => {
@@ -18,6 +18,16 @@ const PluginsList = () => {
     const handleSearch = event => {
         setSearchTerm(event.target.value);
     };
+
+    useEffect(() => {
+        get('api/plugins')
+            .then(res => res.json())
+            .then(plugins => setPlugins(plugins));
+
+        get('api/categories')
+            .then(res => res.json())
+            .then(categories => setCategories(categories));
+    }, []);
 
     return (
         <div>

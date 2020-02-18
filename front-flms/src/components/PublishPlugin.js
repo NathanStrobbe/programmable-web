@@ -1,28 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Modal, Alert } from 'react-bootstrap';
-import { post } from '../utils/api';
+import { post, get } from '../utils/api';
 import { useHistory } from 'react-router-dom';
 import './PublishPlugin.css';
-import { GetCategories } from '../utils/hooks';
 import add from '../assets/plus.png';
 import quit from '../assets/quit.png';
 
 const PublishPlugin = () => {
+    const history = useHistory();
 
     const [openSource, setOpenSource] = useState(false);
     const [imageFile, setImageFile] = useState(null);
     const [pluginBinary, setPluginBinary] = useState(null);
-    const history = useHistory();
-    const { categories } = GetCategories();
+    const [categories, setCategories] = useState([]);
     const [optionCat, setOptionCat] = useState('none');
     const [tags, setTags] = useState([]);
     const [tag, setTag] = useState('');
-
-
     const [show, setShow] = useState(false);
     const [nameCat, setNameCat] = useState('');
     const [error, setError] = useState('');
 
+    useEffect(() => {
+        get('api/categories')
+            .then(res => res.json())
+            .then(categories => setCategories(categories));
+    }, [categories]);
 
     const handleOpenSourceClick = event => {
         setOpenSource(event.target.checked);
@@ -33,7 +35,6 @@ const PublishPlugin = () => {
     };
 
     const handlePluginUpload = event => {
-        console.log(event.target.files[0]);
         setPluginBinary(event.target.files[0]);
     };
 
@@ -116,11 +117,12 @@ const PublishPlugin = () => {
         const data = new FormData();
         data.append('name', nameCat);
         post('api/categories', data)
-            .then(res => {
-                console.log(res);
-                categories.push(res);
+            .then(category => {
+                console.log(category);
+                setCategories([...categories, category]);
                 setShow(false);
-            }).catch(() => {
+            }).catch(err => {
+                console.error(err);
                 setError(409);
             });
     };
@@ -170,7 +172,7 @@ const PublishPlugin = () => {
                     <div className="group">
                         {
                             tags.map((tag, index) =>
-                                <div key={index} iclassName="tags">
+                                <div key={index} className="tags">
                                     <p>{tag}</p>
                                     <img onClick={() => handleDeleteTag(index)} src={quit} alt="quit" width="30px" height="30px" />
                                 </div>
