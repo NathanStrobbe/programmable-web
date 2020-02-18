@@ -3,15 +3,20 @@ import join from 'url-join';
 const host = 'http://localhost:3001';
 
 const request = method => (url, data, contentType) => {
-    if (!contentType) {
-        contentType = '*/*';
+    let headers;
+    if (contentType) {
+        headers = {
+            'Accept': 'application/json',
+            'Content-Type': contentType
+        };
+    } else {
+        headers = {
+            'Accept': 'application/json'
+        };
     }
     return fetch(join(host, url), {
         method: method,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': contentType
-        },
+        headers: headers,
         body: data
     });
 };

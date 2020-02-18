@@ -22,7 +22,7 @@ exports.getAll = (req, res) => {
 
 exports.getOfficiel = (req, res) => {
     Plugin
-        .find({validated: true})
+        .find({ validated: true })
         .populate('image')
         .exec((err, plugins) => {
             if (err) {
@@ -35,42 +35,42 @@ exports.getOfficiel = (req, res) => {
 
 exports.validate = (req, res) => {
     console.log(req.body.validate);
-    if(req.body.validate){
+    if (req.body.validate) {
         Plugin
-            .findOne({'name': req.body.name}, (err, plugin)=>{
+            .findOne({ 'name': req.body.name }, (err, plugin) => {
                 plugin.validated = true;
-                plugin.save((err, newPlugin)=>{
-                    if(err)
+                plugin.save((err, newPlugin) => {
+                    if (err)
                         return res.status(500).send(err);
                     console.log(newPlugin);
                     return res.status(200).send(newPlugin);
                 });
             });
-    }else{
-        return res.status(500).send("Plugin not validated");
+    } else {
+        return res.status(500).send('Plugin not validated');
     }
-}
+};
 
-exports.download = (req, res,next) => {
-  console.log(req.query);
-  let path = '';
-  Plugin
-      .findOne({ '_id': req.query.id })
-      .exec((err, plugin) => {
-          if (err) {
-              console.error(err);
-              return res.status(500).send(err);
-          }
-          path = '../' + plugin.sourcePath;
-          if(path !== '/'){
-            res.download(path, function (err) {
-              console.log(err);
-            });
-          }else{
-            next();
-            return res.status(200).send(plugin);
-          }
-      });
+exports.download = (req, res, next) => {
+    console.log(req.query);
+    let path = '';
+    Plugin
+        .findOne({ '_id': req.query.id })
+        .exec((err, plugin) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send(err);
+            }
+            path = '../' + plugin.sourcePath;
+            if (path !== '/') {
+                res.download(path, function (err) {
+                    console.log(err);
+                });
+            } else {
+                next();
+                return res.status(200).send(plugin);
+            }
+        });
 };
 
 exports.get = (req, res) => {
@@ -89,6 +89,7 @@ exports.get = (req, res) => {
 };
 
 exports.addplugins = (req, res) => {
+    console.log(req.files);
     const imageFile = req.files.image[0];
     const pluginFile = req.files.plugin[0];
 
