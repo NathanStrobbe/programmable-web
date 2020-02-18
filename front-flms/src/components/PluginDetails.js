@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Row, Card, Container, Badge, Form } from 'react-bootstrap';
-import { AddLike, GetUser, AddComment, convertBufferToBase64 } from '../utils/hooks.js';
+import { GetUser, convertBufferToBase64 } from '../utils/hooks.js';
 import { useSelector } from 'react-redux';
 import SweetAlert from 'sweetalert2-react';
 import './PluginDetails.css';
 import heartFill from '../assets/heart.png';
 import heartBlank from '../assets/heart_blank.png';
-import { get } from '../utils/api.js';
+import { get, post } from '../utils/api.js';
 
 const defaultPlugin = {
     name: '',
@@ -64,8 +64,12 @@ const PluginDetails = () => {
         if (sessionStorage.getItem('jwtToken')) {
             const myId = user._id;
             if (!plugin.likes.includes(myId)) {
-                AddLike(plugin, myId);
-                window.location.reload();
+                post('api/plugin', JSON.stringify({
+                    'name': plugin.name,
+                    'user': myId
+                }), 'application/json')
+                    .then(res => res.json())
+                    .then(updatedPlugin => setPlugin(updatedPlugin.data));
             } else {
                 setAlertMessage('Vous avez déjà aimé !');
             }
@@ -80,9 +84,20 @@ const PluginDetails = () => {
         const comment = Object.fromEntries(data);
         if (sessionStorage.getItem('jwtToken')) {
             if (comment.commentContent.trim().length > 0) {
-                const myId = user.username;
-                AddComment(plugin, myId, comment.commentContent);
-                window.location.reload();
+                const now = new Date();
+                console.log(now);
+
+                post('api/comments', JSON.stringify({
+                    'writer': user.username,
+                    'content': comment.commentContent.trim(),
+                    'date': now,
+                    'pluginId': plugin._id
+                }), 'application/json')
+                    .then(res => res.json())
+                    .then(comments => {
+                        setComments(comments);
+                        document.getElementById('commentContent').value = '';
+                    });
             }
         } else {
             alert('Veuillez vous connecter !');
@@ -111,7 +126,7 @@ const PluginDetails = () => {
                 <div className="detailsText">
                     <div className="detailsGroup">
                         <h3>{plugin.name} {plugin.version}</h3>
-                        <img onClick={() => click(plugin)} src={heart()} alt="Add a like" width="20" height="20px" />
+                        <img onClick={() => click(plugin)} src={heart()} alt="Add a like" width="20" height="20px" style={{ cursor: 'pointer' }} />
                         {plugin.likes.length}
                     </div>
                     <p>Auteur : {plugin.creator.username}</p>

@@ -10,6 +10,7 @@ exports.getAll = (req, res) => {
     Plugin
         .find({})
         .populate('image')
+        .populate('creator')
         .exec((err, plugins) => {
             if (err) {
                 console.error(err);
@@ -43,7 +44,7 @@ exports.addplugins = (req, res) => {
     plugin.version = req.body.version;
     plugin.description = req.body.description;
     plugin.version = req.body.version;
-    plugin.likes = req.body.likes;
+    plugin.likes = [];
     plugin.creator = req.body.creator;
     plugin.tags = req.body.tags.split(',');
     plugin.video = req.body.video;
@@ -127,16 +128,24 @@ exports.addplugins = (req, res) => {
 };
 
 exports.addLike = (req, res) => {
-    const users = req.body.users;
-    const plugin = req.body.name;
-    const target = { name: plugin };
-    const newValue = { $set: { likes: users } };
+    const user = req.body.user;
+    const target = { name: req.body.name };
 
-    Plugin.collection.updateOne(target, newValue, (err) => {
+    return Plugin.findOne(target, (err, plugin) => {
         if (err) {
             console.error(err);
             return res.status(500).send(err);
         }
-        return res.status(200).send({ msg: 'Plugins updated', data: plugin });
+
+        return Plugin.findOneAndUpdate(target, { likes: [...plugin.likes, user] }, { new: true })
+            .populate('image')
+            .populate('creator')
+            .exec((err, newPlugin) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send(err);
+                }
+                return res.status(200).send({ msg: 'Plugins updated', data: newPlugin });
+            });
     });
 };
