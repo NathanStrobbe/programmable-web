@@ -20,7 +20,8 @@ const defaultPlugin = {
     tags: [],
     video: '',
     linkgithub: '',
-    openSource: false
+    openSource: false,
+    validated: false
 };
 
 const defaultCategory = {
