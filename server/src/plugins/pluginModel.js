@@ -47,6 +47,10 @@ const pluginSchema = mongoose.Schema({
     sourcePath: {
         type: String,
         required: true
+    },
+    validated: {
+        type: Boolean,
+        default: false
     }
 });
 

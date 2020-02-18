@@ -13,12 +13,24 @@ router.route('/plugins')
     .post(pluginsController.addplugins)
     .get(pluginsController.getAll);
 
+router.route('/plugins/shop')
+    .get(pluginsController.getOfficiel);
+
 router.route('/plugin')
     .post(pluginsController.addLike)
     .get(pluginsController.get);
 
+router.route('/plugin/validate')
+    .post(pluginsController.validate);
+
+router.route('/download')
+    .get(pluginsController.download);
+
 
 const usersController = require('./users/usersController');
+
+router.route('/user/delete')
+    .get(usersController.delete);
 
 router.route('/user/connect')
     .post(usersController.logIn);
@@ -41,6 +53,9 @@ const categoriesController = require('./plugins/categoryController');
 router.route('/categories')
     .get(categoriesController.all)
     .post(categoriesController.add);
+
+router.route('/categories/delete')
+    .get(categoriesController.delete);
 
 router.route('/category')
     .get(categoriesController.findById);

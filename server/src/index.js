@@ -42,5 +42,6 @@ http.listen(3001, () => {
 });
 
 httpServer.createServer({
-    root: 'plugins'
+    root: '.'
 }).listen(8000);
+
