@@ -50,7 +50,8 @@ const pluginSchema = mongoose.Schema({
     },
     validated: {
         type: Boolean,
-        default: false
+        default: false,
+        required: true
     }
 });
 

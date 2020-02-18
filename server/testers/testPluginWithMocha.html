@@ -42,16 +42,16 @@
     <script>mocha.setup('bdd')</script>
 </body>
 <script>
-	const urlParams = new URLSearchParams(window.location.search);
-	const myPlugin = urlParams.get('urlPlugin');
-	document.getElementById("urlPlugin").value = myPlugin;
+  const urlParams = new URLSearchParams(window.location.search);
+  const myPlugin = urlParams.get('urlPlugin');
+  document.getElementById("urlPlugin").value = myPlugin;
   var checkbox = document.querySelector('#checkBox')
   var AudioContext = window.AudioContext || window.webkitAudioContext;
   var ctx = new AudioContext();
   var player = document.getElementById("soundSample");
   var mediaSource = ctx.createMediaElementSource(player);
   var bt_buildIt = document.querySelector('#bt_buildIt');
-  var name = "";
+  var pluginName = myPlugin.split('plugins/')[1];
 
   window.onload = () => {
 
@@ -80,7 +80,6 @@
       return responseJSON.json();
     }).then(metadata => {
       let className = metadata.name;
-	  name = metadata.name;
       loadPlugin(className, baseURL);
     }).catch((e) => {
       console.log(e);
@@ -244,8 +243,25 @@
       });
     });
 	if (mocha.run().stats.failures === 0) {
-		console.log(name + " passed tests")
+		console.log(pluginName + " passed tests");
+		
 	}
+	const data = { name: pluginName, validate: true };
+
+	fetch('http://localhost:3001/api/plugin/validate', {
+	  method: 'POST', // or 'PUT'
+	  headers: {
+		'Content-Type': 'application/json',
+	  },
+	  body: JSON.stringify(data),
+	})
+	.then((response) => response.json())
+	.then((data) => {
+	  console.log('Success:', data);
+	})
+	.catch((error) => {
+	  console.error('Error:', error);
+	});
   }
 </script>
 
