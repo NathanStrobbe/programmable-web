@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Row, Card, Container, Badge, Form } from 'react-bootstrap';
-import { GetUser, convertBufferToBase64 } from '../utils/hooks.js';
+import { convertBufferToBase64 } from '../utils/utils';
 import { useSelector } from 'react-redux';
 import SweetAlert from 'sweetalert2-react';
 import './PluginDetails.css';
@@ -28,16 +28,24 @@ const defaultCategory = {
     name: ''
 };
 
+const defaultUser = {
+    username: '',
+    password: '',
+    email: ''
+};
+
 const PluginDetails = () => {
     const { pluginId } = useParams();
 
+    const [user, setUser] = useState(defaultUser);
     const [plugin, setPlugin] = useState(defaultPlugin);
     const [category, setCategory] = useState(defaultCategory);
     const [comments, setComments] = useState([]);
     const [alertMessage, setAlertMessage] = useState(null);
 
-    let user = '';
     const loggedIn = useSelector(state => state.loggedIn);
+
+    const userToken = sessionStorage.getItem('jwtToken');
 
     useEffect(() => {
         get(`api/plugin?id=${pluginId}`)
@@ -57,9 +65,11 @@ const PluginDetails = () => {
         }
     }, [plugin]);
 
-    if (sessionStorage.getItem('jwtToken')) {
-        user = GetUser(sessionStorage.getItem('jwtToken'));
-    }
+    useEffect(() => {
+        get(`api/user?token=${userToken}`)
+            .then(res => res.json())
+            .then(user => setUser(user));
+    }, [userToken]);
 
     const click = plugin => {
         if (sessionStorage.getItem('jwtToken')) {
@@ -101,15 +111,9 @@ const PluginDetails = () => {
                     });
             }
         } else {
-            alert('Veuillez vous connecter !');
+            setAlertMessage('Veuillez vous connecter !');
         }
     };
-
-    if (plugin === []) return null;
-
-    if (comments) {
-        console.log(comments);
-    }
 
     const heart = () => {
         for (let like of plugin.likes) {
@@ -119,6 +123,8 @@ const PluginDetails = () => {
         }
         return heartBlank;
     };
+
+    if (plugin === defaultPlugin) return null;
 
     return (
         <Container className="pluginDetails">

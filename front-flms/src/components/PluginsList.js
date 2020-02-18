@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Col, Row } from 'react-bootstrap';
-import { convertBufferToBase64 } from '../utils/hooks';
+import { convertBufferToBase64 } from '../utils/utils';
 import { Link } from 'react-router-dom';
 import './PluginsList.css';
 import { get } from '../utils/api';
