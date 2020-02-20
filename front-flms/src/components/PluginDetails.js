@@ -192,7 +192,7 @@ const PluginDetails = () => {
                     </div>
                     <a href={plugin.video ? plugin.video : ''} target="_blank" rel="noopener noreferrer"> {plugin.video ? 'Vidéo' : ''} </a>
                     <a href={plugin.linkgithub ? plugin.linkgithub : ''}> {plugin.linkgithub ? 'GitHub' : ''} </a>
-                </div>
+
             </div>
 
             <div className="detailsDescription">
@@ -212,19 +212,19 @@ const PluginDetails = () => {
                 </div>
                 {
                     comments.length > 0 ? comments.map((comment, i) => {
-                        const commentDate = new Date(comment.date);
-                        return (
+                            const commentDate = new Date(comment.date);
+                            return (
                                 <Row key={i} className="pluginDetailsComment">
                                     <Card className="w-100">
                                         <Card.Body>
                                             <Card.Title>
                                                 <div>
-                                                    <span style={{ float: 'left' }}><b>{comment.writer}</b></span>
-                                                    <span style={{ float: 'right' }}>
+                                                    <span style={{float: 'left'}}><b>{comment.writer}</b></span>
+                                                    <span style={{float: 'right'}}>
                                                         {commentDate.toLocaleDateString()}
                                                     </span>
                                                 </div>
-                                                <br />
+                                                <br/>
                                             </Card.Title>
                                             <Card.Text>
                                                 {comment.content}
@@ -232,7 +232,8 @@ const PluginDetails = () => {
                                         </Card.Body>
                                     </Card>
                                 </Row>
-                        );
+                            );
+                        }) : <br/>
                     }
                     {loggedIn ?
                         <Form onSubmit={handleSubmit} className="detailsAddComment">
@@ -245,6 +246,7 @@ const PluginDetails = () => {
                         :
                         <p></p>
                     }
+                }
                 </div>
                 <SweetAlert
                     show={alertMessage}
