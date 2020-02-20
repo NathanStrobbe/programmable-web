@@ -19,14 +19,9 @@
   color: #61dafb;
 }
 
-
 .App{
+    min-height: 100%;
+    height: 100%;
     background-color: #cdcdcd17;
-    height: 100%;
-}
-
-html, body, #root{
-    margin: 0;
-    height: 100%;
 }
 
