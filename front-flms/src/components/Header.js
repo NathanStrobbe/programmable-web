@@ -31,7 +31,6 @@ const Header = () => {
                     </NavItem>
                     :
                     <NavItem className="mr-sm-2">
-                        <NavLink to="/shop"><Button variant="outline-light">Magasin</Button></NavLink>
                         <NavLink to="/login"><Button variant="outline-light">Connexion</Button></NavLink>
                         <NavLink to="/register"><Button variant="outline-light">Inscription</Button></NavLink>
                     </NavItem>

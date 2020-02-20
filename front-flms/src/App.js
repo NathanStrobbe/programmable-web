@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/Login';
@@ -12,6 +12,10 @@ import PluginDetails from './components/PluginDetails';
 import Shop from './components/Shop';
 
 const App = () => {
+    useEffect(() => {
+        document.title = "Store FLMS";
+    });
+
     return (
         <main className="App">
             <BrowserRouter>
