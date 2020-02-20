@@ -10,6 +10,7 @@ import heartBlank from '../assets/heart_blank.png';
 import { get, post } from '../utils/api.js';
 import Navbar from "react-bootstrap/esm/Navbar";
 import PluginsList from "./PluginsList";
+import load from "../assets/load.gif";
 
 const defaultPlugin = {
     name: '',
@@ -95,7 +96,8 @@ const PluginDetails = () => {
                     'user': myId
                 }), 'application/json')
                     .then(res => res.json())
-                    .then(updatedPlugin => setPlugin(updatedPlugin.data));
+                    .then(updatedPlugin =>
+                        setPlugin(updatedPlugin.data));
             } else {
                 setAlertMessage('Vous avez déjà aimé !');
             }
@@ -139,7 +141,8 @@ const PluginDetails = () => {
         return heartBlank;
     };
 
-    if (plugin === defaultPlugin) return null;
+    if (plugin === defaultPlugin)
+        return <div className="detailsLoad"><img src={load} alt="load" width="150px" height="150px" /></div>;
 
     const handleBackButton = () =>{
         history.push('/pluginsList');
@@ -152,6 +155,7 @@ const PluginDetails = () => {
                 <Breadcrumb.Item active>Détail</Breadcrumb.Item>
             </Breadcrumb>
             <Container className="pluginDetails">
+
                 <div className="detailsHeader">
                     <img className="Image" src={convertBufferToBase64(plugin.image)} alt="Plugin" />
                     <div className="detailsText">
