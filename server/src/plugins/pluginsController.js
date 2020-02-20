@@ -22,7 +22,7 @@ exports.getAll = (req, res) => {
 
 exports.getOfficiel = (req, res) => {
     Plugin
-        .find({ validated: true })
+        .find({validated: true })
         .populate('image')
         .exec((err, plugins) => {
             if (err) {
