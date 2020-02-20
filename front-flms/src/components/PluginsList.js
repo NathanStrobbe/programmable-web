@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import './PluginsList.css';
 import { get } from '../utils/api';
 import {useSelector} from "react-redux";
+import load from "../assets/load.gif";
 
 const PluginsList = () => {
     const [plugins, setPlugins] = useState([]);
@@ -64,7 +65,10 @@ const PluginsList = () => {
 
             <Row className="containerList">
                 {
-                    plugins.filter(plugin => plugin.name.toLowerCase().includes(searchTerm)).map((plugin, i) =>
+                    plugins.length > 0 ? null : <Col className="listCharge"><img src={load} alt="load" width="150px" height="150px" /></Col>
+                }
+                {
+                    plugins.filter(plugin => plugin.name.toLowerCase().includes(searchTerm.toLowerCase())).map((plugin, i) =>
                         filterPlugins === 'all' || plugin.category === filterPlugins ?
                             <Col key={i}>
                                 <Card key={plugin._id} style={{ width: '18rem', maxHeight: '270px', minHeight:"270px"}} className="cardPluginList">
