@@ -18,7 +18,6 @@
   <div id="layout">
     <div class="content" id="main">
       <audio src="../assets/audio/BasketCaseGreendayriffDI.mp3" id="soundSample" controls loop></audio>
-      <h3>Paste here the link to your webaudio plugin</h3>
       <div id="inputs">
 
 
@@ -43,7 +42,8 @@
 </body>
 <script>
   const urlParams = new URLSearchParams(window.location.search);
-  const myPlugin = urlParams.get('urlPlugin');
+  const pluginName = urlParams.get('urlPlugin');
+  const myPlugin = "http://localhost:8000/plugins/" + pluginName;
   document.getElementById("urlPlugin").value = myPlugin;
   var checkbox = document.querySelector('#checkBox')
   var AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -51,13 +51,12 @@
   var player = document.getElementById("soundSample");
   var mediaSource = ctx.createMediaElementSource(player);
   var bt_buildIt = document.querySelector('#bt_buildIt');
-  var pluginName = myPlugin.split('plugins/')[1];
 
   window.onload = () => {
 
 
     bt_buildIt.addEventListener('click', () => {
-
+      console.log("click");
       checkMetadata(document.querySelector("#urlPlugin").value);
     });
 
@@ -70,7 +69,7 @@
 
     player.onplay = () => {
       ctx.resume().then(() => {
-        console.log('Playback resumed successfully');
+        //console.log('Playback resumed successfully');
       });
     }
   }
@@ -82,7 +81,7 @@
       let className = metadata.name;
       loadPlugin(className, baseURL);
     }).catch((e) => {
-      console.log(e);
+      //console.log(e);
     });
   }
 
@@ -98,12 +97,12 @@
 
     if (scriptExists(scriptURL)) {
       //script exists
-      console.log("SCRIPT EXISTS WE JUST INSTANCIATE THE PLUGIN");
+      //console.log("SCRIPT EXISTS WE JUST INSTANCIATE THE PLUGIN");
       buildPlugin(className, baseURL);
       return;
     }
 
-    console.log("SCRIPT DOES NOT EXIST, ADD A SCRIPT SRC=, THEN INSTANCIATE PLUGIN")
+    //console.log("SCRIPT DOES NOT EXIST, ADD A SCRIPT SRC=, THEN INSTANCIATE PLUGIN")
 
     // if we are here this means that the script is not present. Add it to the document
     let script = document.createElement("script");
@@ -122,7 +121,7 @@
   function buildPlugin(className, baseURL) {
 
     var plugin = new window[className](ctx, baseURL);
-    console.log(plugin);
+    //console.log(plugin);
 
     plugin.load().then((node) => {
       // loads and initialize the audio processor part
@@ -131,7 +130,7 @@
       // not doing it twice, and associate the node with its GUI.
       if (checkbox.checked) {
         plugin.loadGui().then((elem) => {
-          console.log("ADDING PLUGIN");
+          //console.log("ADDING PLUGIN");
           // show the GUI of the plugn, the audio part is ready to be used
           document.querySelector("#WAP").appendChild(elem);
           //mediaSource.connect(node);
@@ -143,7 +142,7 @@
       try {
         mediaSource.connect(node);
       } catch (error) {
-        console.log("this plugin does not use audioworkletnode or compositenode");
+        //console.log("this plugin does not use audioworkletnode or compositenode");
         mediaSource.connect(node.getInput(0));
       }
       // if (node instanceof AudioWorkletNode) 
@@ -244,7 +243,6 @@
     });
 	if (mocha.run().stats.failures === 0) {
 		console.log(pluginName + " passed tests");
-		
 	}
 	const data = { name: pluginName, validate: true };
 
@@ -257,7 +255,7 @@
 	})
 	.then((response) => response.json())
 	.then((data) => {
-	  console.log('Success:', data);
+    console.log('Success:', data);
 	})
 	.catch((error) => {
 	  console.error('Error:', error);

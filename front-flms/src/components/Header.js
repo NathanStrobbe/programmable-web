@@ -16,7 +16,7 @@ const Header = () => {
     };
 
     return (
-        <Navbar className="mb-5 justify-content-between" bg="dark" variant="dark">
+        <Navbar className="justify-content-between" bg="dark" variant="dark">
             {loggedIn ?
                 <Navbar.Brand><NavLink to="/pluginsList" className="title">Store FMLS</NavLink></Navbar.Brand>
                 :
@@ -26,7 +26,6 @@ const Header = () => {
             <Nav pullright="true">
                 {loggedIn ?
                     <NavItem className="mr-sm-2">
-                        <NavLink to="/pluginsList"><Button variant="outline-light">Liste des plugins</Button></NavLink>
                         <NavLink to="/publishPlugin"><Button variant="outline-light">Publier un plugin</Button></NavLink>
                         <NavLink to="/shop"><Button onClick={handleSignOut} variant="outline-light">Déconnexion</Button></NavLink>
                     </NavItem>

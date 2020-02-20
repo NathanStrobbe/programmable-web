@@ -22,7 +22,7 @@ exports.getAll = (req, res) => {
 
 exports.getOfficiel = (req, res) => {
     Plugin
-        .find({ validated: true })
+        .find({validated: true })
         .populate('image')
         .exec((err, plugins) => {
             if (err) {
@@ -34,10 +34,11 @@ exports.getOfficiel = (req, res) => {
 };
 
 exports.validate = (req, res) => {
-    console.log(req.body.validate);
+    console.log(req.body);
     if (req.body.validate) {
         Plugin
             .findOne({ 'name': req.body.name }, (err, plugin) => {
+
                 plugin.validated = true;
                 plugin.save((err, newPlugin) => {
                     if (err)

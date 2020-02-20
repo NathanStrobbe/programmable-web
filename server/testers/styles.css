@@ -22,6 +22,7 @@
   }
 
   #inputs {
+    visibility: hidden;
     display: grid;
   }
 
@@ -44,4 +45,17 @@
     border-style: solid;
     padding: 10px;
     width: 50%
+  }
+
+  #buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #bt_buildIt {
+    background-color: #007bff;
+    text-align: center;
+    color: white;
+    border-radius: 4px;
   }
