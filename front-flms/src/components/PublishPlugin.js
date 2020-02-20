@@ -108,6 +108,7 @@ const PublishPlugin = () => {
     const handlenameCatChange = event => {
         setError(0);
         setNameCat(event.target.value);
+        setOptionCat(event.target.value);
     };
 
     const handleClose = () => setShow(false);
