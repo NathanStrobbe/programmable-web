@@ -166,7 +166,7 @@ const PluginDetails = () => {
                     <h5>Description</h5>
                     <p>{plugin.description}</p>
                     <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/plugins/${encodeURI(plugin.name)}?dt=${new Date().getTime()}`, '_blank')} >Essayer le plugin</Button>
-                    <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=http://localhost:8000/plugins/${encodeURI(plugin.name)}`, '_blank')} >Valider le plugin</Button>
+                    <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=${encodeURI(plugin.name)}`, '_blank')} >Valider le plugin</Button>
                 </div>
 
                 <div className="detailsComments">
@@ -181,7 +181,6 @@ const PluginDetails = () => {
                         comments.length > 0 ? comments.map((comment, i) => {
                             const commentDate = new Date(comment.date);
                             return (
-                <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=${encodeURI(plugin.name)}`, '_blank')} >Valider le plugin</Button>
                                 <Row key={i} className="pluginDetailsComment">
                                     <Card className="w-100">
                                         <Card.Body>
