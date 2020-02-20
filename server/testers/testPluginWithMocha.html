@@ -18,7 +18,6 @@
   <div id="layout">
     <div class="content" id="main">
       <audio src="../assets/audio/BasketCaseGreendayriffDI.mp3" id="soundSample" controls loop></audio>
-      <h3>Paste here the link to your webaudio plugin</h3>
       <div id="inputs">
 
 
@@ -52,13 +51,12 @@
   var player = document.getElementById("soundSample");
   var mediaSource = ctx.createMediaElementSource(player);
   var bt_buildIt = document.querySelector('#bt_buildIt');
-  
 
   window.onload = () => {
 
 
     bt_buildIt.addEventListener('click', () => {
-
+      console.log("click");
       checkMetadata(document.querySelector("#urlPlugin").value);
     });
 
@@ -257,7 +255,7 @@
 	})
 	.then((response) => response.json())
 	.then((data) => {
-	  console.log('Success:', data);
+    console.log('Success:', data);
 	})
 	.catch((error) => {
 	  console.error('Error:', error);
