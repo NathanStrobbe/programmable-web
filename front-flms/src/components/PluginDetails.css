@@ -15,6 +15,8 @@
 }
 .detailsText{
     align-self: baseline;
+    margin-left: 20px;
+
 }
 
 .badge-info{
@@ -43,8 +45,10 @@
     flex-direction: column;
 }
 
-.detailsDescription button{
-    align-self: center;
+
+.detailsButtonGroup {
+    display: flex;
+    justify-content: center;
 }
 
 .detailsComments{
