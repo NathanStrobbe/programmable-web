@@ -55,6 +55,11 @@ const PluginDetails = () => {
         get(`api/comments?pluginId=${pluginId}`)
             .then(res => res.json())
             .then(comments => setComments(comments));
+
+        return () => {
+            setPlugin(defaultPlugin);
+            setComments([]);
+        };
     }, [pluginId]);
 
     useEffect(() => {
@@ -63,12 +68,18 @@ const PluginDetails = () => {
                 .then(res => res.json())
                 .then(category => setCategory(category));
         }
+        return () => {
+            setCategory(defaultCategory);
+        };
     }, [plugin]);
 
     useEffect(() => {
         get(`api/user?token=${userToken}`)
             .then(res => res.json())
             .then(user => setUser(user));
+        return () => {
+            setUser(defaultUser);
+        };
     }, [userToken]);
 
     const click = plugin => {
@@ -168,7 +179,6 @@ const PluginDetails = () => {
                     comments.length > 0 ? comments.map((comment, i) => {
                         const commentDate = new Date(comment.date);
                         return (
-                            <>
                                 <Row key={i} className="pluginDetailsComment">
                                     <Card className="w-100">
                                         <Card.Body>
@@ -187,7 +197,6 @@ const PluginDetails = () => {
                                         </Card.Body>
                                     </Card>
                                 </Row>
-                            </>
                         );
                     }
                     ) : <br />
