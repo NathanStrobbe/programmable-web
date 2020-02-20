@@ -182,25 +182,6 @@ const PluginDetails = () => {
                     </div>
                 </div>
 
-                <div className="detailsComments">
-                    <div>
-                        {loggedIn ?
-                            <h5>Commentaires :</h5>
-                            :
-                            <h5>Commentaires (connectez vous pour commenter):</h5>
-                        }
-                    </div>
-                    <a href={plugin.video ? plugin.video : ''} target="_blank" rel="noopener noreferrer"> {plugin.video ? 'Vidéo' : ''} </a>
-                    <a href={plugin.linkgithub ? plugin.linkgithub : ''}> {plugin.linkgithub ? 'GitHub' : ''} </a>
-
-            </div>
-
-            <div className="detailsDescription">
-                <h5>Description</h5>
-                <p>{plugin.description}</p>
-                <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/plugins/${encodeURI(plugin.name)}?dt=${new Date().getTime()}`, '_blank')} >Essayer le plugin</Button>
-                <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=http://localhost:8000/plugins/${encodeURI(plugin.name)}`, '_blank')} >Valider le plugin</Button>
-            </div>
 
             <div className="detailsComments">
                 <div>
@@ -210,7 +191,7 @@ const PluginDetails = () => {
                         <h5>Commentaires (connectez vous pour commenter):</h5>
                     }
                 </div>
-                {
+                    {
                     comments.length > 0 ? comments.map((comment, i) => {
                             const commentDate = new Date(comment.date);
                             return (
@@ -246,7 +227,6 @@ const PluginDetails = () => {
                         :
                         <p></p>
                     }
-                }
                 </div>
                 <SweetAlert
                     show={alertMessage}
