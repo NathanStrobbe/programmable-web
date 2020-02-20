@@ -35,7 +35,6 @@ exports.delete = (req, res) =>{
 
 
 exports.add = (req, res) => {
-    console.log(req.body);
     const cat = new Category();
     cat.name = req.body.name;
 
@@ -49,12 +48,12 @@ exports.add = (req, res) => {
             return res.status(409).send('Categorie already in database');
         }
 
-        return cat.save((err, category) => {
+        return cat.save(err => {
             if (err) {
                 console.error(err);
                 return res.status(500).send(err);
             }
-            return res.status(200).send(category);
+            return res.status(200).send(cat);
         });
     });
 };

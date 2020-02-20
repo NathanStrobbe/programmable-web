@@ -59,6 +59,11 @@ const PluginDetails = () => {
         get(`api/comments?pluginId=${pluginId}`)
             .then(res => res.json())
             .then(comments => setComments(comments));
+
+        return () => {
+            setPlugin(defaultPlugin);
+            setComments([]);
+        };
     }, [pluginId]);
 
     useEffect(() => {
@@ -67,12 +72,18 @@ const PluginDetails = () => {
                 .then(res => res.json())
                 .then(category => setCategory(category));
         }
+        return () => {
+            setCategory(defaultCategory);
+        };
     }, [plugin]);
 
     useEffect(() => {
         get(`api/user?token=${userToken}`)
             .then(res => res.json())
             .then(user => setUser(user));
+        return () => {
+            setUser(defaultUser);
+        };
     }, [userToken]);
 
     const click = plugin => {
@@ -167,7 +178,7 @@ const PluginDetails = () => {
                     <p>{plugin.description}</p>
                     <div className="detailsButtonGroup">
                         <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/plugins/${encodeURI(plugin.name)}?dt=${new Date().getTime()}`, '_blank')} >Essayer le plugin</Button>
-                        <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=${encodeURI(plugin.name)}`, '_blank')} >Valider le plugin</Button>
+                        <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=${encodeURI(plugin.name)}&dt=${new Date().getTime()}`, '_blank')} >Valider le plugin</Button>
                     </div>
                 </div>
 
@@ -179,10 +190,30 @@ const PluginDetails = () => {
                             <h5>Commentaires (connectez vous pour commenter):</h5>
                         }
                     </div>
-                    {
-                        comments.length > 0 ? comments.map((comment, i) => {
-                            const commentDate = new Date(comment.date);
-                            return (
+                    <a href={plugin.video ? plugin.video : ''} target="_blank" rel="noopener noreferrer"> {plugin.video ? 'Vidéo' : ''} </a>
+                    <a href={plugin.linkgithub ? plugin.linkgithub : ''}> {plugin.linkgithub ? 'GitHub' : ''} </a>
+                </div>
+            </div>
+
+            <div className="detailsDescription">
+                <h5>Description</h5>
+                <p>{plugin.description}</p>
+                <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/plugins/${encodeURI(plugin.name)}?dt=${new Date().getTime()}`, '_blank')} >Essayer le plugin</Button>
+                <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=http://localhost:8000/plugins/${encodeURI(plugin.name)}`, '_blank')} >Valider le plugin</Button>
+            </div>
+
+            <div className="detailsComments">
+                <div>
+                    {loggedIn ?
+                        <h5>Commentaires :</h5>
+                        :
+                        <h5>Commentaires (connectez vous pour commenter):</h5>
+                    }
+                </div>
+                {
+                    comments.length > 0 ? comments.map((comment, i) => {
+                        const commentDate = new Date(comment.date);
+                        return (
                                 <Row key={i} className="pluginDetailsComment">
                                     <Card className="w-100">
                                         <Card.Body>
@@ -201,9 +232,7 @@ const PluginDetails = () => {
                                         </Card.Body>
                                     </Card>
                                 </Row>
-                            );
-                        }
-                        ) : <br />
+                        );
                     }
                     {loggedIn ?
                         <Form onSubmit={handleSubmit} className="detailsAddComment">

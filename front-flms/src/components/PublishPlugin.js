@@ -25,7 +25,10 @@ const PublishPlugin = () => {
         get('api/categories')
             .then(res => res.json())
             .then(categories => setCategories(categories));
-    }, [categories]);
+        return () => {
+            setCategories([]);
+        };
+    }, []);
 
     const handleOpenSourceClick = event => {
         setOpenSource(event.target.checked);
@@ -114,6 +117,7 @@ const PublishPlugin = () => {
         const data = new FormData();
         data.append('name', nameCat);
         post('api/categories', data)
+            .then(res => res.json())
             .then(category => {
                 console.log(category);
                 setCategories([...categories, category]);

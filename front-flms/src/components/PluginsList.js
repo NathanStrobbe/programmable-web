@@ -36,6 +36,11 @@ const PluginsList = () => {
         get('api/categories')
             .then(res => res.json())
             .then(categories => setCategories(categories));
+
+        return () => {
+            setPlugins([]);
+            setCategories([]);
+        };
     }, []);
 
     return (
