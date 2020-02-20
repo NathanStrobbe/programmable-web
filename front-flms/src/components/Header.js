@@ -4,6 +4,7 @@ import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
 import './Header.css';
 import { useDispatch, useSelector } from 'react-redux';
 import allActions from '../actions/action';
+import logo from '../assets/trumpet.png';
 
 const Header = () => {
     const loggedIn = useSelector(state => state.loggedIn);
@@ -18,9 +19,21 @@ const Header = () => {
     return (
         <Navbar className="justify-content-between" bg="dark" variant="dark">
             {loggedIn ?
-                <Navbar.Brand><NavLink to="/pluginsList" className="title">Store FMLS</NavLink></Navbar.Brand>
+                <Navbar.Brand> <img
+                    src={logo}
+                    width="30"
+                    height="30"
+                    className="d-inline-block align-top"
+                    alt="React Bootstrap logo"
+                /><NavLink to="/pluginsList" className="title">Store FMLS</NavLink></Navbar.Brand>
                 :
-                <Navbar.Brand><NavLink to="/shop" className="title">Store FMLS</NavLink></Navbar.Brand>
+                <Navbar.Brand><img
+                    src={logo}
+                    width="30"
+                    height="30"
+                    className="d-inline-block align-top"
+                    alt="React Bootstrap logo"
+                /><NavLink to="/shop" className="title">Store FMLS</NavLink></Navbar.Brand>
             }
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Nav pullright="true">
