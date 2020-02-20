@@ -129,7 +129,7 @@ const PublishPlugin = () => {
     };
 
     return (
-        <Card>
+        <Card className="cardPublish">
             <Card.Header>Publier un plugin</Card.Header>
             <Card.Body>
                 <Form onSubmit={handleSubmitForm}>

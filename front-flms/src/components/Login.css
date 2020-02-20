@@ -4,7 +4,6 @@
 }
 
 .form-group {
-    width: 80%;
     margin: 10px auto;
 }
 
@@ -14,4 +13,8 @@
 
 .content{
     min-height: 100vh;
+}
+
+.buttonValidate{
+    display: flex;
 }
