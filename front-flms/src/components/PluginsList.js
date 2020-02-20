@@ -4,12 +4,14 @@ import { convertBufferToBase64 } from '../utils/utils';
 import { Link } from 'react-router-dom';
 import './PluginsList.css';
 import { get } from '../utils/api';
+import {useSelector} from "react-redux";
 
 const PluginsList = () => {
     const [plugins, setPlugins] = useState([]);
     const [categories, setCategories] = useState([]);
     const [filterPlugins, setFilterPlugins] = useState('all');
     const [searchTerm, setSearchTerm] = useState('');
+    const loggedIn = useSelector(state => state.loggedIn);
 
     const filterList = id => {
         setFilterPlugins(id);
@@ -20,9 +22,16 @@ const PluginsList = () => {
     };
 
     useEffect(() => {
-        get('api/plugins')
-            .then(res => res.json())
-            .then(plugins => setPlugins(plugins));
+        if(!loggedIn) {
+            get('api/plugins/shop')
+                .then(res => res.json())
+                .then(plugins => setPlugins(plugins));
+        }
+        else {
+            get('api/plugins')
+                .then(res => res.json())
+                .then(plugins => setPlugins(plugins));
+        }
 
         get('api/categories')
             .then(res => res.json())
