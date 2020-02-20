@@ -20,7 +20,7 @@ const Header = () => {
             {loggedIn ?
                 <Navbar.Brand><NavLink to="/pluginsList" className="title">Store FMLS</NavLink></Navbar.Brand>
                 :
-                <Navbar.Brand><NavLink to="/" className="title">Store FMLS</NavLink></Navbar.Brand>
+                <Navbar.Brand><NavLink to="/shop" className="title">Store FMLS</NavLink></Navbar.Brand>
             }
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Nav pullright="true">

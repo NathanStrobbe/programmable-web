@@ -75,7 +75,7 @@ const Register = () => {
                             <Form.Label htmlFor="examplePassword">Mot de passe</Form.Label>
                             <Form.Control type="password" name="password" id="password" value={password} onChange={handlePasswordChange} />
                         </Form.Group>
-                        <Form.Group className="buttonValidate"><Button type="submit" className="Button">Enregistrer</Button></Form.Group>
+                        <Form.Group className="buttonValidate"><Button variant="outline-secondary" type="submit" className="Button">Enregistrer</Button></Form.Group>
 
                     </Form>
                 </Card.Body>

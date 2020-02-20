@@ -38,3 +38,12 @@
     flex-direction: column;
     align-items: center;
 }
+
+
+.detailsAddComment .form-group{
+    width: 80%;
+}
+
+.pluginDetailsComment .card{
+    width: 80%;
+}
