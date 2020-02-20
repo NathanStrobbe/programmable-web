@@ -36,6 +36,7 @@
   }
 
   #layout {
+    margin-left: 2%;
     display: flex;
   }
 
@@ -47,15 +48,21 @@
     width: 50%
   }
 
-  #buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
   #bt_buildIt {
-    background-color: #007bff;
     text-align: center;
-    color: white;
     border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: white;
+    color: #6c757d;
+    border: 1px solid #6c757d;
+  }
+
+  #bt_buildIt:hover {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .title {
+    margin-left: 1%;
   }
