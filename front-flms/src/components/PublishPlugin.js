@@ -19,12 +19,16 @@ const PublishPlugin = () => {
     const [show, setShow] = useState(false);
     const [nameCat, setNameCat] = useState('');
     const [error, setError] = useState('');
+    const [linkgithub, setlinkgithub] = useState('');
 
     useEffect(() => {
         get('api/categories')
             .then(res => res.json())
             .then(categories => setCategories(categories));
-    }, [categories]);
+        return () => {
+            setCategories([]);
+        };
+    }, []);
 
     const handleOpenSourceClick = event => {
         setOpenSource(event.target.checked);
@@ -64,19 +68,16 @@ const PublishPlugin = () => {
         event.preventDefault();
         const data = new FormData(event.target);
 
+        console.log(data);
         setError(0);
 
         data.append('creator', sessionStorage.getItem('jwtToken'));
         data.append('image', imageFile, imageFile.name);
-        console.log(pluginBinary);
         data.append('plugin', pluginBinary, pluginBinary.name);
         data.append('category', optionCat);
         data.delete('tags');
         data.append('tags', tags);
-
-        if (!data.linkgithub) {
-            data.append('linkgithub', '');
-        }
+        data.append('linkgithub', linkgithub);
 
         const plugin = Object.fromEntries(data);
 
@@ -92,15 +93,13 @@ const PublishPlugin = () => {
 
         post('api/plugins', data)
             .then(response => {
-                console.log(response);
-                if (response) {
+                if(response.status === "409"){
+                    setError(410);
+                }
+                else {
                     history.push('/pluginsList');
                 }
             })
-            .catch(err => {
-                if (err)
-                    setError(410);
-            });
     };
 
 
@@ -118,6 +117,7 @@ const PublishPlugin = () => {
         const data = new FormData();
         data.append('name', nameCat);
         post('api/categories', data)
+            .then(res => res.json())
             .then(category => {
                 console.log(category);
                 setCategories([...categories, category]);
@@ -129,7 +129,7 @@ const PublishPlugin = () => {
     };
 
     return (
-        <Card>
+        <Card className="cardPublish">
             <Card.Header>Publier un plugin</Card.Header>
             <Card.Body>
                 <Form onSubmit={handleSubmitForm}>
@@ -210,7 +210,7 @@ const PublishPlugin = () => {
                     {openSource &&
                         (<Form.Group>
                             <Form.Label htmlFor="publish-plugin-github">Lien vers Github</Form.Label>
-                            <Form.Control type="text" name="github" id="publish-plugin-github" />
+                            <Form.Control type="text" name="github" id="publish-plugin-github" value={linkgithub} onChange={e => setlinkgithub(e.target.value)}/>
                         </Form.Group>)
                     }
                     <Button type="submit" pullright="true">Enregistrer</Button>

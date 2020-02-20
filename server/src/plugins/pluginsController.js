@@ -90,7 +90,6 @@ exports.get = (req, res) => {
 };
 
 exports.addplugins = (req, res) => {
-    console.log(req.files);
     const imageFile = req.files.image[0];
     const pluginFile = req.files.plugin[0];
 

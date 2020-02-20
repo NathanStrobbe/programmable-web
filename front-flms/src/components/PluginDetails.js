@@ -59,6 +59,11 @@ const PluginDetails = () => {
         get(`api/comments?pluginId=${pluginId}`)
             .then(res => res.json())
             .then(comments => setComments(comments));
+
+        return () => {
+            setPlugin(defaultPlugin);
+            setComments([]);
+        };
     }, [pluginId]);
 
     useEffect(() => {
@@ -67,12 +72,18 @@ const PluginDetails = () => {
                 .then(res => res.json())
                 .then(category => setCategory(category));
         }
+        return () => {
+            setCategory(defaultCategory);
+        };
     }, [plugin]);
 
     useEffect(() => {
         get(`api/user?token=${userToken}`)
             .then(res => res.json())
             .then(user => setUser(user));
+        return () => {
+            setUser(defaultUser);
+        };
     }, [userToken]);
 
     const click = plugin => {
@@ -165,20 +176,23 @@ const PluginDetails = () => {
                 <div className="detailsDescription">
                     <h5>Description</h5>
                     <p>{plugin.description}</p>
-                    <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/plugins/${encodeURI(plugin.name)}?dt=${new Date().getTime()}`, '_blank')} >Essayer le plugin</Button>
-                    <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=${encodeURI(plugin.name)}&dt=${new Date().getTime()}`, '_blank')} >Valider le plugin</Button>
+                    <div className="detailsButtonGroup">
+                        <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/plugins/${encodeURI(plugin.name)}?dt=${new Date().getTime()}`, '_blank')} >Essayer le plugin</Button>
+                        <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=${encodeURI(plugin.name)}&dt=${new Date().getTime()}`, '_blank')} >Valider le plugin</Button>
+                    </div>
                 </div>
 
-                <div className="detailsComments">
-                    <div>
-                        {loggedIn ?
-                            <h5>Commentaires :</h5>
-                            :
-                            <h5>Commentaires (connectez vous pour commenter):</h5>
-                        }
-                    </div>
+
+            <div className="detailsComments">
+                <div>
+                    {loggedIn ?
+                        <h5>Commentaires :</h5>
+                        :
+                        <h5>Commentaires (connectez vous pour commenter):</h5>
+                    }
+                </div>
                     {
-                        comments.length > 0 ? comments.map((comment, i) => {
+                    comments.length > 0 ? comments.map((comment, i) => {
                             const commentDate = new Date(comment.date);
                             return (
                                 <Row key={i} className="pluginDetailsComment">
@@ -186,12 +200,12 @@ const PluginDetails = () => {
                                         <Card.Body>
                                             <Card.Title>
                                                 <div>
-                                                    <span style={{ float: 'left' }}><b>{comment.writer}</b></span>
-                                                    <span style={{ float: 'right' }}>
+                                                    <span style={{float: 'left'}}><b>{comment.writer}</b></span>
+                                                    <span style={{float: 'right'}}>
                                                         {commentDate.toLocaleDateString()}
                                                     </span>
                                                 </div>
-                                                <br />
+                                                <br/>
                                             </Card.Title>
                                             <Card.Text>
                                                 {comment.content}
@@ -200,8 +214,7 @@ const PluginDetails = () => {
                                     </Card>
                                 </Row>
                             );
-                        }
-                        ) : <br />
+                        }) : <br/>
                     }
                     {loggedIn ?
                         <Form onSubmit={handleSubmit} className="detailsAddComment">
@@ -209,7 +222,7 @@ const PluginDetails = () => {
                                 <Form.Label htmlFor="commentContent">Ajouter un commentaire</Form.Label>
                                 <Form.Control as="textarea" rows="3" name="commentContent" id="commentContent" required />
                             </Form.Group>
-                            <Button type="submit">Commenter</Button>
+                            <Button type="submit" variant="outline-secondary">Commenter</Button>
                         </Form>
                         :
                         <p></p>

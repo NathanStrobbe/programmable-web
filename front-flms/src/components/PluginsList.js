@@ -36,10 +36,15 @@ const PluginsList = () => {
         get('api/categories')
             .then(res => res.json())
             .then(categories => setCategories(categories));
+
+        return () => {
+            setPlugins([]);
+            setCategories([]);
+        };
     }, []);
 
     return (
-        <div>
+        <div className="contentList">
             <Row className="filter">
                 <Col sm={8}>
                     <h4>Filter les résultats</h4>
@@ -56,22 +61,22 @@ const PluginsList = () => {
                     </Form>
                 </Col>
             </Row>
+
             <Row className="containerList">
                 {
                     plugins.filter(plugin => plugin.name.toLowerCase().includes(searchTerm)).map((plugin, i) =>
                         filterPlugins === 'all' || plugin.category === filterPlugins ?
                             <Col key={i}>
-                                <Card key={plugin._id} style={{ width: '18rem', maxHeight: '600px' }}>
+                                <Card key={plugin._id} style={{ width: '18rem', maxHeight: '270px', minHeight:"270px"}} className="cardPluginList">
                                     <Card.Body>
-                                        <Link to={`/pluginDetails/${plugin._id}`} style={{ textDecoration: 'none' }}>
+                                        <Link to={`/pluginDetails/${plugin._id}`} style={{ textDecoration: 'none' }} className="listPluginDetails">
                                             <Card.Title>{plugin.name}</Card.Title>
-                                            <Card.Img variant="top" src={convertBufferToBase64(plugin.image)} />
+                                            <Card.Img variant="top" src={convertBufferToBase64(plugin.image)}/>
                                             <Card.Text>
-                                                {plugin.description.substr(0, 100)}
-                                                {plugin.description.substr(0, 100) === plugin.description ? null : ' ...'}
+                                                {plugin.description.substr(0, 50)}
+                                                {plugin.description.substr(0, 50) === plugin.description ? null : ' ...'}
                                             </Card.Text>
                                         </Link>
-                                        Likes : {plugin.likes.length}<br />
                                     </Card.Body>
                                 </Card>
                             </Col>

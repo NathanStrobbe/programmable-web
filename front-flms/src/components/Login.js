@@ -73,7 +73,7 @@ const Login = () => {
                                 )
                             }
                         </Form.Group>
-                        <Form.Group><Button type="submit" className="Button">Se connecter</Button></Form.Group>
+                        <Form.Group className="buttonValidate"><Button variant="outline-secondary" type="submit" className="Button">Se connecter</Button></Form.Group>
                     </Form>
                 </Card.Body>
             </Card>
