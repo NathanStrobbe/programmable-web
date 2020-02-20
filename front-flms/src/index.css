@@ -24,7 +24,6 @@ html, body, #root, .App {
     overflow: auto;
 }
 
-
 body{
     min-height: 100%;
 }

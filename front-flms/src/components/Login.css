@@ -11,3 +11,7 @@
 .Button {
     margin: 20px auto;
 }
+
+.content{
+    min-height: 100vh;
+}
