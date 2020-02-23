@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {NavLink, useHistory, useParams} from 'react-router-dom';
-import {Button, Row, Card, Container, Badge, Form, Breadcrumb} from 'react-bootstrap';
+import { useHistory, useParams } from 'react-router-dom';
+import { Button, Container, Badge, Breadcrumb } from 'react-bootstrap';
 import { convertBufferToBase64 } from '../utils/utils';
-import { useSelector } from 'react-redux';
 import SweetAlert from 'sweetalert2-react';
 import './PluginDetails.css';
 import heartFill from '../assets/heart.png';
 import heartBlank from '../assets/heart_blank.png';
 import { get, post } from '../utils/api.js';
-import Navbar from "react-bootstrap/esm/Navbar";
-import PluginsList from "./PluginsList";
-import load from "../assets/load.gif";
+import load from '../assets/load.gif';
+import CommentList from './CommentList';
 
 const defaultPlugin = {
     name: '',
@@ -45,10 +43,7 @@ const PluginDetails = () => {
     const [user, setUser] = useState(defaultUser);
     const [plugin, setPlugin] = useState(defaultPlugin);
     const [category, setCategory] = useState(defaultCategory);
-    const [comments, setComments] = useState([]);
     const [alertMessage, setAlertMessage] = useState(null);
-
-    const loggedIn = useSelector(state => state.loggedIn);
 
     const userToken = sessionStorage.getItem('jwtToken');
 
@@ -57,13 +52,8 @@ const PluginDetails = () => {
             .then(res => res.json())
             .then(plugin => setPlugin(plugin));
 
-        get(`api/comments?pluginId=${pluginId}`)
-            .then(res => res.json())
-            .then(comments => setComments(comments));
-
         return () => {
             setPlugin(defaultPlugin);
-            setComments([]);
         };
     }, [pluginId]);
 
@@ -106,32 +96,6 @@ const PluginDetails = () => {
         }
     };
 
-    const handleSubmit = event => {
-        event.preventDefault();
-        const data = new FormData(event.target);
-        const comment = Object.fromEntries(data);
-        if (sessionStorage.getItem('jwtToken')) {
-            if (comment.commentContent.trim().length > 0) {
-                const now = new Date();
-                console.log(now);
-
-                post('api/comments', JSON.stringify({
-                    'writer': user.username,
-                    'content': comment.commentContent.trim(),
-                    'date': now,
-                    'pluginId': plugin._id
-                }), 'application/json')
-                    .then(res => res.json())
-                    .then(comments => {
-                        setComments(comments);
-                        document.getElementById('commentContent').value = '';
-                    });
-            }
-        } else {
-            setAlertMessage('Veuillez vous connecter !');
-        }
-    };
-
     const heart = () => {
         for (let like of plugin.likes) {
             if (like === user._id) {
@@ -144,7 +108,7 @@ const PluginDetails = () => {
     if (plugin === defaultPlugin)
         return <div className="detailsLoad"><img src={load} alt="load" width="150px" height="150px" /></div>;
 
-    const handleBackButton = () =>{
+    const handleBackButton = () => {
         history.push('/pluginsList');
     };
 
@@ -186,52 +150,8 @@ const PluginDetails = () => {
                     </div>
                 </div>
 
+                <CommentList user={user}/>
 
-            <div className="detailsComments">
-                <div>
-                    {loggedIn ?
-                        <h5>Commentaires :</h5>
-                        :
-                        <h5>Commentaires (connectez vous pour commenter):</h5>
-                    }
-                </div>
-                    {
-                    comments.length > 0 ? comments.map((comment, i) => {
-                            const commentDate = new Date(comment.date);
-                            return (
-                                <Row key={i} className="pluginDetailsComment">
-                                    <Card className="w-100">
-                                        <Card.Body>
-                                            <Card.Title>
-                                                <div>
-                                                    <span style={{float: 'left'}}><b>{comment.writer}</b></span>
-                                                    <span style={{float: 'right'}}>
-                                                        {commentDate.toLocaleDateString()}
-                                                    </span>
-                                                </div>
-                                                <br/>
-                                            </Card.Title>
-                                            <Card.Text>
-                                                {comment.content}
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Row>
-                            );
-                        }) : <br/>
-                    }
-                    {loggedIn ?
-                        <Form onSubmit={handleSubmit} className="detailsAddComment">
-                            <Form.Group>
-                                <Form.Label htmlFor="commentContent">Ajouter un commentaire</Form.Label>
-                                <Form.Control as="textarea" rows="3" name="commentContent" id="commentContent" required />
-                            </Form.Group>
-                            <Button type="submit" variant="outline-secondary">Commenter</Button>
-                        </Form>
-                        :
-                        <p></p>
-                    }
-                </div>
                 <SweetAlert
                     show={alertMessage}
                     title="Erreur"
