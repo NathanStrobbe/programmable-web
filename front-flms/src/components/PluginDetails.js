@@ -130,6 +130,9 @@ const PluginDetails = () => {
                             <img onClick={() => click(plugin)} src={heart()} alt="Add a like" width="20" height="20px" style={{ cursor: 'pointer' }} />
                             {plugin.likes.length}
                         </div>
+                        {plugin.validated ?
+                            <p className="pluginValidated">Plugin validé</p> : null
+                        }
                         <p>Auteur : {plugin.creator.username}</p>
 
                         <p>Catégorie : {category.name}</p>
@@ -148,7 +151,7 @@ const PluginDetails = () => {
                     <p>{plugin.description}</p>
                     <div className="detailsButtonGroup">
                         <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/plugins/${encodeURI(plugin.name)}?dt=${new Date().getTime()}`, '_blank')} >Essayer le plugin</Button>
-                        {loggedIn ?
+                        {loggedIn && !plugin.validated ?
                             <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=${encodeURI(plugin.name)}&dt=${new Date().getTime()}`, '_blank')} >Valider le plugin</Button> : null
                         }
 

@@ -61,6 +61,8 @@ const Register = () => {
                             <Form.Control name="userName" id="userName" value={username} onChange={handleUsernameChange} />
                         </Form.Group>
                         <Form.Group>
+                            <Form.Label htmlFor="email">Email</Form.Label>
+                            <Form.Control type="email" name="email" id="email" value={email} onChange={handleEmailChange} />
                             {
                                 error === 409 && (
                                     <Alert variant="danger" >
@@ -68,8 +70,6 @@ const Register = () => {
                                     </Alert>
                                 )
                             }
-                            <Form.Label htmlFor="email">Email</Form.Label>
-                            <Form.Control type="email" name="email" id="email" value={email} onChange={handleEmailChange} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label htmlFor="examplePassword">Mot de passe</Form.Label>
