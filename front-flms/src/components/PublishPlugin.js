@@ -131,7 +131,7 @@ const PublishPlugin = () => {
     const loggedIn = useSelector(state => state.loggedIn);
 
     if (!loggedIn) {
-        return <Redirect to={{pathname: 'login'}}/ >;
+        return <Redirect to={{pathname: 'login'}}/>;
     }
 
     return (

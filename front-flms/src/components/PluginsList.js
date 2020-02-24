@@ -14,6 +14,8 @@ const PluginsList = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const loggedIn = useSelector(state => state.loggedIn);
 
+
+
     const filterList = id => {
         setFilterPlugins(id);
     };
@@ -49,7 +51,11 @@ const PluginsList = () => {
                 <Col sm={8}>
                     <h4>Filter les résultats</h4>
                     <Button variant="outline-primary" size="sm" onClick={() => filterList('all')}>Tous les plugins</Button>
-                    <Button size="sm" variant="outline-primary" onClick={() => filterList(true)}>Plugins validés</Button>
+                    {
+                        loggedIn ?
+                            <Button size="sm" variant="outline-primary" onClick={() => filterList(true)}>Plugins validés</Button>: null
+                    }
+
                     {
                         categories.map((category, i) =>
                             <Button key={i} size="sm" variant="outline-primary" onClick={() => filterList(category._id)}>{category.name}</Button>
