@@ -1,5 +1,5 @@
 import React from 'react';
-import PluginsList from "./PluginsList";
+import PluginsList from './PluginsList';
 
 const Shop = () => {
 

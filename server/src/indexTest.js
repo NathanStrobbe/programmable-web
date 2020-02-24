@@ -6,7 +6,7 @@ let cors = require('cors');
 
 
 const app = express();
-const http = require('http').Server(app);
+require('http').Server(app);
 const upload = multer();
 
 app.use(cors());

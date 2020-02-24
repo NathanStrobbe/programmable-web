@@ -13,7 +13,7 @@ import Shop from './components/Shop';
 
 const App = () => {
     useEffect(() => {
-        document.title = "Store FLMS";
+        document.title = 'Store FLMS';
     });
 
     return (
