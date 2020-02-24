@@ -75,7 +75,7 @@ const PluginsList = () => {
                                     <Card.Body>
                                         <Link to={`/pluginDetails/${plugin._id}`} style={{ textDecoration: 'none' }} className="listPluginDetails">
                                             <Card.Title>{plugin.name}</Card.Title>
-                                            <Card.Img variant="top" src={convertBufferToBase64(plugin.image)} />
+                                            <Card.Img variant="top" src={convertBufferToBase64(plugin.image)} style={{ maxWidth: '17rem'}} />
                                             <Card.Text>
                                                 {plugin.description.substr(0, 50)}
                                                 {plugin.description.substr(0, 50) === plugin.description ? null : ' ...'}
