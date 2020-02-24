@@ -27,7 +27,7 @@ const pluginSchema = mongoose.Schema({
         ref: 'image'
     },
     category: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: 'category'
     },
