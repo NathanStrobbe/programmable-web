@@ -126,7 +126,7 @@ const PluginDetails = () => {
                     <img className="Image" src={convertBufferToBase64(plugin.image)} alt="Plugin" />
                     <div className="detailsText">
                         <div className="detailsGroup">
-                            <h3>{plugin.name} {plugin.version}</h3>
+                            <h3>{plugin.name} - {plugin.version}</h3>
                             <img onClick={() => click(plugin)} src={heart()} alt="Add a like" width="20" height="20px" style={{ cursor: 'pointer' }} />
                             {plugin.likes.length}
                         </div>
