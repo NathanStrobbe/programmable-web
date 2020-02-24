@@ -36,7 +36,7 @@ exports.getUserByID = (req, res) => {
 
 
 exports.delete = (req, res) =>{
-    User.remove({}, (err, user) =>{
+    User.remove({}, (err) =>{
         if(err)
             return res.status(500).send(err);
         Token.remove({}, (err, token)=>{
@@ -45,7 +45,7 @@ exports.delete = (req, res) =>{
             return res.status(200).send(token);
         });
     });
-}
+};
 
 
 exports.logIn = (req, res) => {
