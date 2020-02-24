@@ -4,8 +4,8 @@ import { convertBufferToBase64 } from '../utils/utils';
 import { Link } from 'react-router-dom';
 import './PluginsList.css';
 import { get } from '../utils/api';
-import {useSelector} from "react-redux";
-import load from "../assets/load.gif";
+import { useSelector } from 'react-redux';
+import load from '../assets/load.gif';
 
 const PluginsList = () => {
     const [plugins, setPlugins] = useState([]);
@@ -23,12 +23,11 @@ const PluginsList = () => {
     };
 
     useEffect(() => {
-        if(!loggedIn) {
+        if (!loggedIn) {
             get('api/plugins/shop')
                 .then(res => res.json())
                 .then(plugins => setPlugins(plugins));
-        }
-        else {
+        } else {
             get('api/plugins')
                 .then(res => res.json())
                 .then(plugins => setPlugins(plugins));
@@ -42,7 +41,7 @@ const PluginsList = () => {
             setPlugins([]);
             setCategories([]);
         };
-    }, []);
+    }, [loggedIn]);
 
     return (
         <div className="contentList">
@@ -71,11 +70,11 @@ const PluginsList = () => {
                     plugins.filter(plugin => plugin.name.toLowerCase().includes(searchTerm.toLowerCase())).map((plugin, i) =>
                         filterPlugins === 'all' || plugin.category === filterPlugins ?
                             <Col key={i}>
-                                <Card key={plugin._id} style={{ width: '18rem', maxHeight: '270px', minHeight:"270px"}} className="cardPluginList">
+                                <Card key={plugin._id} style={{ width: '18rem', maxHeight: '270px', minHeight: '270px' }} className="cardPluginList">
                                     <Card.Body>
                                         <Link to={`/pluginDetails/${plugin._id}`} style={{ textDecoration: 'none' }} className="listPluginDetails">
                                             <Card.Title>{plugin.name}</Card.Title>
-                                            <Card.Img variant="top" src={convertBufferToBase64(plugin.image)}/>
+                                            <Card.Img variant="top" src={convertBufferToBase64(plugin.image)} />
                                             <Card.Text>
                                                 {plugin.description.substr(0, 50)}
                                                 {plugin.description.substr(0, 50) === plugin.description ? null : ' ...'}
