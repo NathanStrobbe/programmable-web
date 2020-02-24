@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {NavLink, useHistory, useParams} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import {Button, Row, Card, Container, Badge, Form, Breadcrumb} from 'react-bootstrap';
 import { convertBufferToBase64 } from '../utils/utils';
 import { useSelector } from 'react-redux';
@@ -8,8 +8,6 @@ import './PluginDetails.css';
 import heartFill from '../assets/heart.png';
 import heartBlank from '../assets/heart_blank.png';
 import { get, post } from '../utils/api.js';
-import Navbar from "react-bootstrap/esm/Navbar";
-import PluginsList from "./PluginsList";
 import load from "../assets/load.gif";
 
 const defaultPlugin = {
@@ -182,7 +180,10 @@ const PluginDetails = () => {
                     <p>{plugin.description}</p>
                     <div className="detailsButtonGroup">
                         <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/plugins/${encodeURI(plugin.name)}?dt=${new Date().getTime()}`, '_blank')} >Essayer le plugin</Button>
-                        <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=${encodeURI(plugin.name)}&dt=${new Date().getTime()}`, '_blank')} >Valider le plugin</Button>
+                        {loggedIn ?
+                            <Button variant="outline-secondary" onClick={() => window.open(`http://localhost:8000/testers/testPluginWithMocha.html?urlPlugin=${encodeURI(plugin.name)}&dt=${new Date().getTime()}`, '_blank')} >Valider le plugin</Button> : null
+                        }
+
                     </div>
                 </div>
 
@@ -229,7 +230,7 @@ const PluginDetails = () => {
                             <Button type="submit" variant="outline-secondary">Commenter</Button>
                         </Form>
                         :
-                        <p></p>
+                      null
                     }
                 </div>
                 <SweetAlert

@@ -184,7 +184,7 @@ const PublishPlugin = () => {
                         <Form.Group>
                             <Form.Control type="textarea" name="tags" id="publish-plugin-tags" value={tag} onChange={handleTagChange} />
                         </Form.Group>
-                        <Button onClick={handleAddTag}>Ajouter</Button>
+                        <Button variant="outline-secondary" onClick={handleAddTag}>Ajouter</Button>
                     </div>
                     <div className="group">
                         <Form.Group>
@@ -213,7 +213,9 @@ const PublishPlugin = () => {
                             <Form.Control type="text" name="github" id="publish-plugin-github" value={linkgithub} onChange={e => setlinkgithub(e.target.value)}/>
                         </Form.Group>)
                     }
-                    <Button type="submit" pullright="true">Enregistrer</Button>
+                    <div className="submitPlugin">
+                        <Button type="submit" variant="outline-secondary" pullright="true">Enregistrer</Button>
+                    </div>
                 </Form>
             </Card.Body>
 
@@ -237,10 +239,10 @@ const PublishPlugin = () => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="outline-secondary" onClick={handleClose}>
                         Fermer
                     </Button>
-                    <Button variant="primary" onClick={handleCloseSubmit}>
+                    <Button variant="outline-secondary" onClick={handleCloseSubmit}>
                         Sauvegarder
                     </Button>
                 </Modal.Footer>

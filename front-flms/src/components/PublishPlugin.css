@@ -57,7 +57,12 @@ img{
 }
 
 .tags p{
-    margin: 0px;
+    margin: 0;
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.submitPlugin{
+    display: flex;
+    justify-content: center;
 }

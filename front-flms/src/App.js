@@ -22,7 +22,7 @@ const App = () => {
                 <Header />
                 <Switch>
                     <Route exact path="/" >
-                        <Redirect to="/login"/>
+                        <Redirect to="/shop"/>
                     </Route>
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
