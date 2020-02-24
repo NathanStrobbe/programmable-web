@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Modal, Alert } from 'react-bootstrap';
 import { post, get } from '../utils/api';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import './PublishPlugin.css';
 import add from '../assets/plus.png';
 import quit from '../assets/quit.png';
+import { useSelector } from 'react-redux';
 
 const PublishPlugin = () => {
     const history = useHistory();
@@ -93,13 +94,12 @@ const PublishPlugin = () => {
 
         post('api/plugins', data)
             .then(response => {
-                if(response.status === "409"){
+                if(response.status === '409'){
                     setError(410);
-                }
-                else {
+                } else {
                     history.push('/pluginsList');
                 }
-            })
+            });
     };
 
 
@@ -127,6 +127,12 @@ const PublishPlugin = () => {
                 setError(409);
             });
     };
+
+    const loggedIn = useSelector(state => state.loggedIn);
+
+    if (!loggedIn) {
+        return <Redirect to={{pathname: 'login'}}/ >;
+    }
 
     return (
         <Card className="cardPublish">
