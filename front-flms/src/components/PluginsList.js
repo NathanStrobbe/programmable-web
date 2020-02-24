@@ -49,6 +49,7 @@ const PluginsList = () => {
                 <Col sm={8}>
                     <h4>Filter les résultats</h4>
                     <Button variant="outline-primary" size="sm" onClick={() => filterList('all')}>Tous les plugins</Button>
+                    <Button size="sm" variant="outline-primary" onClick={() => filterList(true)}>Plugins validés</Button>
                     {
                         categories.map((category, i) =>
                             <Button key={i} size="sm" variant="outline-primary" onClick={() => filterList(category._id)}>{category.name}</Button>
@@ -68,7 +69,7 @@ const PluginsList = () => {
                 }
                 {
                     plugins.filter(plugin => plugin.name.toLowerCase().includes(searchTerm.toLowerCase())).map((plugin, i) =>
-                        filterPlugins === 'all' || plugin.category === filterPlugins ?
+                        filterPlugins === 'all' || plugin.category === filterPlugins || plugin.validated === filterPlugins ?
                             <Col key={i}>
                                 <Card key={plugin._id} style={{ width: '18rem', maxHeight: '270px', minHeight: '270px' }} className="cardPluginList">
                                     <Card.Body>
