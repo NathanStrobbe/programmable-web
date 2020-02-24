@@ -22,7 +22,7 @@ exports.getAll = (req, res) => {
 
 exports.getOfficiel = (req, res) => {
     Plugin
-        .find({validated: true })
+        .find({ validated: true })
         .populate('image')
         .exec((err, plugins) => {
             if (err) {
@@ -152,29 +152,31 @@ exports.addplugins = (req, res) => {
                     console.log('The plugin has been saved!');
                     plugin.sourcePath = pluginPath;
 
-                    fs.createReadStream(pluginZipPath).pipe(unzipper.Extract({ path: pluginPath }));
+                    fs.createReadStream(pluginZipPath)
+                        .pipe(unzipper.Extract({ path: pluginPath }))
+                        .on('close', () => {
+                            console.log(req.body.category);
+                            return Category.findOne({ name: req.body.category }, (err, category) => {
+                                if (err) {
+                                    console.log(err);
+                                    return res.status(500).send(err);
+                                }
 
-                    console.log(req.body.category);
-                    return Category.findOne({ name: req.body.category }, (err, category) => {
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send(err);
-                        }
+                                if (category == null) {
+                                    console.log('category not found');
+                                    return res.status(404).send(err);
+                                }
 
-                        if (category == null) {
-                            console.log('category not found');
-                            return res.status(404).send(err);
-                        }
-
-                        plugin.category = category._id;
-                        return plugin.save((err) => {
-                            if (err) {
-                                console.log(err);
-                                return res.status(500).send(err);
-                            }
-                            return res.status(201).send({ message: 'Plugin added', data: plugin });
+                                plugin.category = category._id;
+                                return plugin.save((err) => {
+                                    if (err) {
+                                        console.log(err);
+                                        return res.status(500).send(err);
+                                    }
+                                    return res.status(201).send({ message: 'Plugin added', data: plugin });
+                                });
+                            });
                         });
-                    });
                 });
             });
         });

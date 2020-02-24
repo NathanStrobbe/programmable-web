@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {useHistory, useParams} from 'react-router-dom';
-import {Button, Row, Card, Container, Badge, Form, Breadcrumb} from 'react-bootstrap';
+import {Button, Container, Badge, Breadcrumb} from 'react-bootstrap';
 import { convertBufferToBase64 } from '../utils/utils';
 import SweetAlert from 'sweetalert2-react';
 import './PluginDetails.css';
@@ -9,7 +9,7 @@ import heartBlank from '../assets/heart_blank.png';
 import { get, post } from '../utils/api.js';
 import load from '../assets/load.gif';
 import CommentList from './CommentList';
-import {useSelector} from "react-redux";
+import {useSelector} from 'react-redux';
 
 const defaultPlugin = {
     name: '',
