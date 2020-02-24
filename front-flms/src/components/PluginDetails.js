@@ -115,7 +115,7 @@ const PluginDetails = () => {
     };
 
     return (
-        <div>
+        <div className="detailsContent">
             <Breadcrumb>
                 <Breadcrumb.Item onClick={handleBackButton}>Liste des plugins</Breadcrumb.Item>
                 <Breadcrumb.Item active>Détail</Breadcrumb.Item>
