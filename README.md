@@ -44,3 +44,10 @@ En haut à droite du site se trouve un bouton donnant accès au formulaire de pu
 Concernant la route exposée afin que quelqu’un puisse récupérer les plugin via notre site, il suffit d’effectuer une requête GET sur notre API vers la route “download” et en donnant l’id du plugin demandé.
 
 (Exemple : http://localhost:3001/api/download?id=idPlugin) 
+
+## Modèle et base de données :
+
+Voici un schéma de notre modèle : 
+![Model-programmableweb.png](Model-programmableweb.png)
+
+La base données qui utilise ce modèle est une base MongoDB déployée avec Atlas. La route de cette base est accessible dans le fichier ```index.js``` du serveur, à la ligne 32. En effet, le backend s'y connecte avec l'url appropriée, ici ```mongodb+srv://flms:flms@flms-cpwc5.gcp.mongodb.net/prod?retryWrites=true&w=majority```.
